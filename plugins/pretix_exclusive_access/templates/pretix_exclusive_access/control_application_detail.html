@@ -1,0 +1,140 @@
+{% extends "pretixcontrol/event/base.html" %}
+{% load i18n %}
+
+{% block content %}
+<h1>{{ application.full_name }}</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p>
+                    {% if application.status == "approved" %}
+                        <span class="label label-success">{% trans "Approved" %}</span>
+                    {% elif application.status == "rejected" %}
+                        <span class="label label-danger">{% trans "Rejected" %}</span>
+                    {% else %}
+                        <span class="label label-warning">{% trans "Pending" %}</span>
+                    {% endif %}
+                </p>
+
+                <table class="table table-bordered table-condensed">
+                    <tbody>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Email" %}</strong></td><td>{{ application.email }}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Phone" %}</strong></td><td>{{ application.phone }}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Gender" %}</strong></td><td>{{ application.get_gender_display|default:application.gender|default:"-" }}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Instagram / Social" %}</strong></td><td>{{ application.instagram_handle }}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Referred by" %}</strong></td><td>{{ application.referred_by|default:"-" }}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Requested item" %}</strong></td><td>{{ application.item.name }}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Submitted at" %}</strong></td><td>{{ application.created_at }}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Reviewed at" %}</strong></td><td>{{ application.reviewed_at|default:"-" }}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Reviewed by" %}</strong></td><td>{{ application.reviewed_by|default:"-" }}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Access token" %}</strong></td><td>{{ application.access_token|default:"-" }}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Access token created" %}</strong></td><td>{{ application.access_token_created_at|default:"-" }}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Approved order code" %}</strong></td><td>{{ application.approved_order_code|default:"-" }}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Approved order position" %}</strong></td><td>{% if application.approved_order_position %}#{{ application.approved_order_position.pk }}{% else %}-{% endif %}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Guest category" %}</strong></td><td>{{ application.guest_category|default:"-" }}</td></tr>
+                        <tr><td class="detail-label-cell"><strong>{% trans "Status reason" %}</strong></td><td>{{ application.status_reason|default:"-" }}</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="form-group">
+                    <label>{% trans "Applicant notes" %}</label>
+                    <div class="well well-sm">{{ application.notes|default:"-" }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>{% trans "Review actions" %}</strong>
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="id_gender">{% trans "Gender" %}</label>
+                        <select name="gender" id="id_gender" class="form-control">
+                            <option value="" {% if not application.gender %}selected{% endif %}>{% trans "---------" %}</option>
+                            <option value="male" {% if application.gender == "male" %}selected{% endif %}>{% trans "Male" %}</option>
+                            <option value="female" {% if application.gender == "female" %}selected{% endif %}>{% trans "Female" %}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_guest_category">{% trans "Guest category" %}</label>
+                        <select name="guest_category" id="id_guest_category" class="form-control">
+                            <option value="">{% trans "---------" %}</option>
+                            <option value="vip" {% if application.guest_category == "vip" %}selected{% endif %}>VIP</option>
+                            <option value="influencer" {% if application.guest_category == "influencer" %}selected{% endif %}>Influencer</option>
+                            <option value="press" {% if application.guest_category == "press" %}selected{% endif %}>Press</option>
+                            <option value="artist_guest" {% if application.guest_category == "artist_guest" %}selected{% endif %}>Artist Guest</option>
+                            <option value="partner" {% if application.guest_category == "partner" %}selected{% endif %}>Partner</option>
+                            <option value="internal" {% if application.guest_category == "internal" %}selected{% endif %}>Internal</option>
+                            <option value="general_guest" {% if application.guest_category == "general_guest" %}selected{% endif %}>General Guest</option>
+                            <option value="other" {% if application.guest_category == "other" %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_status_reason">{% trans "Status reason" %}</label>
+                        <textarea name="status_reason" id="id_status_reason" rows="3" class="form-control">{{ application.status_reason|default:"" }}</textarea>
+                        <p class="help-block">{% trans "Optional approval or rejection context for internal tracking." %}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_internal_note">{% trans "Internal note" %}</label>
+                        <textarea name="internal_note" id="id_internal_note" rows="5" class="form-control">{{ application.internal_note|default:"" }}</textarea>
+                        <p class="help-block">{% trans "Private note for admissions / ops team only." %}</p>
+                    </div>
+
+                    <div class="btn-toolbar">
+                        <button type="submit" name="action" value="save" class="btn btn-default">
+                            {% trans "Save details" %}
+                        </button>
+
+                        <button type="submit" name="action" value="approve" class="btn btn-success" {% if application.status == "approved" %}disabled{% endif %}>
+                            {% trans "Approve" %}
+                        </button>
+
+                        <button type="submit" name="action" value="reject" class="btn btn-danger" {% if application.status == "rejected" %}disabled{% endif %}>
+                            {% trans "Reject" %}
+                        </button>
+
+                        <a class="btn btn-default"
+                           href="{% url "plugins:pretix_exclusive_access:applications" organizer=event.organizer.slug event=event.slug %}">
+                            {% trans "Back to list" %}
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        {% if application.photo %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>{% trans "Photo" %}</strong>
+                </div>
+                <div class="panel-body text-center">
+                    <a href="{{ application.photo.url }}" target="_blank">
+                        <img src="{{ application.photo.url }}" alt="{{ application.full_name }}" class="img-responsive img-thumbnail center-block">
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>{% trans "Internal note" %}</strong>
+            </div>
+            <div class="panel-body">
+                {{ application.internal_note|default:"-" }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,141 @@
+html,body{background:#0A0806!important;color:#F0EDE8!important;font-family:'Outfit',-apple-system,BlinkMacSystemFont,sans-serif!important}
+.navbar,.navbar-default,.navbar-fixed-top,header,.header{background:#0A0806!important;border-bottom:1px solid rgba(192,146,78,0.15)!important;box-shadow:none!important}
+.navbar-default .navbar-brand,.navbar-brand,.navbar a,.navbar-default .navbar-nav>li>a{color:#F0EDE8!important}
+.navbar-default .navbar-nav>li>a:hover,.navbar-default .navbar-nav>li>a:focus{color:#C0924E!important}
+.container,.container-fluid,body>.container{background:transparent!important}
+main,main#content,#content,.main-box,[role="main"]{background:#0A0806!important;color:#F0EDE8!important}
+.page-header,.event-header,.shop-header{background:#0F0C08!important;border-bottom:1px solid rgba(192,146,78,0.12)!important;color:#F0EDE8!important}
+.page-header h1,.page-header h2,.event-header h1{color:#F0EDE8!important}
+.panel,.panel-default,.panel-body,.panel-heading,.panel-footer,.card,.well,.info-row,.shop-box,.event-box{background:#0F0C08!important;border-color:rgba(192,146,78,0.12)!important;color:#F0EDE8!important;box-shadow:none!important}
+.panel-default>.panel-heading{background:#171209!important;border-bottom-color:rgba(192,146,78,0.12)!important;color:#F0EDE8!important}
+.item,.item-row,.product-row,.item-category,.product,.variation,.item-description-box,.category,.category-box,article,.table>thead>tr>th,.table>tbody>tr>td{background:#0F0C08!important;color:#F0EDE8!important;border-color:rgba(192,146,78,0.08)!important}
+.item-category h3,.category h3,.item h4,.product-name,.item-name{color:#F0EDE8!important;font-weight:500!important}
+.item-description,.product-description,.variation-description{color:#c8c4be!important}
+.price,.price-current,.item-price,.product-price,.total-price{color:#C0924E!important;font-weight:600!important}
+.price-old,.price-original{color:#888!important}
+.btn-primary,.btn-success,.btn-add-to-cart,button[type="submit"],input[type="submit"],.btn-checkout{background:#C0924E!important;border-color:#C0924E!important;color:#0A0806!important;font-weight:600!important;text-transform:uppercase!important;letter-spacing:0.08em!important;border-radius:0!important;transition:background 0.3s,transform 0.2s!important}
+.btn-primary:hover,.btn-primary:focus,.btn-success:hover,.btn-success:focus,.btn-add-to-cart:hover,button[type="submit"]:hover,.btn-checkout:hover{background:#8B6830!important;border-color:#8B6830!important;color:#F0EDE8!important;transform:translateY(-1px)!important}
+.btn-default,.btn-secondary{background:transparent!important;border:1px solid rgba(192,146,78,0.4)!important;color:#C0924E!important;border-radius:0!important;transition:all 0.3s!important}
+.btn-default:hover,.btn-default:focus,.btn-secondary:hover{background:rgba(192,146,78,0.1)!important;border-color:#C0924E!important;color:#F0EDE8!important}
+.btn-danger{background:#8B2020!important;border-color:#8B2020!important;color:#F0EDE8!important;border-radius:0!important}
+.btn-danger:hover{background:#6B1515!important}
+a,a:visited{color:#C0924E!important;transition:color 0.3s!important}
+a:hover,a:focus{color:#D4A85C!important;text-decoration:none!important}
+.form-control,input[type="text"],input[type="email"],input[type="tel"],input[type="number"],input[type="password"],input[type="date"],textarea,select{background:#171209!important;border:1px solid rgba(192,146,78,0.15)!important;color:#F0EDE8!important;border-radius:0!important;transition:border-color 0.3s!important}
+.form-control:focus,input:focus,textarea:focus,select:focus{border-color:rgba(192,146,78,0.5)!important;box-shadow:0 0 0 2px rgba(192,146,78,0.08)!important;outline:none!important}
+.form-control::placeholder,input::placeholder,textarea::placeholder{color:#888!important}
+label,.control-label{color:#c8c4be!important;font-weight:500!important;text-transform:uppercase!important;font-size:0.72rem!important;letter-spacing:0.12em!important}
+h1,h2,h3,h4,h5,h6{color:#F0EDE8!important}
+p,li,span,div,td,th{color:#F0EDE8!important}
+.text-muted,.help-block,small,.small{color:#888!important}
+.table,table{background:transparent!important;border-color:rgba(192,146,78,0.08)!important}
+.table>thead>tr>th{border-bottom:2px solid rgba(192,146,78,0.2)!important;color:#C0924E!important;text-transform:uppercase!important;font-size:0.72rem!important;letter-spacing:0.1em!important;font-weight:600!important}
+.table>tbody>tr>td{border-top-color:rgba(192,146,78,0.06)!important}
+.table-striped>tbody>tr:nth-of-type(odd){background:rgba(192,146,78,0.03)!important}
+.table-hover>tbody>tr:hover{background:rgba(192,146,78,0.06)!important}
+.alert{border-radius:0!important;border:none!important}
+.alert-info{background:rgba(192,146,78,0.08)!important;border-left:3px solid #C0924E!important;color:#F0EDE8!important}
+.alert-success{background:rgba(74,222,128,0.08)!important;border-left:3px solid rgba(74,222,128,0.6)!important;color:#F0EDE8!important}
+.alert-warning{background:rgba(192,146,78,0.12)!important;border-left:3px solid #C0924E!important;color:#F0EDE8!important}
+.alert-danger{background:rgba(139,32,32,0.15)!important;border-left:3px solid #8B2020!important;color:#F0EDE8!important}
+.badge,.label,.label-default{background:rgba(192,146,78,0.15)!important;color:#C0924E!important;border-radius:0!important;font-weight:500!important}
+.label-success{background:rgba(74,222,128,0.15)!important;color:#4ade80!important}
+.label-danger{background:rgba(139,32,32,0.2)!important;color:#ef4444!important}
+.modal-content{background:#0F0C08!important;border:1px solid rgba(192,146,78,0.15)!important;border-radius:0!important;color:#F0EDE8!important}
+.modal-header{border-bottom-color:rgba(192,146,78,0.12)!important}
+.modal-footer{border-top-color:rgba(192,146,78,0.12)!important}
+.modal-backdrop{background:#0A0806!important}
+.dropdown-menu{background:#171209!important;border:1px solid rgba(192,146,78,0.12)!important;border-radius:0!important;box-shadow:0 8px 32px rgba(0,0,0,0.5)!important}
+.dropdown-menu>li>a{color:#c8c4be!important;transition:all 0.2s!important}
+.dropdown-menu>li>a:hover{background:rgba(192,146,78,0.1)!important;color:#F0EDE8!important}
+.pagination>li>a,.pagination>li>span{background:#171209!important;border-color:rgba(192,146,78,0.12)!important;color:#c8c4be!important}
+.pagination>li>a:hover{background:rgba(192,146,78,0.1)!important;color:#C0924E!important}
+.pagination>.active>a,.pagination>.active>span{background:#C0924E!important;border-color:#C0924E!important;color:#0A0806!important}
+.breadcrumb{background:transparent!important;padding:0!important}
+.breadcrumb>li,.breadcrumb>.active{color:#888!important}
+.breadcrumb>li>a{color:#C0924E!important}
+.cart,.cart-box,.checkout-flow,.checkout-step{background:#0F0C08!important;border-color:rgba(192,146,78,0.12)!important}
+.cart-total,.order-total{color:#C0924E!important;font-weight:600!important}
+.countdown,.timer{color:#C0924E!important;font-family:'Courier New',monospace!important}
+.progress{background:#171209!important;border-radius:0!important}
+.progress-bar{background:#C0924E!important}
+footer,.footer,.powered-by{background:#0A0806!important;border-top:1px solid rgba(192,146,78,0.1)!important;color:#888!important}
+footer a,.footer a,.powered-by a{color:#888!important}
+footer a:hover,.footer a:hover{color:#C0924E!important}
+input[type="checkbox"],input[type="radio"]{accent-color:#C0924E!important}
+hr{border-top-color:rgba(192,146,78,0.1)!important}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:#0A0806}
+::-webkit-scrollbar-thumb{background:rgba(192,146,78,0.25);border-radius:0}
+::-webkit-scrollbar-thumb:hover{background:rgba(192,146,78,0.4)}
+.quantity-input,.count,input[type="number"]{background:#171209!important;color:#F0EDE8!important;border-color:rgba(192,146,78,0.15)!important}
+.container.main-box,.container>.row,.main-box>.row,#main-content,.content-wrapper,div[class*="content"],div[class*="main"]{background:#0A0806!important;color:#F0EDE8!important}
+*{--bs-body-bg:#0A0806!important;--bs-card-bg:#0F0C08!important}
+
+/* NUKE PRETIX NATIVE FOOTER */
+html body div.container.main-box footer,
+html body div.container.main-box footer * { display: none !important; height: 0 !important; overflow: hidden !important; }
+
+/* ECUBE CENTERED BRANDING BREAKOUT */
+#ecube-branding-vFinal, #ecube-branding-vFinal * { text-align: center !important; }
+#ecube-branding-vFinal {
+    display: block !important;
+    width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    margin-left: -50vw !important;
+    padding: 60px 0 40px !important;
+    color: #888 !important;
+    font-size: 0.9rem !important;
+    background: transparent !important;
+}
+
+
+/* EXCLUSIVE ACCESS CTA FIX v2 */
+html body .exclusive-access-cta a.exclusive-access-btn:link,
+html body .exclusive-access-cta a.exclusive-access-btn:visited,
+html body .exclusive-access-cta a.exclusive-access-btn:active,
+html body .exclusive-access-cta a.exclusive-access-btn.btn:link,
+html body .exclusive-access-cta a.exclusive-access-btn.btn:visited,
+html body .exclusive-access-cta a.exclusive-access-btn.btn:active,
+html body .exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:link,
+html body .exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:visited,
+html body .exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:active {
+    display: inline-block !important;
+    background: #C0924E !important;
+    border: 1px solid #C0924E !important;
+    color: #0A0806 !important;
+    -webkit-text-fill-color: #0A0806 !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: .08em !important;
+    text-decoration: none !important;
+    filter: none !important;
+}
+
+html body .exclusive-access-cta a.exclusive-access-btn *,
+html body .exclusive-access-cta a.exclusive-access-btn.btn *,
+html body .exclusive-access-cta a.exclusive-access-btn.btn.btn-primary * {
+    color: inherit !important;
+    -webkit-text-fill-color: currentColor !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+}
+
+html body .exclusive-access-cta a.exclusive-access-btn:hover,
+html body .exclusive-access-cta a.exclusive-access-btn:focus,
+html body .exclusive-access-cta a.exclusive-access-btn.btn:hover,
+html body .exclusive-access-cta a.exclusive-access-btn.btn:focus,
+html body .exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:hover,
+html body .exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:focus {
+    background: #8B6830 !important;
+    border-color: #8B6830 !important;
+    color: #F0EDE8 !important;
+    -webkit-text-fill-color: #F0EDE8 !important;
+    text-decoration: none !important;
+}
+

@@ -1,0 +1,277 @@
+{% extends "pretixcontrol/event/base.html" %}
+{% load static %}
+
+{% block title %}Operations Command{% endblock %}
+
+{% block custom_header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'pretix_ecube_access/control-ops-dashboard.css' %}?v=opsdash-v2-20260317a">
+    {% if kiosk_mode %}
+    <style>
+        #wrapper > nav.navbar,
+        .navbar-default.sidebar,
+        .ecube-control-footer {
+            display: none !important;
+        }
+        .page-wrapper,
+        #page-wrapper {
+            margin: 0 !important;
+            min-height: 100vh !important;
+            background: transparent !important;
+            border-left: 0 !important;
+        }
+        .container-fluid {
+            padding: 0 !important;
+        }
+    </style>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="eca-ops-v2{% if kiosk_mode %} kiosk{% endif %}">
+    <section class="eca-command-rail">
+        <div class="eca-rail-left">
+            <img class="eca-rail-logo" src="{% static 'pretix_ecube_control_theme/ecube-logo.png' %}" alt="Ecube">
+            <div>
+                <div class="eca-rail-kicker">Ecube Access // Operations Command</div>
+                <h1 class="eca-rail-title">{{ event.name }}</h1>
+                <div class="eca-rail-meta">
+                    <span>{{ alert_state }}</span>
+                    <span>{{ count_active_doors }} active doors</span>
+                    <span>{{ count_protected_doors }} protected</span>
+                    <span>{{ count_inside_signal }} inside signal</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="eca-rail-actions">
+            <a class="btn btn-default" href="{% url 'plugins:pretix_ecube_access:control_ops_dashboard' organizer=event.organizer.slug event=event.slug %}?kiosk=1" target="_blank">Kiosk</a>
+            <button type="button" class="btn btn-default" id="ecaFullscreenBtn">Fullscreen</button>
+            <a class="btn btn-primary" href="{% url 'plugins:pretix_ecube_access:control_door_shell' organizer=event.organizer.slug event=event.slug %}" target="_blank">Open scanner</a>
+            <a class="btn btn-default" href="{% url 'plugins:pretix_ecube_access:control_dashboard' organizer=event.organizer.slug event=event.slug %}">Back</a>
+        </div>
+    </section>
+
+    <section class="eca-mission-strip">
+        <div class="eca-metric allowed">
+            <span>Allowed</span>
+            <strong>{{ count_allowed }}</strong>
+            <em>{{ allowed_rate }}% pass rate</em>
+        </div>
+        <div class="eca-metric blocked">
+            <span>Blocked</span>
+            <strong>{{ count_denied }}</strong>
+            <em>{{ denied_rate }}% denied / warning</em>
+        </div>
+        <div class="eca-metric">
+            <span>Credentials</span>
+            <strong>{{ count_credentials }}</strong>
+            <em>Admissions signal</em>
+        </div>
+        <div class="eca-metric">
+            <span>Tickets</span>
+            <strong>{{ count_tickets }}</strong>
+            <em>Pretix ticket signal</em>
+        </div>
+        <div class="eca-metric">
+            <span>Total scans</span>
+            <strong>{{ count_total }}</strong>
+            <em>All recorded activity</em>
+        </div>
+        <div class="eca-metric">
+            <span>Top anomaly</span>
+            <strong>{{ top_anomaly }}</strong>
+            <em>Grouped recent issue class</em>
+        </div>
+    </section>
+
+    <section class="eca-grid-main">
+        <div class="eca-card eca-feed-card">
+            <div class="eca-card-head">
+                <div>
+                    <div class="eca-card-kicker">Live tactical feed</div>
+                    <h3>Real-time scan stream</h3>
+                </div>
+                <a class="btn btn-default btn-xs" href="{% url 'plugins:pretix_ecube_access:control_scan_logs' organizer=event.organizer.slug event=event.slug %}">Logs</a>
+            </div>
+
+            <div class="eca-feed-list">
+                {% for log in logs %}
+                    <div class="eca-feed-row">
+                        <div class="eca-feed-row-top">
+                            <strong>{{ log.display_name|default:"Unnamed scan" }}</strong>
+                            <span>{{ log.scanned_at|date:"M j · H:i:s" }}</span>
+                        </div>
+                        <div class="eca-feed-row-tags">
+                            <span class="eca-chip">{{ log.object_type|default:"unknown" }}</span>
+                            <span class="eca-chip">{{ log.action|default:"—" }}</span>
+                            <span class="eca-result {{ log.result }}">{{ log.result|default:"unknown" }}</span>
+                        </div>
+                        <div class="eca-feed-row-copy">{{ log.message|default:"No detail returned." }}</div>
+                        <div class="eca-feed-row-foot">Gate: {{ log.gate|default:"—" }} · Operator: {{ log.operator_name|default:"—" }}</div>
+                    </div>
+                {% empty %}
+                    <div class="eca-empty">No scans yet.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="eca-column-stack">
+            <div class="eca-card eca-door-focus">
+                <div class="eca-card-head">
+                    <div>
+                        <div class="eca-card-kicker">Primary door command</div>
+                        <h3>Main terminal focus</h3>
+                    </div>
+                    <a class="btn btn-default btn-xs" href="{% url 'plugins:pretix_ecube_access:control_doors_list' organizer=event.organizer.slug event=event.slug %}">Manage doors</a>
+                </div>
+
+                {% if primary_door %}
+                    <div class="eca-door-focus-top">
+                        <div>
+                            <div class="eca-door-focus-name">{{ primary_door.door.name }}</div>
+                            <div class="eca-door-focus-slug">{{ primary_door.door.slug }}</div>
+                        </div>
+                        {% if primary_door.door.is_active %}
+                            <span class="eca-pill ok">Active</span>
+                        {% else %}
+                            <span class="eca-pill warn">Inactive</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="eca-door-focus-metrics">
+                        <div><span>24h scans</span><strong>{{ primary_door.scans_24h }}</strong></div>
+                        <div><span>Allowed</span><strong>{{ primary_door.allowed_24h }}</strong></div>
+                        <div><span>Blocked</span><strong>{{ primary_door.blocked_24h }}</strong></div>
+                        <div><span>Protection</span><strong>{% if primary_door.door.has_access_pin %}PIN{% else %}Token{% endif %}</strong></div>
+                    </div>
+
+                    <div class="eca-door-focus-url">{{ primary_door.path }}</div>
+
+                    {% if primary_door.last_scan %}
+                        <div class="eca-door-focus-last">
+                            Last scan: <strong>{{ primary_door.last_scan.display_name|default:"Unknown" }}</strong>
+                            · {{ primary_door.last_scan.result|default:"unknown" }}
+                            · {{ primary_door.last_scan.scanned_at|timesince }} ago
+                        </div>
+                    {% else %}
+                        <div class="eca-door-focus-last">No recent activity in the last 24 hours.</div>
+                    {% endif %}
+
+                    <div class="eca-door-focus-actions">
+                        <a class="btn btn-primary btn-sm" href="{{ primary_door.full_url }}" target="_blank">Open terminal</a>
+                        <a class="btn btn-default btn-sm" href="{% url 'plugins:pretix_ecube_access:control_door_edit' organizer=event.organizer.slug event=event.slug pk=primary_door.door.pk %}">Edit door</a>
+                    </div>
+                {% else %}
+                    <div class="eca-empty">No doors configured yet.</div>
+                {% endif %}
+            </div>
+
+            <div class="eca-card">
+                <div class="eca-card-head">
+                    <div>
+                        <div class="eca-card-kicker">Door network</div>
+                        <h3>Secondary endpoints</h3>
+                    </div>
+                </div>
+
+                <div class="eca-door-mini-list">
+                    {% for row in secondary_doors %}
+                        <div class="eca-door-mini-row">
+                            <div>
+                                <strong>{{ row.door.name }}</strong>
+                                <span>{{ row.scans_24h }} scans · {{ row.blocked_24h }} blocked</span>
+                            </div>
+                            {% if row.door.has_access_pin %}
+                                <span class="eca-chip protect">PIN</span>
+                            {% else %}
+                                <span class="eca-chip">Token</span>
+                            {% endif %}
+                        </div>
+                    {% empty %}
+                        <div class="eca-empty">No secondary doors right now.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="eca-column-stack">
+            <div class="eca-card">
+                <div class="eca-card-head">
+                    <div>
+                        <div class="eca-card-kicker">Threat matrix</div>
+                        <h3>Grouped anomalies</h3>
+                    </div>
+                </div>
+
+                <div class="eca-anomaly-list">
+                    {% for row in anomaly_rows %}
+                        <div class="eca-anomaly-row">
+                            <div>
+                                <strong>{{ row.label }}</strong>
+                                <span>{{ row.message }}</span>
+                            </div>
+                            <div class="eca-anomaly-qty">{{ row.qty }}</div>
+                        </div>
+                    {% empty %}
+                        <div class="eca-empty">No recent anomalies.</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="eca-card">
+                <div class="eca-card-head">
+                    <div>
+                        <div class="eca-card-kicker">Identity signals</div>
+                        <h3>Credentials vs tickets</h3>
+                    </div>
+                </div>
+
+                <div class="eca-signal-split">
+                    <div class="eca-signal-col">
+                        <div class="eca-signal-title">Credentials</div>
+                        {% for log in recent_credential_logs %}
+                            <div class="eca-signal-row">
+                                <strong>{{ log.display_name|default:"Credential" }}</strong>
+                                <span class="eca-result {{ log.result }}">{{ log.result|default:"unknown" }}</span>
+                            </div>
+                        {% empty %}
+                            <div class="eca-empty small">No credential scans in latest feed.</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="eca-signal-col">
+                        <div class="eca-signal-title">Tickets</div>
+                        {% for log in recent_ticket_logs %}
+                            <div class="eca-signal-row">
+                                <strong>{{ log.display_name|default:"Ticket" }}</strong>
+                                <span class="eca-result {{ log.result }}">{{ log.result|default:"unknown" }}</span>
+                            </div>
+                        {% empty %}
+                            <div class="eca-empty small">No ticket scans in latest feed.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var btn = document.getElementById("ecaFullscreenBtn");
+    if (!btn) return;
+    btn.addEventListener("click", async function () {
+        try {
+            if (!document.fullscreenElement) {
+                await document.documentElement.requestFullscreen();
+            } else {
+                await document.exitFullscreen();
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    });
+});
+</script>
+{% endblock %}

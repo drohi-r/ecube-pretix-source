@@ -1,0 +1,70 @@
+{% load compress %}
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html{% if rtl %} dir="rtl" class="rtl"{% endif %}>
+<head>
+    <title>{{ django_settings.PRETIX_INSTANCE_NAME }}</title>
+    {% compress css %}
+        <link rel="stylesheet" type="text/x-scss" href="{% static "pretixcontrol/scss/auth.scss" %}"/>
+    {% endcompress %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% if development_warning or debug_warning %}
+{% else %}
+
+
+{% endif %}
+<link rel="stylesheet" href="{% static "pretix_ecube_control_theme/control-theme.css" %}?v=20260316-045829">
+    <script src="{% static "pretix_ecube_control_theme/control-theme.js" %}?v=20260316-045829"></script>
+<!-- ecube backend favicon -->
+    <link rel="shortcut icon" href="{% static "pretix_ecube_control_theme/ecube-logo.png" %}?v=20260316-050145">
+    <link rel="icon" type="image/png" href="{% static "pretix_ecube_control_theme/ecube-logo.png" %}?v=20260316-050145">
+    <link rel="apple-touch-icon" href="{% static "pretix_ecube_control_theme/ecube-logo.png" %}?v=20260316-050145">
+
+<!-- ecube backend favicon -->
+    <link rel="shortcut icon" href="{% static "pretix_ecube_control_theme/ecube-logo.png" %}?v=20260316-050208">
+    <link rel="icon" type="image/png" href="{% static "pretix_ecube_control_theme/ecube-logo.png" %}?v=20260316-050208">
+    <link rel="apple-touch-icon" href="{% static "pretix_ecube_control_theme/ecube-logo.png" %}?v=20260316-050208">
+</head>
+<body>
+<div class="container">
+    <a href="{% url "control:auth.login" %}">
+        <img src="{% static "pretix_ecube_control_theme/ecube-logo.png" %}" class="logo"/>
+    </a>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if request.user.is_hijacked %}
+        <div class="impersonate-warning">
+            <span class="fa fa-user-secret"></span>
+            {% blocktrans with user=request.user%}You are currently working on behalf of {{ user }}.{% endblocktrans %}
+
+            <form action="{% url 'control:users.impersonate.stop' %}" method="post" class="helper-display-inline">
+                {% csrf_token %}
+                <button class="btn btn-default btn-sm">
+                    {% trans "Stop impersonating" %}
+                </button>
+            </form>
+        </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+<footer class="ecube-control-footer">
+    <div class="ecube-control-footer-meta">
+        Powered by <a href="https://pretix.eu" target="_blank" rel="noopener">pretix</a> &middot; Customized by <a href="https://ecube-entertainment.com" target="_blank" rel="noopener">Ecube</a>
+    </div>
+    <div class="ecube-control-footer-meta">&copy; 2026 Ecube Entertainment Ltd.</div>
+    <div class="ecube-control-footer-links">
+        <a href="https://ecube-entertainment.com/about-platform/" target="_blank" rel="noopener">Source &amp; Modifications</a>
+    </div>
+</footer>
+</div>
+<script type="text/javascript" src="{% static "pretixcontrol/js/auth.js" %}"></script>
+</body>
+</html>

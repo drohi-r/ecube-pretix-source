@@ -1,0 +1,496 @@
+.eca-page {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.eca-wrap {
+    max-width: 1080px;
+}
+
+.eca-hero {
+    background:
+        radial-gradient(circle at top right, rgba(200, 0, 10, 0.18), transparent 28%),
+        linear-gradient(135deg, #0b0b0c 0%, #17181b 45%, #23090c 100%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 24px 26px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .16);
+    border: 1px solid rgba(255,255,255,.06);
+}
+
+.eca-kicker {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .72;
+    margin-bottom: 8px;
+}
+
+.eca-title {
+    margin: 0 0 8px 0;
+    font-size: 28px;
+    line-height: 1.1;
+    font-weight: 800;
+}
+
+.eca-subtitle {
+    margin: 0;
+    max-width: 860px;
+    color: rgba(255,255,255,.82);
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.eca-top-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+.eca-card {
+    background: linear-gradient(180deg, #151a22 0%, #131820 100%);
+    border: 1px solid #27303d;
+    border-radius: 14px;
+    box-shadow: 0 10px 28px rgba(0,0,0,.18);
+    overflow: hidden;
+}
+
+.eca-card-hd {
+    padding: 14px 16px;
+    border-bottom: 1px solid #27303d;
+    background: linear-gradient(180deg, #1a212b 0%, #171d26 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.eca-card-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 800;
+    color: #f4f7fb;
+}
+
+.eca-card-subtitle {
+    margin: 4px 0 0 0;
+    color: #93a0b1;
+    font-size: 12px;
+}
+
+.eca-card-bd {
+    padding: 16px;
+}
+
+.eca-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.eca-muted {
+    color: #93a0b1;
+}
+
+.eca-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 12px;
+    background: #0f141b;
+    color: #e7ebf2;
+    border: 1px solid #2c3541;
+    padding: 6px 9px;
+    border-radius: 8px;
+    display: inline-block;
+    word-break: break-all;
+}
+
+.eca-table-wrap {
+    overflow-x: auto;
+}
+
+.eca-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+}
+
+.eca-table thead th {
+    background: #1a212b;
+    color: #cfd7e2;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    padding: 12px;
+    border-bottom: 1px solid #2a3441;
+    white-space: nowrap;
+}
+
+.eca-table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #26303c;
+    vertical-align: top;
+}
+
+.eca-table tbody tr:hover {
+    background: rgba(255,255,255,.03);
+}
+
+.eca-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    white-space: nowrap;
+}
+
+.eca-badge-neutral {
+    background: #232c37;
+    color: #d9e1eb;
+}
+
+.eca-badge-success {
+    background: #143423;
+    color: #bce9cb;
+}
+
+.eca-badge-danger {
+    background: #3b1818;
+    color: #f0b8b8;
+}
+
+.eca-badge-warn {
+    background: #3a2a14;
+    color: #f5d6a3;
+}
+
+.eca-badge-info {
+    background: #1b2640;
+    color: #c8d7ff;
+}
+
+.eca-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.eca-form-full {
+    grid-column: 1 / -1;
+}
+
+.eca-help {
+    font-size: 12px;
+    color: #93a0b1;
+    margin-top: 6px;
+}
+
+.eca-result-ok {
+    background: #143423;
+    border: 1px solid #24573a;
+    color: #bce9cb;
+}
+
+.eca-result-no {
+    background: #3b1818;
+    border: 1px solid #6d2b2b;
+    color: #f0b8b8;
+}
+
+.eca-result-warn {
+    background: #1b2640;
+    border: 1px solid #30446f;
+    color: #c8d7ff;
+}
+
+.eca-result-box {
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.eca-pre {
+    background: #0e1319;
+    color: #edf2f8;
+    padding: 14px;
+    border-radius: 10px;
+    overflow: auto;
+    white-space: pre-wrap;
+    border: 1px solid #27303d;
+    margin: 12px 0 0 0;
+}
+
+@media (max-width: 900px) {
+    .eca-form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
+   ECUBE ACCESS RESPONSIVE DOORS V1
+   mobile-safe rescue for doors list + door form
+   ========================================================= */
+
+.eca-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.eca-door-actions {
+    white-space: nowrap;
+}
+
+.eca-door-actions .btn {
+    margin-right: 6px;
+    margin-bottom: 6px;
+}
+
+.eca-form-actions,
+.eca-form-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.eca-form-actions .btn,
+.eca-form-tools .btn {
+    margin: 0;
+}
+
+.eca-code {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+@media (max-width: 991px) {
+    .eca-hero {
+        padding: 18px !important;
+    }
+
+    .eca-card .bd {
+        padding: 14px !important;
+    }
+
+    .eca-card .hd {
+        padding: 12px 14px !important;
+    }
+
+    .eca-toolbar .btn,
+    .eca-form-actions .btn,
+    .eca-form-tools .btn {
+        width: 100%;
+    }
+
+    .eca-form-card .checkbox {
+        margin-top: 10px !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .eca-hero h2 {
+        font-size: 24px;
+        line-height: 1.15;
+    }
+
+    .eca-hero p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .table-responsive {
+        border: 0 !important;
+        overflow: visible !important;
+    }
+
+    table.eca-mobile-table,
+    table.eca-mobile-table thead,
+    table.eca-mobile-table tbody,
+    table.eca-mobile-table tr,
+    table.eca-mobile-table th,
+    table.eca-mobile-table td {
+        display: block;
+        width: 100%;
+    }
+
+    table.eca-mobile-table thead {
+        display: none;
+    }
+
+    table.eca-mobile-table tbody tr {
+        margin-bottom: 14px;
+        padding: 12px;
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 14px;
+        background: rgba(255,255,255,.02);
+        box-shadow: 0 8px 20px rgba(0,0,0,.08);
+    }
+
+    table.eca-mobile-table tbody td {
+        padding: 8px 0 !important;
+        border-top: 0 !important;
+        border-bottom: 1px solid rgba(255,255,255,.06);
+        white-space: normal;
+    }
+
+    table.eca-mobile-table tbody td:last-child {
+        border-bottom: 0;
+        padding-bottom: 0 !important;
+    }
+
+    table.eca-mobile-table tbody td::before {
+        display: block;
+        margin-bottom: 4px;
+        color: #93a0b1;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+    }
+
+    table.eca-mobile-table tbody td:nth-child(1)::before { content: "Name"; }
+    table.eca-mobile-table tbody td:nth-child(2)::before { content: "Slug"; }
+    table.eca-mobile-table tbody td:nth-child(3)::before { content: "Default action"; }
+    table.eca-mobile-table tbody td:nth-child(4)::before { content: "Status"; }
+    table.eca-mobile-table tbody td:nth-child(5)::before { content: "Public URL"; }
+    table.eca-mobile-table tbody td:nth-child(6)::before { content: "Actions"; }
+
+    table.eca-mobile-table tbody td[colspan] {
+        text-align: left !important;
+        border-bottom: 0 !important;
+    }
+
+    table.eca-mobile-table tbody td[colspan]::before {
+        content: none !important;
+    }
+
+    .eca-door-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .eca-door-actions .btn {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 0;
+    }
+
+    .eca-code {
+        display: block;
+        width: 100%;
+        padding: 8px 10px;
+        line-height: 1.45;
+        border-radius: 10px;
+    }
+
+    .eca-form-card .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .eca-form-card .row > [class*="col-"] {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .eca-form-card .form-control {
+        font-size: 16px;
+    }
+}
+
+
+/* =========================================================
+   ECUBE ACCESS RESPONSIVE PAGES V2
+   ========================================================= */
+.eca-code{
+    max-width:100%;
+    white-space:normal;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+}
+
+@media (max-width: 900px){
+    .table-responsive{border:0 !important; overflow:visible !important;}
+
+    table.eca-mobile-table,
+    table.eca-mobile-table thead,
+    table.eca-mobile-table tbody,
+    table.eca-mobile-table tr,
+    table.eca-mobile-table th,
+    table.eca-mobile-table td{
+        display:block;
+        width:100%;
+    }
+
+    table.eca-mobile-table thead{display:none;}
+
+    table.eca-mobile-table tbody tr{
+        margin-bottom:14px;
+        padding:12px;
+        border:1px solid rgba(255,255,255,.08);
+        border-radius:14px;
+        background:rgba(255,255,255,.02);
+    }
+
+    table.eca-mobile-table tbody td{
+        padding:8px 0 !important;
+        border-top:0 !important;
+        border-bottom:1px solid rgba(255,255,255,.06);
+        white-space:normal;
+    }
+
+    table.eca-mobile-table tbody td:last-child{
+        border-bottom:0;
+    }
+
+    table.eca-mobile-table tbody td::before{
+        display:block;
+        margin-bottom:4px;
+        color:#93a0b1;
+        font-size:11px;
+        font-weight:700;
+        text-transform:uppercase;
+        letter-spacing:.08em;
+    }
+
+    table.eca-mobile-table tbody td:nth-child(1)::before{content:"Name";}
+    table.eca-mobile-table tbody td:nth-child(2)::before{content:"Slug";}
+    table.eca-mobile-table tbody td:nth-child(3)::before{content:"Default action";}
+    table.eca-mobile-table tbody td:nth-child(4)::before{content:"Status";}
+    table.eca-mobile-table tbody td:nth-child(5)::before{content:"Public URL";}
+    table.eca-mobile-table tbody td:nth-child(6)::before{content:"Actions";}
+
+    table.eca-mobile-table .btn{
+        display:block;
+        width:100%;
+        margin:0 0 8px 0 !important;
+    }
+
+    .eca-card .bd,
+    .eca-card .hd,
+    .eca-hero{
+        padding-left:14px !important;
+        padding-right:14px !important;
+    }
+
+    .eca-card .form-control{
+        font-size:16px;
+    }
+}
+
+/* ECUBE ACCESS RESPONSIVE PAGES V2 */

@@ -1,0 +1,119 @@
+{% extends "pretixcontrol/event/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}Ecube Access Door{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'pretix_ecube_access/door.css' %}?v=4">
+
+<div id="ecaDoorRoot"
+     data-api-url="{% if is_public_door %}{% url 'plugins:pretix_ecube_access:public_api_scan' organizer=event.organizer.slug event=event.slug door_slug=public_door.slug door_token=public_door.public_token %}{% else %}{% url 'plugins:pretix_ecube_access:api_scan' organizer=event.organizer.slug event=event.slug %}{% endif %}">
+
+    <div style="margin-bottom:10px; font-size:12px; color:#666;">
+        Asset marker: <strong id="ecaAssetMarker">asset-pending</strong>
+    </div>
+
+    <div class="eca-door-hero">
+        <h2 style="margin:0 0 6px 0;">{{ door_name|default:"Ecube Access Door" }}</h2>
+        <p style="margin:0; opacity:.88;">
+            {% if is_public_door %}
+                Public event door screen for {{ event.name }}.
+            {% else %}
+                Photo-aware verification screen for live entry and exit checks.
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="eca-door-grid">
+        <div class="eca-card">
+            <div class="hd">Scanner</div>
+            <div class="bd">
+                <video id="cameraPreview" class="eca-camera" autoplay playsinline muted></video>
+
+                <div class="eca-controls-grid" style="margin-top:14px;">
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>Action</label>
+                        <select id="scanAction" class="form-control">
+                            <option value="entry" {% if default_action == "entry" %}selected{% endif %}>Entry</option>
+                            <option value="exit" {% if default_action == "exit" %}selected{% endif %}>Exit</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>Gate</label>
+                        <input id="scanGate" class="form-control" value="{{ door_name|default:'' }}" placeholder="Main gate">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>Operator</label>
+                        <input id="scanOperator" class="form-control" placeholder="Operator">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>Device ID</label>
+                        <input id="scanDevice" class="form-control" placeholder="door-device-01">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top:14px; margin-bottom:10px;">
+                    <label>Manual payload</label>
+                    <div style="display:flex; gap:10px;">
+                        <input id="manualPayload" class="form-control" placeholder="ECA:CRED:...">
+                        <button id="manualSubmit" class="btn btn-primary" type="button">Process</button>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button id="startCameraBtn" class="btn btn-default" type="button">Start camera</button>
+                    <button id="stopCameraBtn" class="btn btn-default" type="button">Stop camera</button>
+                    <button id="jsTestBtn" class="btn btn-default" type="button">JS test</button>
+                </div>
+
+                <div id="cameraStatus" class="eca-status-box">Initializing…</div>
+            </div>
+        </div>
+
+        <div class="eca-card">
+            <div class="hd">Verification result</div>
+            <div class="bd">
+                <div id="resultEmpty" class="eca-empty">
+                    Scan a credential QR or paste a payload to see a photo-first verification result here.
+                </div>
+
+                <div id="resultBox" class="eca-result" style="display:none;">
+                    <div id="resultBadge" class="eca-badge">PENDING</div>
+
+                    <div class="eca-result-grid" style="margin-top:14px;">
+                        <div>
+                            <img id="resultPhoto" class="eca-photo" alt="" style="display:none;">
+                            <div id="resultNoPhoto" class="eca-photo" style="display:flex; align-items:center; justify-content:center; color:#888;">
+                                No photo
+                            </div>
+                        </div>
+
+                        <div>
+                            <div id="resultName" class="eca-name">Unknown</div>
+                            <div id="resultType" class="eca-type">Unknown</div>
+
+                            <div class="eca-meta-grid">
+                                <div class="eca-meta"><span class="k">Code</span><span class="v" id="resultCode">—</span></div>
+                                <div class="eca-meta"><span class="k">Engine</span><span class="v" id="resultEngine">—</span></div>
+                                <div class="eca-meta"><span class="k">Object</span><span class="v" id="resultObjectType">—</span></div>
+                                <div class="eca-meta"><span class="k">Gate</span><span class="v" id="resultGate">—</span></div>
+                                <div class="eca-meta"><span class="k">Action</span><span class="v" id="resultAction">—</span></div>
+                                <div class="eca-meta"><span class="k">Timestamp</span><span class="v" id="resultTimestamp">—</span></div>
+                                <div class="eca-meta"><span class="k">Entry mode</span><span class="v" id="resultEntryMode">—</span></div>
+                                <div class="eca-meta"><span class="k">Inside state</span><span class="v" id="resultInside">—</span></div>
+                            </div>
+
+                            <div id="resultMessage" class="eca-message">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'pretix_ecube_access/jsQR.js' %}?v=1"></script>
+<script src="{% static 'pretix_ecube_access/door.js' %}?v=4"></script>
+{% endblock %}
+

@@ -1,0 +1,270 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{ door_name }} — Ecube Access</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <link rel="stylesheet" href="{% static 'pretix_ecube_access/door.css' %}?v=23">
+{% load static %}
+<link rel="shortcut icon" href="/static/pretix_ecube_control_theme/ecube-logo.png?v=doorfavicon-20260316e">
+<link rel="icon" type="image/png" href="/static/pretix_ecube_control_theme/ecube-logo.png?v=doorfavicon-20260316e">
+<link rel="apple-touch-icon" href="/static/pretix_ecube_control_theme/ecube-logo.png?v=doorfavicon-20260316e">
+
+</head>
+<body>
+<div id="pageShell" class="page-shell">
+
+    <div id="ecaDoorRoot"
+         data-api-url="{% url 'plugins:pretix_ecube_access:public_api_scan' organizer=event.organizer.slug event=event.slug door_slug=public_door.slug door_token=public_door.public_token %}"
+         data-door-name="{{ door_name }}"
+         data-event-name="{{ event.name }}"
+         data-default-action="{{ default_action|default:'entry' }}">
+
+        <div class="eca-topbar">
+            <div class="eca-hero">
+                <div class="eca-hero-brand">
+                    <img class="eca-hero-logo" src="{% static 'pretix_ecube_control_theme/ecube-logo.png' %}" alt="Ecube">
+                    <div class="eca-hero-copy">
+                        <div class="eca-hero-kicker">Ecube Access</div>
+                        <h1>{{ door_name }}</h1>
+                        <p>{{ event.name }} — premium live verification terminal</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="eca-topmeta">
+                <div class="eca-mini">
+                    <div class="k">Event</div>
+                    <div class="v">{{ event.name }}</div>
+                </div>
+                <div class="eca-mini">
+                    <div class="k">Door</div>
+                    <div class="v">{{ door_name }}</div>
+                </div>
+                <div class="eca-mini">
+                    <div class="k">Mode</div>
+                    <div class="v" id="headerMode">{{ default_action|upper }}</div>
+                </div>
+                <div class="eca-mini">
+                    <div class="k">Time</div>
+                    <div class="v" id="liveClock">--:--:--</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="eca-main">
+            <section class="eca-card">
+                <div class="eca-card-hd">
+                    <div>
+                        <div class="eca-card-title">Scanner</div>
+                        <div class="eca-card-sub">Live QR acquisition and door control</div>
+                    </div>
+                    <div class="eca-live-pill">
+                        <span class="eca-live-dot"></span>
+                        Ready
+                    </div>
+                </div>
+
+                <div class="eca-card-bd">
+                    <div id="scannerStage" class="eca-scanner-stage">
+                        <video id="cameraPreview" class="eca-camera" autoplay playsinline muted></video>
+
+                        <div class="eca-stage-overlay">
+                            <div class="eca-scan-frame">
+                                <div id="scanFrameLabel" class="eca-scan-frame-label">Present QR inside frame</div>
+                            </div>
+                        </div>
+
+                        <div id="scannerFlash" class="eca-flash"></div>
+
+                        <div id="lockScreen" class="eca-lock-screen">
+                            <div id="lockPill" class="eca-lock-pill">Result locked</div>
+                        </div>
+                    </div>
+
+                    <div class="eca-toolbar">
+                        <div class="eca-field">
+                            <label>Action Mode</label>
+                            <div class="eca-segmented">
+                                <button type="button" id="entryModeBtn" class="eca-seg-btn entry">Entry</button>
+                                <button type="button" id="exitModeBtn" class="eca-seg-btn exit">Exit</button>
+                            </div>
+                            <select id="scanAction" class="eca-hidden">
+                                <option value="entry" {% if default_action == "entry" %}selected{% endif %}>Entry</option>
+                                <option value="exit" {% if default_action == "exit" %}selected{% endif %}>Exit</option>
+                            </select>
+                        </div>
+
+                        <div class="eca-field">
+                            <label>Gate</label>
+                            <input id="scanGate" value="{{ door_name }}" placeholder="Main Gate">
+                        </div>
+
+                        <div class="eca-field">
+                            <label>Operator</label>
+                            <input id="scanOperator" placeholder="Operator name">
+                        </div>
+                    </div>
+
+                    <div class="eca-actions">
+                        <button id="startCameraBtn" class="eca-btn primary" type="button">Start camera</button>
+                        <button id="stopCameraBtn" class="eca-btn ghost" type="button">Stop camera</button>
+                        <button id="resumeScanBtn" class="eca-btn success" type="button">Resume scanning</button>
+                        <button id="kioskModeBtn" class="eca-btn kiosk" type="button">Fullscreen / kiosk</button>
+                        
+                    </div>
+
+                    <details class="eca-settings">
+                        <summary>Advanced settings</summary>
+                        <div class="eca-settings-body">
+                            <div class="eca-toolbar">
+                                <div class="eca-field">
+                                    <label>Device ID</label>
+                                    <input id="scanDevice" placeholder="door-device-01">
+                                </div>
+                            </div>
+
+                            <div class="eca-settings-actions">
+                                <a href="./lock/" class="eca-btn ghost eca-settings-lock">Lock terminal</a>
+                            </div>
+
+                            <div class="eca-field" style="margin-top: 10px;">
+                                <label>Manual Payload</label>
+                                <div class="eca-manual-row">
+                                    <input id="manualPayload" placeholder="ECA:CRED:...">
+                                    <button id="manualSubmit" class="eca-btn primary small" type="button">Process</button>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <div id="cameraStatus" class="eca-status-box">Initializing…</div>
+                </div>
+            </section>
+
+            <section class="eca-card eca-result-desktop">
+                <div class="eca-card-hd">
+                    <div>
+                        <div class="eca-card-title">Verification</div>
+                        <div class="eca-card-sub">Photo-first identity and access decision</div>
+                    </div>
+                    <div id="resultBadgeDesktop" class="eca-badge pending">Pending</div>
+                </div>
+
+                <div class="eca-card-bd">
+                    <div id="resultBoxDesktop" class="eca-result idle">
+                        <div id="resultIdleDesktop" class="eca-idle">
+                            <div class="eca-idle-icon">⌁</div>
+                            <h2>Ready to scan</h2>
+                            <p>Present a credential or ticket QR to the scanner. The result panel will transform instantly with status, photo, and access details.</p>
+                        </div>
+
+                        <div id="resultLiveDesktop" class="eca-hidden">
+                            <div class="eca-result-top">
+                                <div>
+                                    <div id="statusWordDesktop" class="eca-status-word">PENDING</div>
+                                    <div id="statusSubDesktop" class="eca-status-sub">Awaiting scan result</div>
+                                </div>
+                            </div>
+
+                            <div class="eca-result-grid">
+                                <div class="eca-photo-wrap">
+                                    <img id="resultPhotoDesktop" class="eca-photo eca-hidden" alt="">
+                                    <div id="resultNoPhotoDesktop" class="eca-no-photo">No photo</div>
+                                    <div id="photoStatusChipDesktop" class="eca-verification-chip">Photo status pending</div>
+                                </div>
+
+                                <div>
+                                    <div id="resultNameDesktop" class="eca-name">Unknown</div>
+                                    <div id="resultTypeDesktop" class="eca-type">Unknown</div>
+                                    <div id="resultMessageDesktop" class="eca-message">—</div>
+
+                                    <div class="eca-meta-grid">
+                                        <div class="eca-meta"><span class="k">Code</span><span class="v" id="resultCodeDesktop">—</span></div>
+                                        <div class="eca-meta"><span class="k">Engine</span><span class="v" id="resultEngineDesktop">—</span></div>
+                                        <div class="eca-meta"><span class="k">Object</span><span class="v" id="resultObjectTypeDesktop">—</span></div>
+                                        <div class="eca-meta"><span class="k">Gate</span><span class="v" id="resultGateDesktop">—</span></div>
+                                        <div class="eca-meta"><span class="k">Action</span><span class="v" id="resultActionDesktop">—</span></div>
+                                        <div class="eca-meta"><span class="k">Timestamp</span><span class="v" id="resultTimestampDesktop">—</span></div>
+                                        <div class="eca-meta"><span class="k">Entry mode</span><span class="v" id="resultEntryModeDesktop">—</span></div>
+                                        <div class="eca-meta"><span class="k">Inside state</span><span class="v" id="resultInsideDesktop">—</span></div>
+                                    </div>
+
+                                    <div class="eca-result-controls">
+                                        <button id="holdResultBtnDesktop" class="eca-btn warn" type="button">Hold result</button>
+                                        <button id="clearResultBtnDesktop" class="eca-btn ghost" type="button">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div id="resultBackdrop" class="eca-backdrop"></div>
+
+            <div id="resultWrapMobile" class="eca-result-mobile-wrap">
+                <section class="eca-card">
+                    <div class="eca-card-bd">
+                        <div id="resultBoxMobile" class="eca-result eca-result-mobile idle">
+                            <div class="eca-result-handle"></div>
+
+                            <div id="resultIdleMobile" class="eca-idle">
+                                <div class="eca-idle-icon">⌁</div>
+                                <h2>Ready to scan</h2>
+                                <p>Present a credential or ticket QR to the scanner. The result panel will transform instantly with status, photo, and access details.</p>
+                            </div>
+
+                            <div id="resultLiveMobile" class="eca-hidden">
+                                <div class="eca-result-top">
+                                    <div>
+                                        <div id="statusWordMobile" class="eca-status-word">PENDING</div>
+                                        <div id="statusSubMobile" class="eca-status-sub">Awaiting scan result</div>
+                                    </div>
+                                    <div id="resultBadgeMobile" class="eca-badge pending">Pending</div>
+                                </div>
+
+                                <div class="eca-result-grid">
+                                    <div class="eca-photo-wrap">
+                                        <img id="resultPhotoMobile" class="eca-photo eca-hidden" alt="">
+                                        <div id="resultNoPhotoMobile" class="eca-no-photo">No photo</div>
+                                        <div id="photoStatusChipMobile" class="eca-verification-chip">Photo status pending</div>
+                                    </div>
+
+                                    <div>
+                                        <div id="resultNameMobile" class="eca-name">Unknown</div>
+                                        <div id="resultTypeMobile" class="eca-type">Unknown</div>
+                                        <div id="resultMessageMobile" class="eca-message">—</div>
+
+                                        <div class="eca-meta-grid">
+                                            <div class="eca-meta"><span class="k">Code</span><span class="v" id="resultCodeMobile">—</span></div>
+                                            <div class="eca-meta"><span class="k">Engine</span><span class="v" id="resultEngineMobile">—</span></div>
+                                            <div class="eca-meta"><span class="k">Object</span><span class="v" id="resultObjectTypeMobile">—</span></div>
+                                            <div class="eca-meta"><span class="k">Gate</span><span class="v" id="resultGateMobile">—</span></div>
+                                            <div class="eca-meta"><span class="k">Action</span><span class="v" id="resultActionMobile">—</span></div>
+                                            <div class="eca-meta"><span class="k">Timestamp</span><span class="v" id="resultTimestampMobile">—</span></div>
+                                            <div class="eca-meta"><span class="k">Entry mode</span><span class="v" id="resultEntryModeMobile">—</span></div>
+                                            <div class="eca-meta"><span class="k">Inside state</span><span class="v" id="resultInsideMobile">—</span></div>
+                                        </div>
+
+                                        <div class="eca-result-controls">
+                                            <button id="holdResultBtnMobile" class="eca-btn warn" type="button">Hold result</button>
+                                            <button id="clearResultBtnMobile" class="eca-btn ghost" type="button">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'pretix_ecube_access/jsQR.js' %}?v=1"></script>
+<script src="{% static 'pretix_ecube_access/door.js' %}?v=23"></script>
+</body>
+</html>
+

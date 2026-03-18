@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{ door_name }} — Ecube Access</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <link rel="stylesheet" href="{% static 'pretix_ecube_access/door.css' %}?v=unlock-20260317c">
+
+    <link rel="shortcut icon" href="{% static 'pretix_ecube_control_theme/ecube-logo.png' %}?v=unlock-20260317c">
+    <link rel="icon" type="image/png" href="{% static 'pretix_ecube_control_theme/ecube-logo.png' %}?v=unlock-20260317c">
+    <link rel="apple-touch-icon" href="{% static 'pretix_ecube_control_theme/ecube-logo.png' %}?v=unlock-20260317c">
+</head>
+<body class="eca-unlock-page">
+    <div class="eca-unlock-shell">
+        <div class="eca-unlock-card">
+            <div class="eca-unlock-top">
+                <div class="eca-unlock-brand">
+                    <img class="eca-unlock-logo" src="{% static 'pretix_ecube_control_theme/ecube-logo.png' %}" alt="Ecube">
+                    <div>
+                        <div class="eca-unlock-kicker">Secure operator terminal</div>
+                        <div class="eca-unlock-brand-title">Ecube Access</div>
+                    </div>
+                </div>
+
+                <h1 class="eca-unlock-title">Unlock scanner</h1>
+                <p class="eca-unlock-subtitle">
+                    This public door terminal is protected. Enter the configured door PIN or password to open the Ecube Access scanner.
+                </p>
+            </div>
+
+            <div class="eca-unlock-body">
+                <div class="eca-unlock-meta">
+                    <div class="eca-unlock-meta-card">
+                        <div class="eca-unlock-meta-label">Event</div>
+                        <div class="eca-unlock-meta-value">{{ event.name }}</div>
+                    </div>
+                    <div class="eca-unlock-meta-card">
+                        <div class="eca-unlock-meta-label">Door</div>
+                        <div class="eca-unlock-meta-value">{{ door_name }}</div>
+                    </div>
+                </div>
+
+                <form method="post" class="eca-unlock-form">
+                    {% csrf_token %}
+
+                    <label class="eca-unlock-label" for="doorPin">Door PIN / Password</label>
+                    <input
+                        id="doorPin"
+                        class="eca-unlock-input"
+                        type="password"
+                        name="door_pin"
+                        placeholder="Enter door PIN or password"
+                        required
+                        autofocus
+                    >
+
+                    {% if pin_error %}
+                        <div class="eca-unlock-error">{{ pin_error }}</div>
+                    {% endif %}
+
+                    <button class="eca-unlock-btn" type="submit">Unlock Ecube Access</button>
+                </form>
+
+                <div class="eca-unlock-foot">
+                    Powered by <strong>Ecube Access</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

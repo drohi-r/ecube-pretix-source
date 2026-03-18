@@ -1,0 +1,89 @@
+{% extends "pretixcontrol/event/base.html" %}
+{% load i18n %}
+
+{% block title %}Ecube Access Scan Shell{% endblock %}
+
+{% block content %}
+<style>
+.eca-wrap { max-width: 980px; }
+.eca-hero { background: linear-gradient(135deg, #0c0c0d 0%, #1b1b1d 50%, #2b0a0d 100%); color: #fff; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 10px 24px rgba(0,0,0,.14); }
+.eca-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.04); margin-bottom: 18px; }
+.eca-card .hd { padding: 14px 16px; border-bottom: 1px solid #eee; background: #fafafa; font-weight: 700; }
+.eca-card .bd { padding: 16px; }
+.eca-result-ok { background:#e9f7ee; border:1px solid #cde9d4; color:#1f7a3d; }
+.eca-result-no { background:#fdeaea; border:1px solid #f2c6c4; color:#b52b27; }
+.eca-result-warn { background:#eef2ff; border:1px solid #d8e0ff; color:#3752c5; }
+pre { background:#111; color:#f1f1f1; padding:14px; border-radius:10px; overflow:auto; white-space:pre-wrap; }
+</style>
+
+<div class="eca-wrap">
+    <div class="eca-hero">
+        <h2 style="margin:0 0 6px 0;">Ecube Access Scan Shell</h2>
+        <p style="margin:0; opacity:.88;">Use this internal shell to test entry, exit, and re-entry behavior through the unified router.</p>
+    </div>
+
+    <div class="eca-card">
+        <div class="hd">Test a scan</div>
+        <div class="bd">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Payload</label>
+                            {{ form.payload }}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Action</label>
+                            {{ form.action }}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Gate</label>
+                            {{ form.gate }}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Operator</label>
+                            {{ form.operator_name }}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Device ID</label>
+                            {{ form.device_id }}
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Process scan</button>
+            </form>
+        </div>
+    </div>
+
+    {% if result %}
+    <div class="eca-card">
+        <div class="hd">Result</div>
+        <div class="bd {% if result.ok %}eca-result-ok{% elif result.result == 'pending' %}eca-result-warn{% else %}eca-result-no{% endif %}">
+            <div style="font-size:18px; font-weight:800; margin-bottom:8px;">{{ result.result|upper }}</div>
+            <div style="margin-bottom:8px;"><strong>{{ result.display_name|default:"Unknown" }}</strong>{% if result.display_type %} — {{ result.display_type }}{% endif %}</div>
+            <div style="margin-bottom:8px;">{{ result.message }}</div>
+            <pre>{{ result }}</pre>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="eca-card">
+        <div class="hd">Payload examples</div>
+        <div class="bd">
+            <p><strong>Credential:</strong> <code>ECA:CRED:&lt;token&gt;</code></p>
+            <p><strong>Entry mode ideas:</strong> single, re-entry-after-exit, multi</p>
+            <p style="margin-bottom:0; color:#777;">In this build, credentials validate live with entry/exit state. Pretix ticket routing is still scaffolded, not yet redeemed through native Pretix check-in.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

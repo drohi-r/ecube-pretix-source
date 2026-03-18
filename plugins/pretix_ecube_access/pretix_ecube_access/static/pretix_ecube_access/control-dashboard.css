@@ -1,0 +1,565 @@
+.eca-page {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.eca-hero {
+    background:
+        radial-gradient(circle at top right, rgba(200, 0, 10, 0.18), transparent 28%),
+        linear-gradient(135deg, #0b0b0c 0%, #17181b 45%, #23090c 100%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 24px 26px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .16);
+    border: 1px solid rgba(255,255,255,.06);
+}
+
+.eca-hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+}
+
+.eca-kicker {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .72;
+    margin-bottom: 8px;
+}
+
+.eca-title {
+    margin: 0 0 8px 0;
+    font-size: 30px;
+    line-height: 1.1;
+    font-weight: 800;
+}
+
+.eca-subtitle {
+    margin: 0;
+    max-width: 820px;
+    color: rgba(255,255,255,.82);
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.eca-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+    min-width: 260px;
+}
+
+.eca-hero .btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 10px 14px;
+    box-shadow: none;
+}
+
+.eca-hero .btn.btn-primary {
+    background: #c8000a;
+    border-color: #c8000a;
+}
+
+.eca-hero .btn.btn-default {
+    background: rgba(255,255,255,.08);
+    color: #fff;
+    border-color: rgba(255,255,255,.14);
+}
+
+.eca-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.eca-panels-2 {
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    gap: 14px;
+}
+
+.eca-card {
+    background: #fff;
+    border: 1px solid #e9e9ed;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(16, 24, 40, .05);
+    overflow: hidden;
+}
+
+.eca-card-hd {
+    padding: 14px 16px;
+    border-bottom: 1px solid #efeff2;
+    background: linear-gradient(180deg, #fcfcfd 0%, #f8f8fa 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.eca-card-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+    color: #171717;
+}
+
+.eca-card-subtitle {
+    margin: 4px 0 0 0;
+    font-size: 12px;
+    color: #7a7f87;
+}
+
+.eca-card-bd {
+    padding: 16px;
+}
+
+.eca-stat-card {
+    padding: 18px 18px 16px;
+}
+
+.eca-stat-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #7a7f87;
+    margin-bottom: 10px;
+}
+
+.eca-stat-value {
+    font-size: 32px;
+    line-height: 1;
+    font-weight: 800;
+    color: #111317;
+    margin-bottom: 8px;
+}
+
+.eca-stat-help {
+    font-size: 13px;
+    line-height: 1.45;
+    color: #7a7f87;
+}
+
+.eca-stat-accent-total { border-top: 3px solid #3f3f46; }
+.eca-stat-accent-allowed { border-top: 3px solid #1f8f4d; }
+.eca-stat-accent-denied { border-top: 3px solid #c8000a; }
+.eca-stat-accent-doors { border-top: 3px solid #6b46c1; }
+
+.eca-section-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.eca-action-tile {
+    border: 1px solid #ececf1;
+    border-radius: 12px;
+    padding: 14px;
+    background: #fbfbfc;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 132px;
+}
+
+.eca-action-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: #15171b;
+}
+
+.eca-action-copy {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #6f7680;
+    flex: 1 1 auto;
+}
+
+.eca-action-tile .btn {
+    align-self: flex-start;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.eca-door-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.eca-door-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 999px;
+    background: #f7f7f9;
+    border: 1px solid #e7e7ec;
+    font-size: 12px;
+    line-height: 1.2;
+    color: #252932;
+}
+
+.eca-door-name {
+    font-weight: 700;
+    color: #101217;
+}
+
+.eca-door-meta {
+    color: #6d7480;
+}
+
+.eca-empty {
+    color: #777d86;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.eca-table-wrap {
+    overflow-x: auto;
+}
+
+.eca-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+}
+
+.eca-table thead th {
+    background: #fafafc;
+    color: #5f6672;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    padding: 12px 12px;
+    border-bottom: 1px solid #ececf1;
+    white-space: nowrap;
+}
+
+.eca-table tbody td {
+    padding: 12px 12px;
+    border-bottom: 1px solid #f0f1f4;
+    vertical-align: middle;
+    color: #1d2129;
+    font-size: 13px;
+}
+
+.eca-table tbody tr:hover {
+    background: #fcfcfe;
+}
+
+.eca-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.eca-mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 12px;
+}
+
+.eca-code {
+    display: inline-block;
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #384152;
+}
+
+.eca-name {
+    font-weight: 600;
+    color: #151922;
+}
+
+.eca-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    white-space: nowrap;
+}
+
+.eca-badge-neutral {
+    background: #f1f3f6;
+    color: #4e5664;
+}
+
+.eca-badge-entry {
+    background: #e9f7ee;
+    color: #1f7a3d;
+}
+
+.eca-badge-exit {
+    background: #eef2ff;
+    color: #3752c5;
+}
+
+.eca-result {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    white-space: nowrap;
+}
+
+.eca-result.allowed,
+.eca-result.allowed_exit {
+    background: #e8f7ec;
+    color: #1e7b40;
+}
+
+.eca-result.pending {
+    background: #eef2ff;
+    color: #3853c6;
+}
+
+.eca-result.invalid,
+.eca-result.revoked,
+.eca-result.blocked,
+.eca-result.denied,
+.eca-result.error,
+.eca-result.expired,
+.eca-result.duplicate,
+.eca-result.not_inside {
+    background: #fdecec;
+    color: #b32c29;
+}
+
+.eca-muted {
+    color: #7a808a;
+}
+
+@media (max-width: 1280px) {
+    .eca-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .eca-panels-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 900px) {
+    .eca-hero-top {
+        flex-direction: column;
+    }
+
+    .eca-hero-actions {
+        justify-content: flex-start;
+        min-width: 0;
+    }
+
+    .eca-section-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .eca-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .eca-title {
+        font-size: 24px;
+    }
+
+    .eca-code {
+        max-width: 180px;
+    }
+}
+
+
+
+/* ECUBE ACCESS DASHBOARD DARK CARD POLISH v1 */
+.eca-card {
+    background: linear-gradient(180deg, #151a22 0%, #131820 100%) !important;
+    border: 1px solid #27303d !important;
+    box-shadow: 0 10px 28px rgba(0,0,0,.18) !important;
+}
+.eca-card-hd {
+    background: linear-gradient(180deg, #1a212b 0%, #171d26 100%) !important;
+    border-bottom: 1px solid #27303d !important;
+}
+.eca-card-title,
+.eca-stat-value,
+.eca-name,
+.eca-door-name {
+    color: #f4f7fb !important;
+}
+.eca-card-subtitle,
+.eca-stat-label,
+.eca-stat-help,
+.eca-action-copy,
+.eca-door-meta,
+.eca-muted {
+    color: #93a0b1 !important;
+}
+.eca-action-tile {
+    background: #11161c !important;
+    border: 1px solid #27303d !important;
+}
+.eca-action-label {
+    color: #eef2f7 !important;
+}
+.eca-door-chip {
+    background: #0f141b !important;
+    border: 1px solid #2c3541 !important;
+    color: #dfe6ef !important;
+}
+.eca-table thead th {
+    background: #1a212b !important;
+    color: #cfd7e2 !important;
+    border-bottom: 1px solid #2a3441 !important;
+}
+.eca-table tbody td {
+    background: #131820 !important;
+    color: #e7edf5 !important;
+    border-bottom: 1px solid #26303c !important;
+}
+.eca-table tbody tr:hover {
+    background: #1a2028 !important;
+}
+.eca-badge-neutral {
+    background: #232c37 !important;
+    color: #d9e1eb !important;
+}
+.eca-badge-entry {
+    background: #143423 !important;
+    color: #bce9cb !important;
+}
+.eca-badge-exit {
+    background: #1b2640 !important;
+    color: #c8d7ff !important;
+}
+.eca-result.allowed,
+.eca-result.allowed_exit {
+    background: #143423 !important;
+    color: #bce9cb !important;
+}
+.eca-result.pending {
+    background: #1b2640 !important;
+    color: #c8d7ff !important;
+}
+.eca-result.invalid,
+.eca-result.revoked,
+.eca-result.blocked,
+.eca-result.denied,
+.eca-result.error,
+.eca-result.expired,
+.eca-result.duplicate,
+.eca-result.not_inside {
+    background: #3b1818 !important;
+    color: #f0b8b8 !important;
+}
+\n\n
+/* ECUBE ACCESS DASHBOARD DARK OVERRIDE v3 */
+
+/* Keep dashboard and internal cards dark without touching door.css */
+.eca-card,
+.eca-stat-card,
+.eca-action-tile,
+.eca-door-chip,
+.eca-table-wrap {
+    background: linear-gradient(180deg, #151a22 0%, #131820 100%) !important;
+    color: #eef2f7 !important;
+    border-color: #27303d !important;
+}
+
+.eca-card-hd {
+    background: linear-gradient(180deg, #1a212b 0%, #171d26 100%) !important;
+    border-bottom-color: #27303d !important;
+}
+
+.eca-card-title,
+.eca-stat-value,
+.eca-name,
+.eca-door-name,
+.eca-action-label {
+    color: #f4f7fb !important;
+}
+
+.eca-card-subtitle,
+.eca-stat-label,
+.eca-stat-help,
+.eca-action-copy,
+.eca-door-meta,
+.eca-muted {
+    color: #93a0b1 !important;
+}
+
+.eca-table thead th {
+    background: #1a212b !important;
+    color: #cfd7e2 !important;
+    border-bottom-color: #2a3441 !important;
+}
+
+.eca-table tbody td {
+    background: #131820 !important;
+    color: #e7edf5 !important;
+    border-bottom-color: #26303c !important;
+}
+
+.eca-table tbody tr:hover,
+.eca-table tbody tr:hover td {
+    background: #1a2028 !important;
+}
+
+.eca-badge-neutral {
+    background: #232c37 !important;
+    color: #d9e1eb !important;
+}
+
+.eca-badge-entry {
+    background: #143423 !important;
+    color: #bce9cb !important;
+}
+
+.eca-badge-exit {
+    background: #1b2640 !important;
+    color: #c8d7ff !important;
+}
+
+.eca-result.allowed,
+.eca-result.allowed_exit {
+    background: #143423 !important;
+    color: #bce9cb !important;
+}
+
+.eca-result.pending {
+    background: #1b2640 !important;
+    color: #c8d7ff !important;
+}
+
+.eca-result.invalid,
+.eca-result.revoked,
+.eca-result.blocked,
+.eca-result.denied,
+.eca-result.error,
+.eca-result.expired,
+.eca-result.duplicate,
+.eca-result.not_inside {
+    background: #3b1818 !important;
+    color: #f0b8b8 !important;
+}
+

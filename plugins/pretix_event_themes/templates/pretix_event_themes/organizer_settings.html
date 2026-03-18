@@ -1,0 +1,77 @@
+{% extends "pretixcontrol/base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <h1>{% trans "Themes" %}</h1>
+
+    <form action="" method="post" class="form-horizontal">
+        {% csrf_token %}
+
+        <fieldset>
+            <legend>{% trans "Organizer defaults" %}</legend>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "Default preset" %}</label>
+                <div class="col-md-9">
+                    <select name="ecube_theme_preset" class="form-control">
+                        {% for val, label in preset_choices %}
+                            <option value="{{ val }}" {% if current_preset == val %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="help-block">{% trans "Preset selection is kept for future use. Current frontend rendering uses the mapped base theme." %}</p>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset style="margin-top: 25px;">
+            <legend>{% trans "Default design tokens" %}</legend>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "Primary color" %}</label>
+                <div class="col-md-9">
+                    <input type="text" name="ecube_primary" value="{{ current_primary }}" class="form-control" placeholder="#C8000A">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "Secondary color" %}</label>
+                <div class="col-md-9">
+                    <input type="text" name="ecube_secondary" value="{{ current_secondary }}" class="form-control" placeholder="#080808">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "Accent color" %}</label>
+                <div class="col-md-9">
+                    <input type="text" name="ecube_accent" value="{{ current_accent }}" class="form-control" placeholder="#F0EDE8">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "Overlay opacity" %}</label>
+                <div class="col-md-9">
+                    <input type="text" name="ecube_overlay_opacity" value="{{ current_overlay }}" class="form-control" placeholder="0.58">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset style="margin-top: 25px;">
+            <legend>{% trans "Default custom CSS" %}</legend>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "CSS overrides" %}</label>
+                <div class="col-md-9">
+                    <textarea name="ecube_custom_css" class="form-control" rows="12" style="font-family: monospace;">{{ current_custom_css }}</textarea>
+                    <p class="help-block">{% trans "Saved for later. Not injected on the public page in this stable rollback mode." %}</p>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="form-group submit-group">
+            <div class="col-md-9 col-md-offset-3">
+                <button type="submit" class="btn btn-primary btn-save">{% trans "Save" %}</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+

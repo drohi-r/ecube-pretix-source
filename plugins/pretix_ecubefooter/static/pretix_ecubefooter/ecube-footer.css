@@ -1,0 +1,4 @@
+footer nav[aria-label="Footer Navigation"] ul li a[href*="pretix"],
+footer nav[aria-label="Footer Navigation"] ul li a[href*="redirect"]{display:none!important}
+footer nav[aria-label="Footer Navigation"] ul li{list-style:none}
+footer{text-align:center!important}

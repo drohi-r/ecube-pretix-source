@@ -1,0 +1,68 @@
+/* Static background runtime CSS to avoid CSP issues */
+html, body {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+.wrapper,
+.wrapper-inner,
+.page-wrapper,
+.page-content,
+.main-box,
+.container,
+.container-fluid,
+.content,
+.content-main,
+header,
+footer,
+#page-wrapper {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+.wrapper::before,
+.wrapper::after,
+.wrapper-inner::before,
+.wrapper-inner::after,
+.page-wrapper::before,
+.page-wrapper::after,
+.main-box::before,
+.main-box::after,
+.container::before,
+.container::after,
+#page-wrapper::before,
+#page-wrapper::after {
+    background: none !important;
+    background-image: none !important;
+}
+
+body > *:not(#event-themes-bg-layer):not(#event-themes-bg-grain) {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+.main-box,
+.container.main-box {
+    background-color: rgba(10, 10, 10, 0.72) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.28) !important;
+}
+
+@media (max-width: 768px) {
+    .main-box,
+    .container.main-box {
+        background-color: rgba(10, 10, 10, 0.82) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+        border: 1px solid rgba(255,255,255,0.04) !important;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.24) !important;
+    }
+
+    .main-box {
+        margin-left: 10px !important;
+        margin-right: 10px !important;
+    }
+}
+

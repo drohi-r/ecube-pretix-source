@@ -1,0 +1,4 @@
+Thank you for your interest in {{ event.name }}.
+
+At this time, your access request was not approved.
+

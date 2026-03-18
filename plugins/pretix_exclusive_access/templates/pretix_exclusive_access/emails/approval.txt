@@ -1,0 +1,13 @@
+Hello {{ application.full_name }},
+
+Your access request for {{ event.name }} has been approved.
+
+Use your private access link below:
+
+{{ access_link }}
+
+Please open this link in the browser/device you will use for the ticket purchase flow.
+
+Best regards,
+Ecube
+

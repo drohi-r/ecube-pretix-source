@@ -1,0 +1,121 @@
+/* Exclusive Access public CTA - static CSS to avoid CSP issues */
+.exclusive-access-cta {
+    margin: 18px 0 24px 0;
+    padding: 18px 20px;
+    border: 1px solid rgba(200, 0, 10, .18);
+    border-radius: 12px;
+    background: rgba(200, 0, 10, .05);
+    color: #F0EDE8 !important;
+    -webkit-text-fill-color: #F0EDE8 !important;
+    position: relative !important;
+    z-index: 3 !important;
+    isolation: isolate !important;
+}
+
+.exclusive-access-cta.approved {
+    border-color: rgba(31, 143, 85, .22);
+    background: rgba(31, 143, 85, .06);
+}
+
+.exclusive-access-cta h3,
+.exclusive-access-cta p,
+.exclusive-access-cta span,
+.exclusive-access-cta strong,
+.exclusive-access-cta a:not(.exclusive-access-btn) {
+    color: #F0EDE8 !important;
+    -webkit-text-fill-color: #F0EDE8 !important;
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    text-shadow: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.exclusive-access-cta h3 {
+    margin: 0 0 8px 0;
+}
+
+.exclusive-access-cta p {
+    margin: 0 0 10px 0;
+}
+
+.exclusive-access-cta a.exclusive-access-btn,
+.exclusive-access-cta a.exclusive-access-btn.btn,
+.exclusive-access-cta a.exclusive-access-btn.btn.btn-primary {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #C0924E !important;
+    border: 1px solid #C0924E !important;
+    color: #0A0806 !important;
+    -webkit-text-fill-color: #0A0806 !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: .08em !important;
+    border-radius: 0 !important;
+    text-decoration: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 4 !important;
+    overflow: visible !important;
+}
+
+.exclusive-access-cta a.exclusive-access-btn::before,
+.exclusive-access-cta a.exclusive-access-btn::after,
+.exclusive-access-cta a.exclusive-access-btn.btn::before,
+.exclusive-access-cta a.exclusive-access-btn.btn::after,
+.exclusive-access-cta a.exclusive-access-btn.btn.btn-primary::before,
+.exclusive-access-cta a.exclusive-access-btn.btn.btn-primary::after {
+    content: none !important;
+    display: none !important;
+}
+
+.exclusive-access-cta a.exclusive-access-btn .exclusive-access-btn-label,
+.exclusive-access-cta a.exclusive-access-btn.btn .exclusive-access-btn-label,
+.exclusive-access-cta a.exclusive-access-btn.btn.btn-primary .exclusive-access-btn-label {
+    color: #0A0806 !important;
+    -webkit-text-fill-color: #0A0806 !important;
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    text-shadow: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 5 !important;
+    white-space: nowrap !important;
+}
+
+.exclusive-access-cta a.exclusive-access-btn:hover,
+.exclusive-access-cta a.exclusive-access-btn:focus,
+.exclusive-access-cta a.exclusive-access-btn.btn:hover,
+.exclusive-access-cta a.exclusive-access-btn.btn:focus,
+.exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:hover,
+.exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:focus {
+    background: #8B6830 !important;
+    border-color: #8B6830 !important;
+    color: #F0EDE8 !important;
+    -webkit-text-fill-color: #F0EDE8 !important;
+}
+
+.exclusive-access-cta a.exclusive-access-btn:hover .exclusive-access-btn-label,
+.exclusive-access-cta a.exclusive-access-btn:focus .exclusive-access-btn-label,
+.exclusive-access-cta a.exclusive-access-btn.btn:hover .exclusive-access-btn-label,
+.exclusive-access-cta a.exclusive-access-btn.btn:focus .exclusive-access-btn-label,
+.exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:hover .exclusive-access-btn-label,
+.exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:focus .exclusive-access-btn-label {
+    color: #F0EDE8 !important;
+    -webkit-text-fill-color: #F0EDE8 !important;
+}
+

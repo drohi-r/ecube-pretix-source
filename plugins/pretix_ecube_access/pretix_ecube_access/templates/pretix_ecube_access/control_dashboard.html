@@ -1,0 +1,184 @@
+{% extends "pretixcontrol/event/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}Ecube Access{% endblock %}
+
+{% block custom_header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "pretix_ecube_access/control-dashboard.css" %}">
+{% endblock %}
+
+{% block content %}
+<div class="eca-page">
+
+    <div class="eca-hero">
+        <div class="eca-hero-top">
+            <div>
+                <div class="eca-kicker">Ecube Access</div>
+                <h2 class="eca-title">Door control and scan operations</h2>
+                <p class="eca-subtitle">
+                    Unified door orchestration, credential validation, and live scan activity for this event.
+                    Public door endpoints can be exposed through a dedicated access subdomain while operators continue to work from this control surface.
+                </p>
+            </div>
+            <div class="eca-hero-actions">
+                <a class="btn btn-primary" href="{% url "plugins:pretix_ecube_access:control_door_shell" organizer=event.organizer.slug event=event.slug %}">Open control door</a>
+                <a class="btn btn-default" href="{% url "plugins:pretix_ecube_access:control_scan_logs" organizer=event.organizer.slug event=event.slug %}">View scan logs</a>
+                <a class="btn btn-default" href="{% url "plugins:pretix_ecube_access:control_doors_list" organizer=event.organizer.slug event=event.slug %}">Manage doors</a>
+                <a class="btn btn-default" href="{% url "plugins:pretix_ecube_access:control_ops_dashboard" organizer=event.organizer.slug event=event.slug %}" target="_blank">Operations Command</a>
+                <a class="btn btn-default" href="{% url "plugins:pretix_ecube_access:control_scan_shell" organizer=event.organizer.slug event=event.slug %}">Open scan shell</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="eca-stats">
+        <div class="eca-card eca-stat-card eca-stat-accent-total">
+            <div class="eca-stat-label">Total scans</div>
+            <div class="eca-stat-value">{{ count_total }}</div>
+            <div class="eca-stat-help">All Ecube Access scan events recorded for this event.</div>
+        </div>
+
+        <div class="eca-card eca-stat-card eca-stat-accent-allowed">
+            <div class="eca-stat-label">Allowed</div>
+            <div class="eca-stat-value">{{ count_allowed }}</div>
+            <div class="eca-stat-help">Successful entries and exits accepted by the access engine.</div>
+        </div>
+
+        <div class="eca-card eca-stat-card eca-stat-accent-denied">
+            <div class="eca-stat-label">Warnings / blocked</div>
+            <div class="eca-stat-value">{{ count_denied }}</div>
+            <div class="eca-stat-help">Invalid, duplicate, denied, pending, or otherwise non-allowed scan results.</div>
+        </div>
+
+        <div class="eca-card eca-stat-card eca-stat-accent-doors">
+            <div class="eca-stat-label">Configured doors</div>
+            <div class="eca-stat-value">{{ doors|length }}</div>
+            <div class="eca-stat-help">Door endpoints currently available for this event configuration.</div>
+        </div>
+    </div>
+
+    <div class="eca-panels-2">
+        <div class="eca-card">
+            <div class="eca-card-hd">
+                <div>
+                    <div class="eca-card-title">Quick actions</div>
+                    <div class="eca-card-subtitle">Operational shortcuts for entry control and testing.</div>
+                </div>
+            </div>
+            <div class="eca-card-bd">
+                <div class="eca-section-grid">
+                    <div class="eca-action-tile">
+                        <div class="eca-action-label">Control door</div>
+                        <div class="eca-action-copy">Launch the browser-based scanner interface with camera support and live operator use.</div>
+                        <a class="btn btn-primary" href="{% url "plugins:pretix_ecube_access:control_door_shell" organizer=event.organizer.slug event=event.slug %}">Open control door</a>
+                    </div>
+
+                    <div class="eca-action-tile">
+                        <div class="eca-action-label">Manual scan shell</div>
+                        <div class="eca-action-copy">Test raw payloads, scan parsing, and entry or exit logic without using the live door interface.</div>
+                        <a class="btn btn-default" href="{% url "plugins:pretix_ecube_access:control_scan_shell" organizer=event.organizer.slug event=event.slug %}">Open scan shell</a>
+                    </div>
+
+                    <div class="eca-action-tile">
+                        <div class="eca-action-label">Scan logs</div>
+                        <div class="eca-action-copy">Review recent validation attempts, decisions, gate activity, and operational anomalies.</div>
+                        <a class="btn btn-default" href="{% url "plugins:pretix_ecube_access:control_scan_logs" organizer=event.organizer.slug event=event.slug %}">View scan logs</a>
+                    </div>
+
+                    <div class="eca-action-tile">
+                        <div class="eca-action-label">Door management</div>
+                        <div class="eca-action-copy">Configure public door endpoints, names, slugs, and default actions for distributed access points.</div>
+                        <a class="btn btn-default" href="{% url "plugins:pretix_ecube_access:control_doors_list" organizer=event.organizer.slug event=event.slug %}">Manage doors</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="eca-card">
+            <div class="eca-card-hd">
+                <div>
+                    <div class="eca-card-title">Doors</div>
+                    <div class="eca-card-subtitle">Configured endpoints and their default access behavior.</div>
+                </div>
+            </div>
+            <div class="eca-card-bd">
+                {% if doors %}
+                    <div class="eca-door-list">
+                        {% for door in doors %}
+                            <div class="eca-door-chip">
+                                <span class="eca-door-name">{{ door.name }}</span>
+                                <span class="eca-door-meta">{{ door.slug }}</span>
+                                <span class="eca-door-meta">{{ door.default_action }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="eca-empty">No doors have been created yet. Create at least one door endpoint to expose a dedicated public scanner route for on-site operations.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="eca-card">
+        <div class="eca-card-hd">
+            <div>
+                <div class="eca-card-title">Recent scans</div>
+                <div class="eca-card-subtitle">Latest access activity across configured doors and control surfaces.</div>
+            </div>
+        </div>
+        <div class="eca-card-bd" style="padding:0;">
+            <div class="eca-table-wrap">
+                <table class="eca-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Action</th>
+                            <th>Engine</th>
+                            <th>Type</th>
+                            <th>Name</th>
+                            <th>Code</th>
+                            <th>Result</th>
+                            <th>Gate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                            <tr>
+                                <td>{{ log.scanned_at|date:"Y-m-d H:i:s" }}</td>
+                                <td>
+                                    {% if log.action == "entry" %}
+                                        <span class="eca-badge eca-badge-entry">{{ log.action }}</span>
+                                    {% elif log.action == "exit" %}
+                                        <span class="eca-badge eca-badge-exit">{{ log.action }}</span>
+                                    {% else %}
+                                        <span class="eca-badge eca-badge-neutral">{{ log.action|default:"—" }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ log.engine|default:"—" }}</td>
+                                <td><span class="eca-badge eca-badge-neutral">{{ log.object_type|default:"—" }}</span></td>
+                                <td><span class="eca-name">{{ log.display_name|default:"—" }}</span></td>
+                                <td class="eca-mono">
+                                    {% if log.normalized_code %}
+                                        <span class="eca-code" title="{{ log.normalized_code }}">{{ log.normalized_code }}</span>
+                                    {% else %}
+                                        <span class="eca-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td><span class="eca-result {{ log.result }}">{{ log.result|default:"unknown" }}</span></td>
+                                <td>{{ log.gate|default:"—" }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="8" style="text-align:center; padding:28px 12px; color:#7a808a;">No scans logged yet.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+

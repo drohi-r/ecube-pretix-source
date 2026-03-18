@@ -1,0 +1,30 @@
+{% extends "pretixcontrol/event/base.html" %}
+
+{% block title %}Delete door{% endblock %}
+
+{% block content %}
+<div class="panel panel-danger">
+    <div class="panel-heading"><strong>Delete door</strong></div>
+    <div class="panel-body">
+        <p>This will remove this Ecube Access door configuration and make its public URL unusable.</p>
+
+        <p><strong>Door name:</strong> {{ door.name }}</p>
+        <p><strong>Slug:</strong> {{ door.slug }}</p>
+        <p><strong>Public path:</strong> <code>{{ door_path }}</code></p>
+        <p><strong>Public URL:</strong> <code>{{ door_full_url }}</code></p>
+
+        <hr>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Type <strong>{{ expected_name }}</strong> to confirm deletion</label>
+                <input type="text" name="confirm_name" class="form-control" placeholder="Type the exact door name" required>
+            </div>
+
+            <button type="submit" class="btn btn-danger">Delete this door permanently</button>
+            <a href="{% url "plugins:pretix_ecube_access:control_door_edit" organizer=event.organizer.slug event=event.slug pk=door.pk %}" class="btn btn-default">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

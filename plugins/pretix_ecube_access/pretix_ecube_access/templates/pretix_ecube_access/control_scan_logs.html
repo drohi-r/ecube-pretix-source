@@ -1,0 +1,64 @@
+{% extends "pretixcontrol/event/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}Ecube Access Logs{% endblock %}
+
+{% block custom_header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "pretix_ecube_access/control-pages.css" %}">
+{% endblock %}
+
+{% block content %}
+
+<div style="margin-bottom: 14px;">
+    <a href="{% url "plugins:pretix_ecube_access:control_dashboard" organizer=event.organizer.slug event=event.slug %}" class="btn btn-default">
+        <span class="fa fa-arrow-left" style="margin-right:8px;"></span>Back to Ecube Access
+    </a>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Ecube Access Scan Logs</h3>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped eca-mobile-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Action</th>
+                        <th>Engine</th>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Result</th>
+                        <th>Gate</th>
+                        <th>Operator</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                        <tr>
+                            <td>{{ log.scanned_at|date:"Y-m-d H:i:s" }}</td>
+                            <td>{{ log.action }}</td>
+                            <td>{{ log.engine }}</td>
+                            <td>{{ log.object_type }}</td>
+                            <td>{{ log.display_name|default:"—" }}</td>
+                            <td>{{ log.normalized_code|default:"—" }}</td>
+                            <td>{{ log.result }}</td>
+                            <td>{{ log.gate|default:"—" }}</td>
+                            <td>{{ log.operator_name|default:"—" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="9">No scan logs yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

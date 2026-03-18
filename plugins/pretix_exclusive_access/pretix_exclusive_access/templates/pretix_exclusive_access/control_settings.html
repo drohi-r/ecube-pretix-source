@@ -1,0 +1,67 @@
+{% extends "pretixcontrol/event/settings_base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{% trans "Exclusive Access Settings" %}{% endblock %}
+
+{% block inside %}
+<form method="post" class="form-horizontal">
+    {% csrf_token %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>{% trans "Access configuration" %}</strong>
+        </div>
+        <div class="panel-body">
+            {% bootstrap_field form.protected_items layout="horizontal" %}
+            {% bootstrap_field form.voucher_validity_days layout="horizontal" %}
+            {% bootstrap_field form.approval_email_subject layout="horizontal" %}
+            {% bootstrap_field form.rejection_email_subject layout="horizontal" %}
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>{% trans "Public request form fields" %}</strong>
+        </div>
+        <div class="panel-body">
+            <p class="text-muted" style="margin-bottom: 14px;">
+                {% trans "Turn applicant fields on or off individually. Required is ignored automatically if a field is hidden." %}
+            </p>
+            <div class="table-responsive">
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Field" %}</th>
+                            <th style="width:120px;">{% trans "Show" %}</th>
+                            <th style="width:120px;">{% trans "Require" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in field_rows %}
+                            <tr>
+                                <td><strong>{{ row.label }}</strong></td>
+                                <td>{{ row.show_field }}</td>
+                                <td>{{ row.require_field }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <p class="help-block" style="margin-bottom:0;">
+                {% trans "Name, email, and ticket type remain core application fields." %}
+            </p>
+        </div>
+    </div>
+
+    <div class="form-group submit-group">
+        <button type="submit" class="btn btn-primary btn-save">
+            {% trans "Save" %}
+        </button>
+    </div>
+</form>
+
+<hr>
+<p><strong>{% trans "Public application URL:" %}</strong> <code>/request-access/</code></p>
+<p>{% trans "Important:" %} {% trans "Set the protected products themselves to voucher-only in normal pretix item settings." %}</p>
+{% endblock %}

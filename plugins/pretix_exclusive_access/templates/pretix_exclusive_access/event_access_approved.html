@@ -1,0 +1,16 @@
+{% extends "pretixpresale/event/base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+    <h1>{% trans "Access Approved" %}</h1>
+    <p>{% blocktrans with name=application.full_name eventname=event.name %}Hi {{ name }}, your access for {{ eventname }} has been confirmed.{% endblocktrans %}</p>
+    <p>{% trans "This browser has been marked as approved for the next stage of the purchase flow." %}</p>
+    <p>
+        <a class="btn btn-primary" href="https://tickets.ecube-entertainment.com/{{ event.organizer.slug }}/{{ event.slug }}/">
+            {% trans "Continue to event" %}
+        </a>
+    </p>
+</div>
+{% endblock %}
+

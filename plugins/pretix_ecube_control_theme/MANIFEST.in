@@ -1,0 +1,3 @@
+recursive-include pretix_ecube_control_theme/static *
+recursive-include pretix_ecube_control_theme/templates *
+

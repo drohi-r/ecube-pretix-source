@@ -1,0 +1,7 @@
+/* Ecube legacy core dark css neutralized in migration pass A
+   Original migrated into plugin-owned control-theme.css
+   Timestamp: 20260316-045801
+*/
+:root {
+  --ecube-core-dark-neutralized: 1;
+}

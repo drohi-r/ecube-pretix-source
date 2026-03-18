@@ -1,0 +1,2 @@
+recursive-include pretix_ecube_access/templates *
+
