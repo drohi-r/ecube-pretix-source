@@ -1,0 +1,2 @@
+recursive-include pretix_ticketing_portal/static *
+recursive-include pretix_ticketing_portal/templates *

@@ -1,8 +1,11 @@
 import csv
 import io
+import logging
 import secrets
 
 from django.db import transaction
+
+logger = logging.getLogger(__name__)
 from django.utils import timezone
 
 
@@ -63,7 +66,7 @@ def approve_application_v11(
             if hasattr(legacy_services, "send_approval_email"):
                 legacy_services.send_approval_email(application)
         except Exception:
-            pass
+            logger.exception("Failed to send approval email for application %s", application.pk)
 
     return application
 
@@ -191,6 +194,7 @@ def export_applications_csv_v11(queryset):
             try:
                 requested_item = str(item_obj)
             except Exception:
+                logger.debug("Could not stringify item object, using name fallback")
                 requested_item = getattr(item_obj, "name", "")
 
         reviewed_by = ""

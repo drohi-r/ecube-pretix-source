@@ -6,24 +6,29 @@
 
 {% block custom_header %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static "pretix_ecube_access/control-pages.css" %}">
+    <link rel="stylesheet" href="{% static "pretix_ecube_access/control-pages.css" %}?v=responsive-20260324a">
 {% endblock %}
 
 {% block content %}
+<div class="eca-page">
 
-<div style="margin-bottom: 14px;">
+<div class="eca-hero">
+    <span class="eca-kicker">Ecube Access</span>
+    <h2 class="eca-title">Scan Logs</h2>
+    <p class="eca-subtitle">View all scan events across doors for this event.</p>
+</div>
+
+<div class="eca-toolbar">
     <a href="{% url "plugins:pretix_ecube_access:control_dashboard" organizer=event.organizer.slug event=event.slug %}" class="btn btn-default">
-        <span class="fa fa-arrow-left" style="margin-right:8px;"></span>Back to Ecube Access
+        <span class="fa fa-arrow-left"></span> Back to Ecube Access
     </a>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Ecube Access Scan Logs</h3>
-    </div>
-    <div class="panel-body">
-        <div class="table-responsive">
-            <table class="table table-striped eca-mobile-table">
+<div class="eca-card">
+    <div class="eca-card-hd"><h4 class="eca-card-title">Scan Logs</h4></div>
+    <div class="eca-card-bd" style="padding:0;">
+        <div class="eca-table-wrap">
+            <table class="eca-table eca-mobile-table">
                 <thead>
                     <tr>
                         <th>Time</th>
@@ -40,15 +45,15 @@
                 <tbody>
                     {% for log in logs %}
                         <tr>
-                            <td>{{ log.scanned_at|date:"Y-m-d H:i:s" }}</td>
-                            <td>{{ log.action }}</td>
-                            <td>{{ log.engine }}</td>
-                            <td>{{ log.object_type }}</td>
-                            <td>{{ log.display_name|default:"—" }}</td>
-                            <td>{{ log.normalized_code|default:"—" }}</td>
-                            <td>{{ log.result }}</td>
-                            <td>{{ log.gate|default:"—" }}</td>
-                            <td>{{ log.operator_name|default:"—" }}</td>
+                            <td data-label="Time">{{ log.scanned_at|date:"Y-m-d H:i:s" }}</td>
+                            <td data-label="Action">{{ log.action }}</td>
+                            <td data-label="Engine">{{ log.engine }}</td>
+                            <td data-label="Type">{{ log.object_type }}</td>
+                            <td data-label="Name">{{ log.display_name|default:"—" }}</td>
+                            <td data-label="Code">{{ log.normalized_code|default:"—" }}</td>
+                            <td data-label="Result">{{ log.result }}</td>
+                            <td data-label="Gate">{{ log.gate|default:"—" }}</td>
+                            <td data-label="Operator">{{ log.operator_name|default:"—" }}</td>
                         </tr>
                     {% empty %}
                         <tr>
@@ -59,6 +64,8 @@
             </table>
         </div>
     </div>
+</div>
+
 </div>
 {% endblock %}
 

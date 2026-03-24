@@ -4,6 +4,66 @@
 {% block inside %}
     <h1>{% trans "Themes" %}</h1>
 
+    <style>
+        .ecube-asset-preview {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 100%;
+            padding: 12px;
+            border: 1px solid #d9dee5;
+            border-radius: 8px;
+            background: #f8fafc;
+            overflow: hidden;
+        }
+
+        .ecube-asset-preview img {
+            display: block;
+            width: auto;
+            max-width: 100%;
+            border-radius: 6px;
+        }
+
+        .ecube-asset-preview--wide img {
+            max-width: 100%;
+            max-height: 120px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .ecube-asset-preview--logo img {
+            max-width: 100%;
+            max-height: 72px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .ecube-asset-preview--thumb {
+            width: 100px;
+            height: 100px;
+            padding: 6px;
+        }
+
+        .ecube-asset-preview--thumb img {
+            width: 88px;
+            height: 88px;
+            object-fit: cover;
+        }
+
+        .ecube-asset-actions {
+            margin-top: 10px;
+        }
+    </style>
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+                <div>{{ error }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
         {% csrf_token %}
 
@@ -13,12 +73,9 @@
             <div class="form-group">
                 <label class="col-md-3 control-label">{% trans "Theme preset" %}</label>
                 <div class="col-md-9">
-                    <select name="ecube_theme_preset" class="form-control">
-                        {% for val, label in preset_choices %}
-                            <option value="{{ val }}" {% if current_preset == val %}selected{% endif %}>{{ label }}</option>
-                        {% endfor %}
-                    </select>
-                    <p class="help-block">{% trans "Preset selection is kept for future use. Current frontend rendering uses the mapped base theme." %}</p>
+                    {{ form.ecube_theme_preset }}
+                    <p class="help-block">{% trans "Controls the base colour palette and visual style." %}</p>
+                    {{ form.ecube_theme_preset.errors }}
                 </div>
             </div>
         </fieldset>
@@ -29,28 +86,32 @@
             <div class="form-group">
                 <label class="col-md-3 control-label">{% trans "Primary color" %}</label>
                 <div class="col-md-9">
-                    <input type="text" name="ecube_primary" value="{{ current_primary }}" class="form-control" placeholder="#C8000A">
+                    {{ form.ecube_primary }}
+                    {{ form.ecube_primary.errors }}
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-md-3 control-label">{% trans "Secondary color" %}</label>
                 <div class="col-md-9">
-                    <input type="text" name="ecube_secondary" value="{{ current_secondary }}" class="form-control" placeholder="#080808">
+                    {{ form.ecube_secondary }}
+                    {{ form.ecube_secondary.errors }}
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-md-3 control-label">{% trans "Accent color" %}</label>
                 <div class="col-md-9">
-                    <input type="text" name="ecube_accent" value="{{ current_accent }}" class="form-control" placeholder="#F0EDE8">
+                    {{ form.ecube_accent }}
+                    {{ form.ecube_accent.errors }}
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-md-3 control-label">{% trans "Overlay opacity" %}</label>
                 <div class="col-md-9">
-                    <input type="text" name="ecube_overlay_opacity" value="{{ current_overlay }}" class="form-control" placeholder="0.58">
+                    {{ form.ecube_overlay_opacity }}
+                    {{ form.ecube_overlay_opacity.errors }}
                 </div>
             </div>
         </fieldset>
@@ -61,14 +122,15 @@
             <div class="form-group">
                 <label class="col-md-3 control-label">{% trans "CSS overrides" %}</label>
                 <div class="col-md-9">
-                    <textarea name="ecube_custom_css" class="form-control" rows="12" style="font-family: monospace;">{{ current_custom_css }}</textarea>
-                    <p class="help-block">{% trans "Saved for later. Not injected on the public page in this stable rollback mode." %}</p>
+                    {{ form.ecube_custom_css }}
+                    <p class="help-block">{% trans "Additional CSS applied on top of the selected theme." %}</p>
+                    {{ form.ecube_custom_css.errors }}
                 </div>
             </div>
         </fieldset>
 
         <fieldset style="margin-top: 25px;">
-            <legend>{% trans "Background" %}</legend>
+            <legend>{% trans "Legacy background" %}</legend>
 
             {% if current_bg_url %}
                 <div class="alert alert-info">
@@ -78,7 +140,12 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label">{% trans "Preview" %}</label>
                     <div class="col-md-9">
-                        <img src="{{ current_bg_url }}" style="max-width:100%; max-height:240px; border-radius:8px;">
+                        <div class="ecube-asset-preview ecube-asset-preview--wide">
+                            <img src="{{ current_bg_url }}" alt="{% trans "Legacy background preview" %}">
+                        </div>
+                        <div class="ecube-asset-actions">
+                            <button type="submit" name="remove_background" value="1" class="btn btn-danger">{% trans "Remove legacy background" %}</button>
+                        </div>
                     </div>
                 </div>
             {% endif %}
@@ -86,8 +153,163 @@
             <div class="form-group">
                 <label class="col-md-3 control-label" for="background_image">{% trans "Background image" %}</label>
                 <div class="col-md-9">
-                    <input id="background_image" name="background_image" type="file" accept="image/*" class="form-control">
-                    <p class="help-block">{% trans "Upload one image for this event background." %}</p>
+                    {{ form.background_image }}
+                    <p class="help-block">{% trans "Updates the event page background image." %}</p>
+                    {{ form.background_image.errors }}
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset style="margin-top: 25px;">
+            <legend>{% trans "Event asset pack" %}</legend>
+
+            {% if hero_preview_url %}
+                <div class="form-group">
+                    <label class="col-md-3 control-label">{% trans "Hero preview" %}</label>
+                    <div class="col-md-9">
+                        <div class="ecube-asset-preview ecube-asset-preview--wide">
+                            <img src="{{ hero_preview_url }}" alt="{% trans "Hero preview" %}">
+                        </div>
+                        <p class="help-block">
+                            <a href="{{ hero_preview_url }}" target="_blank">{% trans "Original hero" %}</a>
+                            {% if hero_card_16x9_url %} · <a href="{{ hero_card_16x9_url }}" target="_blank">{% trans "16:9 card" %}</a>{% endif %}
+                            {% if hero_email_banner_url %} · <a href="{{ hero_email_banner_url }}" target="_blank">{% trans "Email banner" %}</a>{% endif %}
+                            {% if hero_ticket_texture_url %} · <a href="{{ hero_ticket_texture_url }}" target="_blank">{% trans "Ticket texture" %}</a>{% endif %}
+                        </p>
+                        <div class="ecube-asset-actions">
+                            <button type="submit" name="remove_hero_image" value="1" class="btn btn-default">{% trans "Remove hero image" %}</button>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "Hero image" %}</label>
+                <div class="col-md-9">
+                    {{ form.hero_image }}
+                    <p class="help-block">{% trans "Automatically generates email banner, ticket texture, 16:9 card, and thumbnail on upload." %}</p>
+                    {{ form.hero_image.errors }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "Hero focal point" %}</label>
+                <div class="col-md-4">
+                    {{ form.hero_focal_x }}
+                    <p class="help-block">{% trans "Horizontal focal point from 0.00 to 1.00." %}</p>
+                    {{ form.hero_focal_x.errors }}
+                </div>
+                <div class="col-md-5">
+                    {{ form.hero_focal_y }}
+                    <p class="help-block">{% trans "Vertical focal point from 0.00 to 1.00." %}</p>
+                    {{ form.hero_focal_y.errors }}
+                </div>
+            </div>
+
+            {% if logo_preview_url %}
+                <div class="form-group">
+                    <label class="col-md-3 control-label">{% trans "Logo preview" %}</label>
+                    <div class="col-md-9">
+                        <div class="ecube-asset-preview ecube-asset-preview--logo">
+                            <img src="{{ logo_preview_url }}" alt="{% trans "Logo preview" %}">
+                        </div>
+                        <p class="help-block">
+                            <a href="{{ logo_preview_url }}" target="_blank">{% trans "Original logo" %}</a>
+                            {% if logo_email_url %} · <a href="{{ logo_email_url }}" target="_blank">{% trans "Email PNG" %}</a>{% endif %}
+                            {% if logo_ticket_url %} · <a href="{{ logo_ticket_url }}" target="_blank">{% trans "Ticket PNG" %}</a>{% endif %}
+                        </p>
+                        <div class="ecube-asset-actions">
+                            <button type="submit" name="remove_logo_image" value="1" class="btn btn-default">{% trans "Remove logo image" %}</button>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "Logo / lockup" %}</label>
+                <div class="col-md-9">
+                    {{ form.logo_image }}
+                    <p class="help-block">{% trans "Automatically generates email and ticket PNG derivatives on upload." %}</p>
+                    {{ form.logo_image.errors }}
+                </div>
+            </div>
+
+            {% if background_texture_original_url or background_texture_web_url %}
+                <div class="form-group">
+                    <label class="col-md-3 control-label">{% trans "Background texture preview" %}</label>
+                    <div class="col-md-9">
+                        <div class="ecube-asset-preview ecube-asset-preview--wide">
+                            <img src="{{ background_texture_web_url|default:background_texture_original_url }}" alt="{% trans "Background texture preview" %}">
+                        </div>
+                        <p class="help-block">
+                            {% if background_texture_original_url %}<a href="{{ background_texture_original_url }}" target="_blank">{% trans "Original texture" %}</a>{% endif %}
+                            {% if background_texture_web_url %} · <a href="{{ background_texture_web_url }}" target="_blank">{% trans "Web derivative" %}</a>{% endif %}
+                            {% if background_texture_ticket_url %} · <a href="{{ background_texture_ticket_url }}" target="_blank">{% trans "Ticket derivative" %}</a>{% endif %}
+                        </p>
+                        <div class="ecube-asset-actions">
+                            <button type="submit" name="remove_background_texture" value="1" class="btn btn-default">{% trans "Remove background texture" %}</button>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "Background texture" %}</label>
+                <div class="col-md-9">
+                    {{ form.background_texture_image }}
+                    <p class="help-block">{% trans "Sets the event page background. Takes priority over the legacy background image above." %}</p>
+                    {{ form.background_texture_image.errors }}
+                </div>
+            </div>
+
+            {% if thumbnail_override_url or thumbnail_square_url %}
+                <div class="form-group">
+                    <label class="col-md-3 control-label">{% trans "Thumbnail preview" %}</label>
+                    <div class="col-md-9">
+                        <div class="ecube-asset-preview ecube-asset-preview--thumb">
+                            <img src="{{ thumbnail_square_url|default:thumbnail_override_url }}" alt="{% trans "Thumbnail preview" %}">
+                        </div>
+                        <p class="help-block">
+                            {% if thumbnail_override_url %}<a href="{{ thumbnail_override_url }}" target="_blank">{% trans "Override source" %}</a>{% endif %}
+                            {% if thumbnail_square_url %} · <a href="{{ thumbnail_square_url }}" target="_blank">{% trans "Square derivative" %}</a>{% endif %}
+                        </p>
+                        {% if thumbnail_override_url %}
+                        <div class="ecube-asset-actions">
+                            <button type="submit" name="remove_thumbnail_override" value="1" class="btn btn-default">{% trans "Remove thumbnail override" %}</button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "Thumbnail override" %}</label>
+                <div class="col-md-9">
+                    {{ form.thumbnail_override_image }}
+                    <p class="help-block">{% trans "Optional custom source for the square thumbnail. If omitted, the hero image is used." %}</p>
+                    {{ form.thumbnail_override_image.errors }}
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset style="margin-top: 25px;">
+            <legend>{% trans "Asset usage" %}</legend>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "Use hero in email" %}</label>
+                <div class="col-md-9" style="padding-top: 7px;">
+                    {{ form.use_hero_in_email }}
+                    <p class="help-block">{% trans "Shows the hero image at the top of transactional emails." %}</p>
+                    {{ form.use_hero_in_email.errors }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "Use hero on ticket" %}</label>
+                <div class="col-md-9" style="padding-top: 7px;">
+                    {{ form.use_hero_on_ticket }}
+                    <p class="help-block">{% trans "Shows the hero image as a texture on printed tickets." %}</p>
+                    {{ form.use_hero_on_ticket.errors }}
                 </div>
             </div>
         </fieldset>
@@ -98,13 +320,4 @@
             </div>
         </div>
     </form>
-
-    {% if current_bg_url %}
-    <form action="" method="post" style="margin-top: 10px;">
-        {% csrf_token %}
-        <input type="hidden" name="remove_background" value="1">
-        <button type="submit" class="btn btn-danger">{% trans "Remove background" %}</button>
-    </form>
-    {% endif %}
 {% endblock %}
-

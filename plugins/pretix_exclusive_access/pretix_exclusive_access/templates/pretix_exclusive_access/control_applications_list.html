@@ -1,6 +1,10 @@
 {% extends "pretixcontrol/event/base.html" %}
 {% load i18n %}
-
+{% block custom_header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="/static/pretix_exclusive_access/exclusive-access-control.css?v=20260324-v7">
+    <link rel="stylesheet" href="/static/pretix_exclusive_access/control-applications.css?v=20260324-v7">
+{% endblock %}
 
 {% block content %}
 <h1>{% trans "Exclusive Access Applications" %}</h1>

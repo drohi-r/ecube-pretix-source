@@ -6,32 +6,25 @@
 
 {% block custom_header %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static "pretix_ecube_access/control-pages.css" %}?v=doors-mobile-20260317a">
+    <link rel="stylesheet" href="{% static "pretix_ecube_access/control-pages.css" %}?v=responsive-20260324a">
 {% endblock %}
 
 {% block content %}
-<style>
-.eca-hero { background: linear-gradient(135deg, #0c0c0d 0%, #1b1b1d 50%, #2b0a0d 100%); color: #fff; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 10px 24px rgba(0,0,0,.14); }
-.eca-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.04); }
-.eca-card .hd { padding: 14px 16px; border-bottom: 1px solid #eee; background: #fafafa; font-weight: 700; }
-.eca-card .bd { padding: 16px; }
-.eca-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; background: #f6f8fa; padding: 3px 7px; border-radius: 8px; display: inline-block; word-break: break-all; }
-.eca-muted { color: #777; }
-</style>
-
+<div class="eca-page">
 <div class="eca-hero">
-    <h2 style="margin:0 0 6px 0;">Door Management</h2>
-    <p style="margin:0; opacity:.88;">Manage public Ecube Access door endpoints for this event.</p>
+    <span class="eca-kicker">Ecube Access</span>
+    <h2 class="eca-title">Door Management</h2>
+    <p class="eca-subtitle">Manage public Ecube Access door endpoints for this event.</p>
 </div>
 
-<div class="eca-toolbar" style="margin-bottom: 16px;">
+<div class="eca-toolbar">
     <a href="{% url "plugins:pretix_ecube_access:control_door_create" organizer=event.organizer.slug event=event.slug %}" class="btn btn-primary">Create door</a>
     <a href="{% url "plugins:pretix_ecube_access:control_dashboard" organizer=event.organizer.slug event=event.slug %}" class="btn btn-default">Back to Ecube Access</a>
 </div>
 
 <div class="eca-card">
-    <div class="hd">Doors</div>
-    <div class="bd">
+    <div class="eca-card-hd"><h4 class="eca-card-title">Doors</h4></div>
+    <div class="eca-card-bd">
         <div class="table-responsive">
             <table class="table table-striped eca-mobile-table" style="margin-bottom:0;">
                 <thead>
@@ -47,12 +40,12 @@
                 <tbody>
                     {% for row in door_rows %}
                         <tr>
-                            <td class="eca-door-actions"><strong>{{ row.door.name }}</strong></td>
-                            <td>{{ row.door.slug }}</td>
-                            <td>{{ row.door.default_action }}</td>
-                            <td>{% if row.door.is_active %}Active{% else %}Inactive{% endif %}</td>
-                            <td><span class="eca-code">{{ row.full_url }}</span></td>
-                            <td>
+                            <td data-label="Name" class="eca-door-actions"><strong>{{ row.door.name }}</strong></td>
+                            <td data-label="Slug">{{ row.door.slug }}</td>
+                            <td data-label="Default action">{{ row.door.default_action }}</td>
+                            <td data-label="Status">{% if row.door.is_active %}Active{% else %}Inactive{% endif %}</td>
+                            <td data-label="Public URL"><span class="eca-code">{{ row.full_url }}</span></td>
+                            <td data-label="Actions">
                                 <a href="{% url "plugins:pretix_ecube_access:control_door_edit" organizer=event.organizer.slug event=event.slug pk=row.door.pk %}" class="btn btn-xs btn-default">Edit</a>
                                 <a href="{{ row.full_url }}" class="btn btn-xs btn-primary" target="_blank">Open</a>
                                 <a href="{% url "plugins:pretix_ecube_access:control_door_delete" organizer=event.organizer.slug event=event.slug pk=row.door.pk %}" class="btn btn-xs btn-danger">Delete</a>
@@ -70,6 +63,7 @@
             </table>
         </div>
     </div>
+</div>
 </div>
 {% endblock %}
 

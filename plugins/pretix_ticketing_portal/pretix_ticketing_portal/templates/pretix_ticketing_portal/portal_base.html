@@ -1,0 +1,32 @@
+{% extends "pretixpresale/base.html" %}
+{% load static %}
+
+{% block thetitle %}Ecube Access Ticketing Portal{% endblock %}
+
+{% block custom_header %}
+    {% static "pretix_ecube_control_theme/ecube-logo.png" as ecube_share_logo %}
+    {{ block.super }}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Ecube Access Ticketing Portal" />
+    <meta property="og:description" content="Official ticketing portal for Ecube Entertainment." />
+    <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}" />
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ ecube_share_logo }}?v=share-20260320a" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Ecube Access Ticketing Portal" />
+    <meta name="twitter:description" content="Official ticketing portal for Ecube Entertainment." />
+    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ ecube_share_logo }}?v=share-20260320a" />
+    <link rel="stylesheet" href="{% static 'pretix_ticketing_portal/portal.css' %}?v=20260325-v4c">
+{% endblock %}
+
+{% block above %}{% endblock %}
+
+{% block page %}{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block powered_by %}{% endblock %}
+
+{% block footernav %}
+    <script src="{% static 'pretix_ticketing_portal/portal-favicon.js' %}?v=20260325-v4c" defer></script>
+    <script src="{% static 'pretix_ticketing_portal/portal-ui.js' %}?v=20260325-v4c" defer></script>
+{% endblock %}

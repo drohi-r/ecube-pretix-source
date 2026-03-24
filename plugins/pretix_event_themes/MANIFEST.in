@@ -1,3 +1,2 @@
-recursive-include pretix_event_themes/templates *
-recursive-include pretix_event_themes/static *
-
+recursive-include templates *
+recursive-include static *

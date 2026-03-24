@@ -1,0 +1,30 @@
+{% extends "pretixcontrol/event/settings_base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{% trans "Ticketing Portal Settings" %}{% endblock %}
+
+{% block inside %}
+<form method="post" class="form-horizontal">
+    {% csrf_token %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>{% trans "Portal event visibility" %}</strong>
+        </div>
+        <div class="panel-body">
+            {% bootstrap_field form.portal_featured layout="horizontal" %}
+            {% bootstrap_field form.portal_visibility layout="horizontal" %}
+            {% bootstrap_field form.portal_label layout="horizontal" %}
+            {% bootstrap_field form.portal_category layout="horizontal" %}
+            {% bootstrap_field form.portal_sort_order layout="horizontal" %}
+        </div>
+    </div>
+
+    <div class="form-group submit-group">
+        <button type="submit" class="btn btn-primary btn-save">
+            {% trans "Save" %}
+        </button>
+    </div>
+</form>
+{% endblock %}

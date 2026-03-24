@@ -1,50 +1,36 @@
 # Source Disclosure
 
-This repository is intended to disclose the source modifications and custom plugins used in the Ecube pretix deployment, while excluding private operational material that is not required for source disclosure.
+This repository is a public source-disclosure mirror for an Ecube-maintained customized pretix deployment.
 
-## Disclosure Scope
+## Included Material
 
-This repository publishes Ecube-maintained modifications, plugins, and selected override files that are relevant to the deployed customization layer. The upstream pretix application remains an upstream project and is not republished here as a full source tree.
+This mirror contains:
 
-## Customizations Included
+- Ecube-maintained custom plugins under `plugins/`
+- selected Ecube-maintained override files under `core_overrides/`
+- the Docker image assembly file at `infra/docker/pretix-web.Dockerfile`
+- top-level documentation describing the disclosure scope and provenance of the public mirror
 
-### Custom plugins
+The modified image is assembled using `infra/docker/pretix-web.Dockerfile`.
 
-- `pretix_admissions`
-- `pretix_ecube_access`
-- `pretix_ecube_control_theme`
-- `pretix_ecubefooter`
-- `pretix_event_themes`
-- `pretix_exclusive_access`
-- `pretix_sslcommerz`
+That Dockerfile currently builds from `pretix/standalone:stable`, then layers the disclosed Ecube-maintained plugins and selected override files into the resulting image.
 
-### Core override areas
+Because the Dockerfile references `pretix/standalone:stable`, the exact resolved upstream image version or digest may vary at build time unless it is pinned separately and recorded.
 
-- `pretix/control/templates/pretixcontrol/base.html`
-- `pretix/control/templates/pretixcontrol/auth/base.html`
-- `pretix/control/static/pretixcontrol/css/ecube-dark.css`
+## Excluded Material
 
-### Image build overview
+This mirror does not contain:
 
-The modified web image is assembled from `infra/docker/pretix-web.Dockerfile`.
+- the full upstream pretix source tree
+- the full private Ecube operations repository
+- operational secrets or secret values
+- `.env` files or similar environment-specific configuration files
+- host-specific deployment paths or host-specific operational state
+- private automation used only for internal deployment workflows
+- internal infrastructure details, credentials, inventories, or backup roots
 
-At a high level, the Dockerfile:
+## Relationship To The Running Deployment
 
-- starts from the upstream `pretix/standalone:stable` image
-- copies the Ecube plugin source directories into the image build context
-- copies the selected core override files into pretix core paths inside the image
-- installs each custom plugin with editable `pip install -e` steps
-- runs `python -m pretix rebuild` to rebuild static/application assets
+This mirror is intended to publish the Ecube-maintained source modifications relevant to the customized deployment layer. It does not by itself identify a fully pinned upstream pretix version or digest for every historical deployment.
 
-Secret environment values and private deployment configuration are intentionally excluded from this repository.
-
-## Excluded Private Operational Material
-
-The public mirror excludes material that is not required to disclose source modifications, including:
-
-- `.env` files and secret configuration values
-- private infrastructure and host-specific deployment files
-- internal backup/export locations and backup artifacts
-- internal operations and handover documentation
-- private automation related only to internal deployment environments
-- live or staging environment values that are not necessary to disclose source code changes
+For provenance and build-mapping notes about the current disclosed build path, see `UPSTREAM_VERSION.md`.

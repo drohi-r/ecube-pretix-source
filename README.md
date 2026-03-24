@@ -1,33 +1,33 @@
-# Ecube Pretix Source Mirror
+# Ecube Pretix Public Source-Disclosure Mirror
 
-This repository is a public source-disclosure mirror for the modified pretix deployment used by Ecube.
+This repository is a public source-disclosure mirror for an Ecube-maintained customized pretix deployment.
 
-[`pretix`](https://pretix.eu/about/en/) is the upstream project. This mirror contains Ecube-maintained modifications and plugins, selected core template/static override files, and the repo-built Dockerfile used to assemble the modified pretix web image.
+It contains Ecube-maintained modifications, custom plugins, selected core override files, and the Docker build file used to assemble the customized pretix web image published from this mirror.
 
-This repository does not contain the full upstream pretix source tree. It publishes the Ecube-maintained source components and override files that are relevant to source disclosure for the deployed customization layer.
+This repository does not contain the full upstream pretix source tree. pretix remains the upstream software project and should be obtained from the upstream project itself.
 
-Operational deployment on Ecube private infrastructure may include additional private environment configuration, deployment automation, and host-specific settings that are intentionally not published here.
+This repository is not the full private operations repository used to run Ecube infrastructure. Operational secrets, environment files, host-specific deployment paths, private automation, internal infrastructure details, and other internal-only operational material are intentionally excluded.
 
-## Repository Structure
+## What This Repository Contains
 
-- `plugins/` - Ecube custom pretix plugins included in the deployed image
-- `core_overrides/` - Selected pretix core template/static overrides maintained in source control
-- `infra/docker/pretix-web.Dockerfile` - Dockerfile used to assemble the modified pretix web image from this repository source
-- `SOURCE_DISCLOSURE.md` - Scope summary of the disclosed customizations and exclusions
-- `LICENSE_NOTES.md` - Short attribution and source-disclosure notes
+- `plugins/` - Ecube-maintained custom pretix plugins included in the customized deployment image
+- `core_overrides/` - selected Ecube-maintained override files applied onto upstream pretix paths during image assembly
+- `infra/docker/pretix-web.Dockerfile` - Dockerfile used to assemble the customized pretix web image from the disclosed source in this repository
+- `SOURCE_DISCLOSURE.md` - scope and exclusions for the public source disclosure
+- `LICENSE_NOTES.md` - short factual attribution and disclosure note
+- `UPSTREAM_VERSION.md` - provenance and build-mapping note for the upstream base image reference used by this mirror
+- `LICENSE` - GNU Affero General Public License version 3 text
 
-## Upstream / Attribution
+## Build Mapping
 
-pretix is the upstream ticketing and event management software project. This repository does not replace the upstream project; it publishes Ecube-specific source modifications and custom plugin code maintained around that upstream base.
+The customized web image is assembled using `infra/docker/pretix-web.Dockerfile`.
 
-## Provenance / Build Mapping
+That Dockerfile currently starts from `pretix/standalone:stable` and then layers the Ecube-maintained plugins and selected override files contained in this repository into the resulting image.
 
-This mirror is exported from the private Ecube development repository for public source-disclosure purposes.
+Because the Dockerfile currently builds from `pretix/standalone:stable`, the exact resolved upstream pretix image version or digest may vary at build time unless it is pinned separately and recorded from the deployment environment.
 
-The modified web image is assembled using `infra/docker/pretix-web.Dockerfile`. That Dockerfile currently starts from `pretix/standalone:stable`, then layers the disclosed Ecube plugins and selected override files into the resulting image.
+## Scope
 
-Because the Dockerfile references the `stable` upstream image tag, the exact resolved upstream base image may vary depending on build time unless it is pinned separately.
+This mirror is intended to publish the Ecube-maintained source components relevant to the customized deployment layer. It is not intended to republish the full upstream pretix source tree or the full private repository used for internal operations.
 
-## Public Source Disclosure Scope
-
-This mirror is intended to disclose the relevant source code for Ecube-maintained pretix customizations used in deployment. Private operational material such as secrets, environment files, internal infrastructure details, host-specific paths, backup artifacts, and private deployment documentation is excluded.
+For additional detail, see `SOURCE_DISCLOSURE.md`, `LICENSE_NOTES.md`, and `UPSTREAM_VERSION.md`.

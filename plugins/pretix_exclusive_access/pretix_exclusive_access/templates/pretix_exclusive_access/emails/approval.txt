@@ -1,13 +1,11 @@
-Hello {{ application.full_name }},
+Hey {{ application.full_name }},
 
-Your access request for {{ event.name }} has been approved.
+You're in — your access request for {{ event.name }} has been approved.
 
-Use your private access link below:
+Your private access link is below. Open it on the browser or device you'll use to complete your purchase. Don't share this link — it's yours only.
 
 {{ access_link }}
 
-Please open this link in the browser/device you will use for the ticket purchase flow.
+See you there.
 
-Best regards,
-Ecube
-
+— Ecube Access

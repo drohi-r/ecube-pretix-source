@@ -1,6 +1,11 @@
 {% extends "pretixcontrol/event/base.html" %}
 {% load i18n %}
 
+{% block custom_header %}
+    {{ block.super }}
+    <link rel="stylesheet" href="/static/pretix_exclusive_access/exclusive-access-control.css?v=20260324-v7">
+    <link rel="stylesheet" href="/static/pretix_exclusive_access/control-applications.css?v=20260324-v7">
+{% endblock %}
 
 {% block content %}
 <h1>{% trans "Exclusive Access Applications" %}</h1>
@@ -206,24 +211,17 @@
             <tbody>
             {% for a in applications %}
                 <tr>
-                    <td class="select-cell">
+                    <td class="select-cell ea-select-cell">
                         <input type="checkbox" name="selected_applications" value="{{ a.pk }}" form="bulk-actions-form">
                     </td>
-                    <td style="width:180px;min-width:180px;max-width:180px;vertical-align:middle;">
+                    <td data-label="{% trans "Photo" %}" class="ea-photo-cell">
                         {% if a.photo %}
-                            <a href="{{ a.photo.url }}" target="_blank"
-                               style="display:block;width:160px;height:160px;min-width:160px;min-height:160px;max-width:160px;max-height:160px;overflow:hidden;border-radius:8px;border:1px solid #ddd;background:#f5f5f5;">
-                                <img
-                                    src="{{ a.photo.url }}"
-                                    alt="{{ a.full_name }}"
-                                    width="160"
-                                    height="160"
-                                    style="width:160px !important;height:160px !important;min-width:160px !important;min-height:160px !important;max-width:160px !important;max-height:160px !important;object-fit:cover !important;display:block !important;margin:0 !important;border:0 !important;"
-                                >
+                            <a href="{{ a.photo.url }}" target="_blank" class="ea-photo-link">
+                                <img src="{{ a.photo.url }}" alt="{{ a.full_name }}" class="ea-photo-img">
                             </a>
                         {% endif %}
                     </td>
-                    <td>
+                    <td data-label="{% trans "Name" %}">
                         <strong>{{ a.full_name }}</strong>
                         {% if a.gender %}
                             <br><small class="text-muted">{% trans "Gender" %}: {{ a.get_gender_display|default:a.gender }}</small>
@@ -232,18 +230,18 @@
                             <br><small class="text-muted">{% trans "Referred by" %}: {{ a.referred_by }}</small>
                         {% endif %}
                     </td>
-                    <td>
+                    <td data-label="{% trans "Status" %}">
                         <span class="status-pill status-{{ a.status }}">{{ a.get_status_display }}</span>
                     </td>
-                    <td>{{ a.guest_category|default:"-" }}</td>
-                    <td>{{ a.item.name }}</td>
-                    <td>{{ a.email }}</td>
-                    <td>{{ a.phone|default:"-" }}</td>
-                    <td>{{ a.instagram_handle|default:"-" }}</td>
-                    <td>{{ a.created_at }}</td>
-                    <td>{{ a.reviewed_by|default:"-" }}</td>
-                    <td>{{ a.approved_order_code|default:"-" }}</td>
-                    <td>
+                    <td data-label="{% trans "Guest category" %}">{{ a.guest_category|default:"-" }}</td>
+                    <td data-label="{% trans "Item" %}">{{ a.item.name }}</td>
+                    <td data-label="{% trans "Email" %}">{{ a.email }}</td>
+                    <td data-label="{% trans "Phone" %}">{{ a.phone|default:"-" }}</td>
+                    <td data-label="{% trans "Instagram / Social" %}">{{ a.instagram_handle|default:"-" }}</td>
+                    <td data-label="{% trans "Submitted" %}">{{ a.created_at }}</td>
+                    <td data-label="{% trans "Reviewed by" %}">{{ a.reviewed_by|default:"-" }}</td>
+                    <td data-label="{% trans "Linked order" %}">{{ a.approved_order_code|default:"-" }}</td>
+                    <td data-label="{% trans "Actions" %}">
                         <div class="action-stack">
                             <a class="btn btn-primary btn-sm"
                                href="{% url 'plugins:pretix_exclusive_access:application_detail' organizer=event.organizer.slug event=event.slug application_id=a.pk %}">
@@ -278,7 +276,7 @@
                 </tr>
 
                 {% if a.notes or a.status_reason %}
-                <tr>
+                <tr class="ea-notes-row">
                     <td></td>
                     <td></td>
                     <td colspan="11">

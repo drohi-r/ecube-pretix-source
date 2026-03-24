@@ -2,6 +2,8 @@
 
 pretix is the upstream software project.
 
-Ecube operates a customized pretix deployment and maintains custom plugins, selected override files, and image-build customizations around that upstream software.
+Ecube maintains modifications, plugins, and selected override files around that upstream software.
 
-This mirror publishes the relevant Ecube-maintained source modifications for source-disclosure purposes. It does not replace the upstream pretix licensing terms or notices.
+This public mirror publishes the relevant Ecube-maintained source modifications and custom plugins for source-disclosure purposes.
+
+This file is informational only and is not legal advice.

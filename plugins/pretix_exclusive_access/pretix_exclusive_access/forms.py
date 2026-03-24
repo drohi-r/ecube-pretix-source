@@ -7,6 +7,7 @@ from .models import ExclusiveAccessApplication
 PUBLIC_FORM_FIELD_SPECS = [
     {"name": "phone", "label": _("Phone"), "default_show": True, "default_required": True},
     {"name": "instagram_handle", "label": _("Instagram / Social"), "default_show": True, "default_required": True},
+    {"name": "item", "label": _("Ticket type"), "default_show": True, "default_required": True},
     {"name": "photo", "label": _("Photo"), "default_show": True, "default_required": True},
     {"name": "gender", "label": _("Gender"), "default_show": True, "default_required": False},
     {"name": "referred_by", "label": _("Referred by"), "default_show": True, "default_required": False},
@@ -90,12 +91,12 @@ class ExclusiveAccessApplicationForm(forms.ModelForm):
             self.fields[name].required = meta["required"]
 
         desired_order = [
-            "item",
             "full_name",
             "gender",
             "email",
             "phone",
             "instagram_handle",
+            "item",
             "photo",
             "referred_by",
             "notes",
@@ -103,6 +104,8 @@ class ExclusiveAccessApplicationForm(forms.ModelForm):
         self.order_fields([f for f in desired_order if f in self.fields])
 
     def clean_item(self):
+        if "item" not in self.fields:
+            return None
         value = self.cleaned_data.get("item")
         item = self._protected_item_map.get(str(value))
         if not item:

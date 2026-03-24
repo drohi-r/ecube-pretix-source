@@ -7,7 +7,7 @@
 .eca-hero {
     background:
         radial-gradient(circle at top right, rgba(200, 0, 10, 0.18), transparent 28%),
-        linear-gradient(135deg, #0b0b0c 0%, #17181b 45%, #23090c 100%);
+        linear-gradient(135deg, #0b0b0c 0%, #171717 45%, #23090c 100%);
     color: #fff;
     border-radius: 16px;
     padding: 24px 26px;
@@ -63,14 +63,20 @@
 }
 
 .eca-hero .btn.btn-primary {
-    background: #c8000a;
-    border-color: #c8000a;
+    background: #ed1c24;
+    border-color: #ed1c24;
 }
 
 .eca-hero .btn.btn-default {
-    background: rgba(255,255,255,.08);
-    color: #fff;
-    border-color: rgba(255,255,255,.14);
+    background: #111111 !important;
+    color: #fff !important;
+    border-color: #2a2a2a !important;
+}
+
+.eca-hero .btn.btn-default:hover,
+.eca-hero .btn.btn-default:focus {
+    background: #1a1a1a !important;
+    border-color: #3a3a3a !important;
 }
 
 .eca-stats {
@@ -86,17 +92,17 @@
 }
 
 .eca-card {
-    background: #fff;
-    border: 1px solid #e9e9ed;
-    border-radius: 14px;
-    box-shadow: 0 6px 20px rgba(16, 24, 40, .05);
+    background: linear-gradient(180deg, #141414 0%, #111111 100%);
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    box-shadow: 0 10px 28px rgba(0,0,0,.18);
     overflow: hidden;
 }
 
 .eca-card-hd {
     padding: 14px 16px;
-    border-bottom: 1px solid #efeff2;
-    background: linear-gradient(180deg, #fcfcfd 0%, #f8f8fa 100%);
+    border-bottom: 1px solid #2a2a2a;
+    background: linear-gradient(180deg, #1a1a1a 0%, #161616 100%);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -107,13 +113,13 @@
     margin: 0;
     font-size: 14px;
     font-weight: 800;
-    color: #171717;
+    color: #f5f5f5;
 }
 
 .eca-card-subtitle {
     margin: 4px 0 0 0;
     font-size: 12px;
-    color: #7a7f87;
+    color: #9e9e9e;
 }
 
 .eca-card-bd {
@@ -125,11 +131,11 @@
 }
 
 .eca-stat-label {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: .04em;
-    color: #7a7f87;
+    letter-spacing: .08em;
+    color: #9e9e9e;
     margin-bottom: 10px;
 }
 
@@ -137,20 +143,20 @@
     font-size: 32px;
     line-height: 1;
     font-weight: 800;
-    color: #111317;
+    color: #f5f5f5;
     margin-bottom: 8px;
 }
 
 .eca-stat-help {
     font-size: 13px;
     line-height: 1.45;
-    color: #7a7f87;
+    color: #9e9e9e;
 }
 
-.eca-stat-accent-total { border-top: 3px solid #3f3f46; }
+.eca-stat-accent-total { border-top: 3px solid #ed1c24; }
 .eca-stat-accent-allowed { border-top: 3px solid #1f8f4d; }
-.eca-stat-accent-denied { border-top: 3px solid #c8000a; }
-.eca-stat-accent-doors { border-top: 3px solid #6b46c1; }
+.eca-stat-accent-denied { border-top: 3px solid #ff5252; }
+.eca-stat-accent-doors { border-top: 3px solid #ed1c24; }
 
 .eca-section-grid {
     display: grid;
@@ -159,10 +165,10 @@
 }
 
 .eca-action-tile {
-    border: 1px solid #ececf1;
+    border: 1px solid #2a2a2a;
     border-radius: 12px;
     padding: 14px;
-    background: #fbfbfc;
+    background: #111111;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -172,13 +178,13 @@
 .eca-action-label {
     font-size: 15px;
     font-weight: 700;
-    color: #15171b;
+    color: #f0f0f0;
 }
 
 .eca-action-copy {
     font-size: 13px;
     line-height: 1.5;
-    color: #6f7680;
+    color: #9e9e9e;
     flex: 1 1 auto;
 }
 
@@ -186,6 +192,18 @@
     align-self: flex-start;
     border-radius: 10px;
     font-weight: 600;
+}
+
+.eca-action-tile .btn.btn-default {
+    background: #111111 !important;
+    color: #fff !important;
+    border-color: #2a2a2a !important;
+}
+
+.eca-action-tile .btn.btn-default:hover,
+.eca-action-tile .btn.btn-default:focus {
+    background: #1a1a1a !important;
+    border-color: #3a3a3a !important;
 }
 
 .eca-door-list {
@@ -200,30 +218,33 @@
     gap: 8px;
     padding: 10px 12px;
     border-radius: 999px;
-    background: #f7f7f9;
-    border: 1px solid #e7e7ec;
+    background: #0f0f0f;
+    border: 1px solid #2c2c2c;
     font-size: 12px;
     line-height: 1.2;
-    color: #252932;
+    color: #e0e0e0;
 }
 
 .eca-door-name {
     font-weight: 700;
-    color: #101217;
+    color: #f5f5f5;
 }
 
 .eca-door-meta {
-    color: #6d7480;
+    color: #9e9e9e;
 }
 
 .eca-empty {
-    color: #777d86;
+    color: #9e9e9e;
     font-size: 13px;
     line-height: 1.6;
 }
 
 .eca-table-wrap {
     overflow-x: auto;
+    background: linear-gradient(180deg, #141414 0%, #111111 100%);
+    color: #f0f0f0;
+    border-color: #2a2a2a;
 }
 
 .eca-table {
@@ -234,27 +255,29 @@
 }
 
 .eca-table thead th {
-    background: #fafafc;
-    color: #5f6672;
+    background: #1a1a1a;
+    color: #d0d0d0;
     font-size: 11px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: .06em;
     padding: 12px 12px;
-    border-bottom: 1px solid #ececf1;
+    border-bottom: 1px solid #2a2a2a;
     white-space: nowrap;
 }
 
 .eca-table tbody td {
     padding: 12px 12px;
-    border-bottom: 1px solid #f0f1f4;
+    border-bottom: 1px solid #262626;
     vertical-align: middle;
-    color: #1d2129;
+    color: #e8e8e8;
     font-size: 13px;
+    background: #111111;
 }
 
-.eca-table tbody tr:hover {
-    background: #fcfcfe;
+.eca-table tbody tr:hover,
+.eca-table tbody tr:hover td {
+    background: #1a1a1a;
 }
 
 .eca-table tbody tr:last-child td {
@@ -272,12 +295,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: #384152;
+    color: #e8e8e8;
 }
 
 .eca-name {
     font-weight: 600;
-    color: #151922;
+    color: #f5f5f5;
 }
 
 .eca-badge {
@@ -295,18 +318,18 @@
 }
 
 .eca-badge-neutral {
-    background: #f1f3f6;
-    color: #4e5664;
+    background: #222222;
+    color: #dcdcdc;
 }
 
 .eca-badge-entry {
-    background: #e9f7ee;
-    color: #1f7a3d;
+    background: #143423;
+    color: #bce9cb;
 }
 
 .eca-badge-exit {
-    background: #eef2ff;
-    color: #3752c5;
+    background: #222222;
+    color: #dcdcdc;
 }
 
 .eca-result {
@@ -325,13 +348,13 @@
 
 .eca-result.allowed,
 .eca-result.allowed_exit {
-    background: #e8f7ec;
-    color: #1e7b40;
+    background: #143423;
+    color: #bce9cb;
 }
 
 .eca-result.pending {
-    background: #eef2ff;
-    color: #3853c6;
+    background: rgba(249,217,118,.12);
+    color: #f9d976;
 }
 
 .eca-result.invalid,
@@ -342,12 +365,12 @@
 .eca-result.expired,
 .eca-result.duplicate,
 .eca-result.not_inside {
-    background: #fdecec;
-    color: #b32c29;
+    background: #3b1818;
+    color: #f0b8b8;
 }
 
 .eca-muted {
-    color: #7a808a;
+    color: #9e9e9e;
 }
 
 @media (max-width: 1280px) {
@@ -388,178 +411,3 @@
         max-width: 180px;
     }
 }
-
-
-
-/* ECUBE ACCESS DASHBOARD DARK CARD POLISH v1 */
-.eca-card {
-    background: linear-gradient(180deg, #151a22 0%, #131820 100%) !important;
-    border: 1px solid #27303d !important;
-    box-shadow: 0 10px 28px rgba(0,0,0,.18) !important;
-}
-.eca-card-hd {
-    background: linear-gradient(180deg, #1a212b 0%, #171d26 100%) !important;
-    border-bottom: 1px solid #27303d !important;
-}
-.eca-card-title,
-.eca-stat-value,
-.eca-name,
-.eca-door-name {
-    color: #f4f7fb !important;
-}
-.eca-card-subtitle,
-.eca-stat-label,
-.eca-stat-help,
-.eca-action-copy,
-.eca-door-meta,
-.eca-muted {
-    color: #93a0b1 !important;
-}
-.eca-action-tile {
-    background: #11161c !important;
-    border: 1px solid #27303d !important;
-}
-.eca-action-label {
-    color: #eef2f7 !important;
-}
-.eca-door-chip {
-    background: #0f141b !important;
-    border: 1px solid #2c3541 !important;
-    color: #dfe6ef !important;
-}
-.eca-table thead th {
-    background: #1a212b !important;
-    color: #cfd7e2 !important;
-    border-bottom: 1px solid #2a3441 !important;
-}
-.eca-table tbody td {
-    background: #131820 !important;
-    color: #e7edf5 !important;
-    border-bottom: 1px solid #26303c !important;
-}
-.eca-table tbody tr:hover {
-    background: #1a2028 !important;
-}
-.eca-badge-neutral {
-    background: #232c37 !important;
-    color: #d9e1eb !important;
-}
-.eca-badge-entry {
-    background: #143423 !important;
-    color: #bce9cb !important;
-}
-.eca-badge-exit {
-    background: #1b2640 !important;
-    color: #c8d7ff !important;
-}
-.eca-result.allowed,
-.eca-result.allowed_exit {
-    background: #143423 !important;
-    color: #bce9cb !important;
-}
-.eca-result.pending {
-    background: #1b2640 !important;
-    color: #c8d7ff !important;
-}
-.eca-result.invalid,
-.eca-result.revoked,
-.eca-result.blocked,
-.eca-result.denied,
-.eca-result.error,
-.eca-result.expired,
-.eca-result.duplicate,
-.eca-result.not_inside {
-    background: #3b1818 !important;
-    color: #f0b8b8 !important;
-}
-\n\n
-/* ECUBE ACCESS DASHBOARD DARK OVERRIDE v3 */
-
-/* Keep dashboard and internal cards dark without touching door.css */
-.eca-card,
-.eca-stat-card,
-.eca-action-tile,
-.eca-door-chip,
-.eca-table-wrap {
-    background: linear-gradient(180deg, #151a22 0%, #131820 100%) !important;
-    color: #eef2f7 !important;
-    border-color: #27303d !important;
-}
-
-.eca-card-hd {
-    background: linear-gradient(180deg, #1a212b 0%, #171d26 100%) !important;
-    border-bottom-color: #27303d !important;
-}
-
-.eca-card-title,
-.eca-stat-value,
-.eca-name,
-.eca-door-name,
-.eca-action-label {
-    color: #f4f7fb !important;
-}
-
-.eca-card-subtitle,
-.eca-stat-label,
-.eca-stat-help,
-.eca-action-copy,
-.eca-door-meta,
-.eca-muted {
-    color: #93a0b1 !important;
-}
-
-.eca-table thead th {
-    background: #1a212b !important;
-    color: #cfd7e2 !important;
-    border-bottom-color: #2a3441 !important;
-}
-
-.eca-table tbody td {
-    background: #131820 !important;
-    color: #e7edf5 !important;
-    border-bottom-color: #26303c !important;
-}
-
-.eca-table tbody tr:hover,
-.eca-table tbody tr:hover td {
-    background: #1a2028 !important;
-}
-
-.eca-badge-neutral {
-    background: #232c37 !important;
-    color: #d9e1eb !important;
-}
-
-.eca-badge-entry {
-    background: #143423 !important;
-    color: #bce9cb !important;
-}
-
-.eca-badge-exit {
-    background: #1b2640 !important;
-    color: #c8d7ff !important;
-}
-
-.eca-result.allowed,
-.eca-result.allowed_exit {
-    background: #143423 !important;
-    color: #bce9cb !important;
-}
-
-.eca-result.pending {
-    background: #1b2640 !important;
-    color: #c8d7ff !important;
-}
-
-.eca-result.invalid,
-.eca-result.revoked,
-.eca-result.blocked,
-.eca-result.denied,
-.eca-result.error,
-.eca-result.expired,
-.eca-result.duplicate,
-.eca-result.not_inside {
-    background: #3b1818 !important;
-    color: #f0b8b8 !important;
-}
-

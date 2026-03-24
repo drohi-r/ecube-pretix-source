@@ -1,3 +1,4 @@
+import logging
 from datetime import timedelta
 
 from django import forms
@@ -13,6 +14,8 @@ from django.views import View
 from django.views.generic.edit import FormView
 
 from pretix.control.permissions import EventPermissionRequiredMixin
+
+logger = logging.getLogger(__name__)
 from pretix.control.views.event import EventSettingsViewMixin
 from pretix.presale.views import EventViewMixin
 
@@ -48,7 +51,7 @@ class ExclusiveAccessSettingsForm(forms.Form):
     approval_email_subject = forms.CharField(
         required=True,
         max_length=255,
-        initial=_("Your access request has been approved"),
+        initial=_("You're in — your access request has been approved"),
         label=_("Approval email subject")
     )
     rejection_email_subject = forms.CharField(
@@ -102,8 +105,8 @@ class ExclusiveAccessSettingsView(EventSettingsViewMixin, FormView):
             ) or 7,
             "approval_email_subject": self.request.event.settings.get(
                 "exclusive_access_approval_email_subject",
-                default="Your access request has been approved",
-            ) or "Your access request has been approved",
+                default="You're in — your access request has been approved",
+            ) or "You're in — your access request has been approved",
             "rejection_email_subject": self.request.event.settings.get(
                 "exclusive_access_rejection_email_subject",
                 default="Update on your access request",
@@ -212,8 +215,13 @@ class RequestAccessView(EventViewMixin, View):
 
             selected_item = form.cleaned_data.get("item") or form.cleaned_data.get("requested_item")
             if not selected_item:
-                messages.error(request, _("Please select a ticket type."))
-                return render(request, self.template_name, {"event": request.event, "form": form})
+                # Item field may be hidden — auto-assign first protected item
+                protected = list(self.get_protected_items()[:1])
+                if protected:
+                    selected_item = protected[0]
+                else:
+                    messages.error(request, _("Please select a ticket type."))
+                    return render(request, self.template_name, {"event": request.event, "form": form})
 
             app.item = selected_item
 
@@ -229,7 +237,7 @@ class RequestAccessView(EventViewMixin, View):
             try:
                 app.save()
             except IntegrityError as e:
-                print("EXCLUSIVE ACCESS SAVE INTEGRITY ERROR:", repr(e))
+                logger.exception("Exclusive access application save failed")
                 messages.error(request, _("Application submission failed. Please try again or contact support."))
             else:
                 return HttpResponseRedirect(
@@ -499,6 +507,7 @@ class ApplicationListView(EventPermissionRequiredMixin, View):
                         )
                         approved_count += 1
                     except Exception:
+                        logger.exception("Bulk approve failed for application %s", application.pk)
                         skipped_count += 1
 
                 messages.success(
@@ -528,6 +537,7 @@ class ApplicationListView(EventPermissionRequiredMixin, View):
                         )
                         rejected_count += 1
                     except Exception:
+                        logger.exception("Bulk reject failed for application %s", application.pk)
                         skipped_count += 1
 
                 messages.success(

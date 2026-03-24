@@ -1,0 +1,234 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en" dir="{% if rtl %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
+    <title>{{ subject }}</title>
+    <style>
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+        body { margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: #050507; }
+        a { color: {{ profile.primary_color|default:"#E83845" }}; }
+        @media only screen and (max-width: 600px) {
+            .email-container { width: 100% !important; max-width: 100% !important; }
+            .mobile-padding { padding-left: 20px !important; padding-right: 20px !important; }
+            .hero-title { font-size: 34px !important; }
+            .stack-column { display: block !important; width: 100% !important; }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #050507;">
+<center style="width: 100%; background-color: #050507;">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <!--[if mso]>
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" align="center"><tr><td>
+        <![endif]-->
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 600px; margin: 0 auto;" class="email-container">
+
+            <!-- TOP ACCENT LINE -->
+            <tr>
+                <td style="height: 3px; background: linear-gradient(90deg, {{ profile.primary_color|default:'#E83845' }}, {{ profile.accent_color|default:'#E8B931' }}, {{ profile.primary_color|default:'#E83845' }}); font-size: 0; line-height: 0;">&nbsp;</td>
+            </tr>
+
+            <!-- HEADER -->
+            <tr>
+                <td style="background-color: #0a0a0f; padding: 28px 40px 24px; border-bottom: 1px solid rgba(255,255,255,0.04);" class="mobile-padding">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                            <td style="font-family: Impact, Arial, sans-serif; font-size: 22px; letter-spacing: 0.14em; color: #F0ECE4;">
+                                {% if logo_url %}
+                                    <img src="{{ logo_url }}" alt="{{ event.name }}" style="display:block; max-width:220px; max-height:52px;">
+                                {% else %}
+                                    ECUBE <span style="font-family: 'Courier New', monospace; font-size: 9px; letter-spacing: 0.2em; border: 1px solid {{ profile.primary_color|default:'#E83845' }}; color: {{ profile.primary_color|default:'#E83845' }}; padding: 2px 8px; margin-left: 8px; vertical-align: middle;">ACCESS</span>
+                                {% endif %}
+                            </td>
+                            <td style="text-align: right; font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 0.1em; color: {{ status_color }}; text-transform: uppercase;">
+                                {{ status_label }}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <!-- HERO BANNER (if set) -->
+            {% if hero_banner_url %}
+            <tr>
+                <td style="background-color: #0e0e14;">
+                    <img src="{{ hero_banner_url }}" alt="{{ event_object.name }}" style="display:block; width:100%; max-width:600px; max-height:280px; object-fit:cover;">
+                </td>
+            </tr>
+            {% endif %}
+
+            <!-- HERO SECTION -->
+            <tr>
+                <td style="background-color: #0e0e14; padding: 48px 40px 32px;" class="mobile-padding">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                            <td style="width: 44px; height: 44px; border-radius: 50%; background-color: {{ status_color }}22; text-align: center; vertical-align: middle; font-family: Arial, sans-serif; font-size: 22px; color: #F0ECE4;">
+                                {{ status_icon }}
+                            </td>
+                        </tr>
+                    </table>
+                    <p style="font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: {{ status_color }}; margin: 20px 0 10px;">{{ status_label|upper }}</p>
+                    <h1 style="font-family: Impact, Arial, sans-serif; font-size: 42px; letter-spacing: 0.03em; line-height: 1; color: #F0ECE4; margin: 0 0 14px; text-transform: uppercase;" class="hero-title">
+                        {{ status_summary }}
+                    </h1>
+                    <p style="font-family: Arial, sans-serif; font-size: 15px; font-weight: 300; color: #A8A4A0; line-height: 1.7; margin: 0;">
+                        {{ subject }}
+                    </p>
+                </td>
+            </tr>
+
+            <!-- ORDER DETAILS CARD -->
+            {% if order %}
+            <tr>
+                <td style="background-color: #0e0e14; padding: 0 40px 24px;" class="mobile-padding">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #14141c; border: 1px solid rgba(255,255,255,0.04); border-radius: 4px;">
+
+                        <!-- Order code -->
+                        <tr>
+                            <td style="padding: 20px 24px 16px; border-bottom: 1px solid rgba(255,255,255,0.04);">
+                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                    <tr>
+                                        <td style="font-family: 'Courier New', monospace; font-size: 9px; letter-spacing: 0.18em; color: #605E5A; text-transform: uppercase;">{% trans "Order" %}</td>
+                                        <td style="text-align: right; font-family: Impact, Arial, sans-serif; font-size: 24px; letter-spacing: 0.08em; color: #F0ECE4;">{{ order.code }}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <!-- Event name (full width, prominent) -->
+                        <tr>
+                            <td style="padding: 20px 24px 4px;">
+                                <p style="font-family: 'Courier New', monospace; font-size: 9px; letter-spacing: 0.16em; color: #605E5A; text-transform: uppercase; margin: 0 0 6px;">{% trans "Event" %}</p>
+                                <p style="font-family: Impact, Arial, sans-serif; font-size: 22px; letter-spacing: 0.04em; color: #F0ECE4; margin: 0;">{{ event_object.name }}</p>
+                            </td>
+                        </tr>
+
+                        <!-- Date + Venue -->
+                        <tr>
+                            <td style="padding: 16px 24px 20px;">
+                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                    <tr>
+                                        <td width="50%" style="vertical-align: top;" class="stack-column">
+                                            <p style="font-family: 'Courier New', monospace; font-size: 9px; letter-spacing: 0.16em; color: #605E5A; text-transform: uppercase; margin: 0 0 4px;">{% trans "Date" %}</p>
+                                            <p style="font-family: Arial, sans-serif; font-size: 14px; color: #A8A4A0; margin: 0;">{{ event_object.date_from|date:"d M Y" }}</p>
+                                        </td>
+                                        <td width="50%" style="vertical-align: top;" class="stack-column">
+                                            <p style="font-family: 'Courier New', monospace; font-size: 9px; letter-spacing: 0.16em; color: #605E5A; text-transform: uppercase; margin: 0 0 4px;">{% trans "Venue" %}</p>
+                                            <p style="font-family: Arial, sans-serif; font-size: 14px; color: #A8A4A0; margin: 0;">{{ event_object.location|default:event.location }}</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <!-- Total paid (own row, prominent) -->
+                        <tr>
+                            <td style="padding: 16px 24px; border-top: 1px solid rgba(255,255,255,0.04);">
+                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                    <tr>
+                                        <td style="font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 0.14em; color: #605E5A; text-transform: uppercase; vertical-align: middle;">{% trans "Total" %}</td>
+                                        <td style="text-align: right; font-family: Impact, Arial, sans-serif; font-size: 30px; letter-spacing: 0.04em; color: #F0ECE4;">{{ summary_total }}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+            {% endif %}
+
+            <!-- EMAIL BODY -->
+            <tr>
+                <td style="background-color: #0e0e14; padding: 0 40px 32px;" class="mobile-padding">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #14141c; border: 1px solid rgba(255,255,255,0.04); border-radius: 4px;">
+                        <tr>
+                            <td style="padding: 24px 24px 20px; font-family: Arial, sans-serif; font-size: 15px; color: #A8A4A0; line-height: 1.7;">
+                                {{ body|safe }}
+                                {% if signature %}
+                                    <div style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.06); color: #A8A4A0;">{{ signature|safe }}</div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <!-- PAYMENT INFO -->
+            {% if payment_info %}
+            <tr>
+                <td style="background-color: #0e0e14; padding: 0 40px 24px;" class="mobile-padding">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: rgba(232,185,49,0.06); border-left: 2px solid #E8B931; border-radius: 0 4px 4px 0;">
+                        <tr>
+                            <td style="padding: 16px 20px;">
+                                <p style="font-family: 'Courier New', monospace; font-size: 9px; letter-spacing: 0.16em; color: #E8B931; text-transform: uppercase; margin: 0 0 6px;">{% trans "Payment info" %}</p>
+                                <p style="font-family: Arial, sans-serif; font-size: 13px; color: #A8A4A0; line-height: 1.6; margin: 0;">{{ payment_info }}</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            {% endif %}
+
+            <!-- CTA BUTTON -->
+            {% if action_url %}
+            <tr>
+                <td style="background-color: #0e0e14; padding: 0 40px 16px;" class="mobile-padding">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr>
+                            <td style="border-radius: 3px; background-color: {{ profile.primary_color|default:'#E83845' }}; text-align: center;">
+                                <a href="{{ action_url }}" target="_blank" style="display: block; padding: 16px 32px; font-family: Impact, Arial, sans-serif; font-size: 18px; letter-spacing: 0.16em; color: #F0ECE4; text-decoration: none; text-transform: uppercase;">
+                                    {{ action_label }} →
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: #0e0e14; padding: 0 40px 40px; text-align: center;" class="mobile-padding">
+                    <p style="font-family: Arial, sans-serif; font-size: 12px; color: #605E5A; margin: 0;">
+                        {% trans "Or copy this link:" %} <a href="{{ action_url }}" style="color: #A8A4A0; text-decoration: underline;">{{ action_url }}</a>
+                    </p>
+                </td>
+            </tr>
+            {% endif %}
+
+            <!-- FOOTER DIVIDER -->
+            <tr>
+                <td style="background-color: #0a0a0f; padding: 0 40px;" class="mobile-padding">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tr><td style="height: 1px; background-color: #14141c; font-size: 0; line-height: 0;">&nbsp;</td></tr>
+                    </table>
+                </td>
+            </tr>
+
+            <!-- FOOTER -->
+            <tr>
+                <td style="background-color: #0a0a0f; padding: 32px 40px; text-align: center;" class="mobile-padding">
+                    <p style="font-family: 'Courier New', monospace; font-size: 10px; letter-spacing: 0.12em; color: #3A3836; margin: 0;">
+                        <a href="https://tickets.ecube-entertainment.com" style="color: #3A3836; text-decoration: none;">tickets.ecube-entertainment.com</a>
+                    </p>
+                </td>
+            </tr>
+
+            <!-- BOTTOM ACCENT LINE -->
+            <tr>
+                <td style="height: 2px; background-color: {{ profile.primary_color|default:'#E83845' }}; font-size: 0; line-height: 0;">&nbsp;</td>
+            </tr>
+
+        </table>
+        <!--[if mso]>
+        </td></tr></table>
+        <![endif]-->
+    </div>
+</center>
+</body>
+</html>

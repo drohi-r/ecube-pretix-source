@@ -1,0 +1,251 @@
+{% extends "pretix_ticketing_portal/portal_base.html" %}
+{% load i18n %}
+
+{% block page %}
+<div class="portal-page">
+<div class="grain" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+
+<div class="mobile-nav" data-mobile-nav>
+    <a href="{{ portal_active_path }}">ALL EVENTS</a>
+    <a href="https://ecube-entertainment.com" target="_blank" rel="noopener">ECUBE MAIN</a>
+    <a href="https://ecube-entertainment.com/contact.html" target="_blank" rel="noopener">CONTACT</a>
+    <a href="#">MY TICKETS</a>
+</div>
+
+{# ── Topbar ── #}
+<header class="topbar" data-topbar>
+    <div class="topbar-left">
+        <a href="{{ portal_active_path }}" class="topbar-logo">ECUBE</a>
+        <span class="topbar-badge">ACCESS</span>
+    </div>
+    <nav class="topbar-nav" aria-label="Portal links">
+        <a href="{{ portal_active_path }}">ALL EVENTS</a>
+        <a href="https://ecube-entertainment.com" target="_blank" rel="noopener">ECUBE MAIN</a>
+        <a href="https://ecube-entertainment.com/contact.html" target="_blank" rel="noopener">CONTACT</a>
+    </nav>
+    <div class="topbar-right">
+        <a href="#" class="topbar-tickets">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0112 0v1"/></svg>
+            <span>MY TICKETS</span>
+        </a>
+        <button class="topbar-burger" type="button" aria-label="Menu" data-topbar-toggle>
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+{# ── Hero ── #}
+{% if hero_entry %}
+<section class="hero">
+    <canvas class="hero-canvas" data-freq-canvas aria-hidden="true"></canvas>
+    <div class="hero-fog"></div>
+
+    <div class="hero-inner">
+        <div class="hero-main">
+            <div class="hero-eyebrow">
+                <span class="eyebrow-line"></span>
+                <span class="eyebrow-text">{% if hero_entry.featured %}FEATURED EVENT{% elif hero_entry.category %}{{ hero_entry.category|upper }} EVENT{% else %}LIVE EVENT{% endif %}</span>
+                {% if hero_entry.sale_state == "ON_SALE" %}
+                <span class="badge badge-live"><span class="dot"></span>ON SALE</span>
+                {% endif %}
+            </div>
+
+            <h1 class="hero-title">{{ hero_entry.event.name|upper }}</h1>
+
+            <p class="hero-desc">
+                {% if hero_entry.category %}{{ hero_entry.category }} event{% else %}Live event access{% endif %}{% if hero_entry.event.location %} at {{ hero_entry.event.location }}.{% else %}.{% endif %}
+                {% if hero_entry.is_listed_private %} Listed private access applies.{% endif %}
+                {% if hero_entry.label == "application" %} Application approval required.{% elif hero_entry.label == "invite_only" %} Invite-only access flow active.{% endif %}
+            </p>
+
+            <div class="hero-chips">
+                <span class="chip">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    {% if hero_entry.event.date_from %}{{ hero_entry.event.date_from|date:"d M Y"|upper }}{% else %}DATE TBA{% endif %}
+                </span>
+                <span class="chip">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                    {% if hero_entry.event.date_from %}{{ hero_entry.event.date_from|date:"H:i" }}{% else %}TIME TBA{% endif %}
+                </span>
+                <span class="chip">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    {% if hero_entry.event.location %}{{ hero_entry.event.location|upper }}{% else %}VENUE TBA{% endif %}
+                </span>
+            </div>
+
+            <div class="hero-ctas">
+                <a href="{{ hero_entry.url }}" class="cta-primary">
+                    GET TICKETS
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+                </a>
+                <a href="#events-main" class="cta-ghost">EXPLORE LINEUP</a>
+            </div>
+        </div>
+
+        <div class="hero-panel">
+            <div class="panel-label">STARTING FROM</div>
+            <div class="panel-price">{{ hero_entry.price_display }}</div>
+            <div class="panel-note">{{ hero_entry.access_mode_label }} &middot; {{ hero_entry.sale_state_label }}</div>
+            <div class="panel-grid">
+                <div class="panel-stat">
+                    <div class="panel-stat-label">ACCESS</div>
+                    <div class="panel-stat-val">{{ hero_entry.access_mode_label }}</div>
+                </div>
+                <div class="panel-stat">
+                    <div class="panel-stat-label">AVAILABLE</div>
+                    <div class="panel-stat-val {% if hero_entry.has_availability_bar %}urgent{% endif %}">{% if hero_entry.has_availability_bar %}{{ hero_entry.availability_display }}{% else %}LIVE{% endif %}</div>
+                </div>
+                <div class="panel-stat">
+                    <div class="panel-stat-label">CATEGORY</div>
+                    <div class="panel-stat-val">{% if hero_entry.category %}{{ hero_entry.category }}{% else %}General{% endif %}</div>
+                </div>
+                <div class="panel-stat">
+                    <div class="panel-stat-label">ORGANIZER</div>
+                    <div class="panel-stat-val">{{ hero_entry.event.organizer.name }}</div>
+                </div>
+            </div>
+            {% if hero_entry.has_availability_bar %}
+            <div class="avail-bar">
+                <div class="avail-label">
+                    <span class="sold">{{ hero_entry.availability_display }} AVAILABLE</span>
+                    <span class="left">{{ hero_entry.sale_state_label|upper }}</span>
+                </div>
+                <div class="avail-track">
+                    <div class="avail-fill" style="width: {{ hero_entry.availability_percent }}%;"></div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="scroll-indicator">
+        <div class="scroll-line"></div>
+        <span class="scroll-text">SCROLL</span>
+    </div>
+</section>
+{% endif %}
+
+{# ── Marquee ticker ── #}
+{% if portal_ticker_items %}
+<div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+        {% for loop_index in "1234567890" %}
+            {% for item in portal_ticker_items %}
+                <span class="m-item"><span class="m-dot"></span> {{ item }}</span>
+                <span class="m-sep">&middot;</span>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{# ── Filter bar ── #}
+<div class="filters">
+    <div class="filters-inner">
+        <div class="filter-tabs" role="tablist" aria-label="Event filters">
+            {% for tab in portal_filter_tabs %}
+            <button class="ftab {% if forloop.first %}active{% endif %}" type="button" data-filter-tab="{{ tab.key }}">
+                {{ tab.label|upper }}<span class="fcount">{{ tab.count }}</span>
+            </button>
+            {% endfor %}
+        </div>
+        <div class="filter-right">
+            <label class="search-box">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="search" placeholder="Search events..." data-filter-search>
+            </label>
+        </div>
+    </div>
+</div>
+
+{# ── Event grid (flat, featured first card spans 2 cols) ── #}
+<main class="events-main" id="events-main">
+    {% if portal_entries %}
+    <div class="ev-grid">
+        {% for entry in portal_entries %}
+        <a
+            href="{{ entry.url }}"
+            class="ecard{% if forloop.first %} ecard-featured{% endif %}"
+            style="--glow: {% if entry.sale_state == 'ON_SALE' %}200,0,10{% elif entry.label == 'invite_only' or entry.label == 'application' or entry.is_listed_private %}184,134,11{% else %}60,120,255{% endif %}"
+            data-sale-state="{{ entry.sale_state|lower }}"
+            data-is-free="{% if entry.is_free %}true{% else %}false{% endif %}"
+            data-is-exclusive="{% if entry.label or entry.is_listed_private %}true{% else %}false{% endif %}"
+            data-search="{{ entry.search_blob|lower }}"
+        >
+            {# Glow border effect #}
+            <div class="ecard-glow"></div>
+
+            <div class="ecard-img">
+                <div class="ecard-img-bg" style="background: {{ entry.image_gradient }};"></div>
+                <div class="ecard-img-grid"></div>
+                <div class="ecard-img-fade"></div>
+                <div class="ecard-date">
+                    <span class="ecard-date-month">{% if entry.event.date_from %}{{ entry.event.date_from|date:"M" }}{% else %}TBA{% endif %}</span>
+                    <span class="ecard-date-day">{% if entry.event.date_from %}{{ entry.event.date_from|date:"d" }}{% else %}--{% endif %}</span>
+                </div>
+                <div class="ecard-badges">
+                    {% for badge in entry.badges %}
+                    <span class="badge {% if badge.class == 'badge-sale' %}badge-live{% elif badge.class == 'badge-featured' %}badge-gold{% elif badge.class == 'badge-upcoming' %}badge-ice{% elif badge.class == 'badge-free' %}badge-mint{% elif badge.class == 'badge-invite' or badge.class == 'badge-hidden' %}badge-bloom{% else %}badge-ash{% endif %}">
+                        {% if badge.class == "badge-sale" %}<span class="dot"></span>{% endif %}
+                        {{ badge.label }}
+                    </span>
+                    {% endfor %}
+                </div>
+                {% if entry.sale_state == "SOLD_OUT" %}
+                <div class="soldout-stamp"><span>SOLD OUT</span></div>
+                {% endif %}
+            </div>
+
+            {# Ticket stub tear #}
+            <div class="ecard-tear"></div>
+
+            <div class="ecard-body">
+                <div class="ecard-org">{{ entry.event.organizer.name }}</div>
+                <div class="ecard-title">{{ entry.event.name }}</div>
+                <div class="ecard-desc">
+                    {% if entry.category %}{{ entry.category }} event{% else %}Live event{% endif %}{% if entry.event.location %} at {{ entry.event.location }}{% endif %}
+                </div>
+                <div class="ecard-meta">
+                    <span class="ecard-meta-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        {% if entry.event.location %}{{ entry.event.location }}{% else %}Venue TBA{% endif %}
+                    </span>
+                    <span class="ecard-meta-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                        {% if entry.event.date_from %}{{ entry.event.date_from|date:"H:i" }}{% else %}Time TBA{% endif %}
+                    </span>
+                </div>
+                <div class="ecard-foot">
+                    <div class="ecard-price">
+                        <span class="ecard-price-label">FROM</span>
+                        <span class="ecard-price-value">{{ entry.price_display }}</span>
+                    </div>
+                    <div class="ecard-cta">
+                        {% if entry.sale_state == "ON_SALE" %}GET TICKETS{% elif entry.label == "application" %}APPLY{% elif entry.sale_state == "SOLD_OUT" %}VIEW DETAILS{% elif entry.label == "invite_only" or entry.is_listed_private %}REQUEST ACCESS{% else %}NOTIFY ME{% endif %}
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="portal-empty-state" {% if portal_entries %}style="display:none"{% endif %}>
+        <div class="portal-empty-icon">&#9675;</div>
+        <div class="portal-empty-title">No Events Found</div>
+        <div class="portal-empty-desc">Try another category or clear the filter to view all currently listed events.</div>
+    </div>
+</main>
+
+{# ── Footer (matches production format) ── #}
+<footer class="site-footer">
+    <div class="foot-center">
+        <div>Powered by <a href="https://pretix.eu" target="_blank" rel="noopener">pretix</a> &middot; Customized by <a href="https://ecube-entertainment.com" target="_blank" rel="noopener">Ecube</a></div>
+        <div>&copy; 2026 Ecube Entertainment Ltd.</div>
+        <div><a href="https://ecube-entertainment.com/about-platform" target="_blank" rel="noopener">Source &amp; Modifications</a></div>
+    </div>
+</footer>
+</div>
+{% endblock %}

@@ -1,0 +1,224 @@
+html body .main-box,
+html body .container.main-box,
+html body div.container.main-box {
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-radius: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    --pretix-body-bg-white-0: 0 !important;
+    --pretix-body-bg-white-1: 0 !important;
+}
+.ec-specter-wrap{background:#020f0f;min-height:calc(100vh - 120px)}
+.ec-specter-top{padding:48px 52px 36px;border-bottom:1px solid rgba(20,184,166,.1)}
+.ec-specter-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.18);padding:5px 12px;margin-bottom:20px}
+.ec-specter-badge-dot{width:5px;height:5px;border-radius:50%;background:#14b8a6;animation:sp-blink 2s ease-in-out infinite;flex-shrink:0}
+@keyframes sp-blink{0%,100%{opacity:1}50%{opacity:.3}}
+.ec-specter-badge-text{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:#14b8a6}
+.ec-specter-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(44px,6vw,76px);font-weight:600;line-height:.92;letter-spacing:-.03em;color:#f0fdfa;margin:0 0 16px;text-transform:uppercase}
+.ec-specter-title-main{display:block}
+.ec-specter-title-accent{display:block;color:#14b8a6}
+.ec-specter-info-row{display:flex;flex-wrap:wrap;gap:20px}
+.ec-specter-info-item{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:300;color:#5eead4;letter-spacing:.06em;display:flex;align-items:center;gap:7px}
+.ec-specter-info-item::before{content:'';width:3px;height:3px;border-radius:50%;background:#14b8a6;flex-shrink:0}
+.ec-specter-wrap > .exclusive-access-cta{
+    margin:0 52px 0 !important;
+    padding:24px 0 24px !important;
+    border-top:1px solid rgba(20,184,166,.1) !important;
+    border-bottom:1px solid rgba(20,184,166,.1) !important;
+    border-left:none !important;
+    border-right:none !important;
+    border-radius:0 !important;
+    background:transparent !important;
+}
+.ec-specter-wrap > .exclusive-access-cta h3{
+    margin:0 0 8px !important;
+    font-family:'Space Grotesk',sans-serif !important;
+    font-size:36px !important;
+    font-weight:600 !important;
+    line-height:1 !important;
+    letter-spacing:-.03em !important;
+    color:#f0fdfa !important;
+}
+.ec-specter-wrap > .exclusive-access-cta p{
+    max-width:720px !important;
+    margin:0 0 14px !important;
+    font-family:'Space Grotesk',sans-serif !important;
+    font-size:13px !important;
+    font-weight:300 !important;
+    line-height:1.7 !important;
+    letter-spacing:.02em !important;
+    color:#99f6e4 !important;
+}
+.ec-specter-wrap > .exclusive-access-cta .exclusive-access-btn{
+    min-width:170px !important;
+}
+.ec-specter-tickets{padding:32px 52px;max-width:none}
+.ec-specter-tickets-label{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:#134e4a;margin-bottom:16px}
+.ec-specter-tickets section{display:block !important}
+.ec-specter-tickets > .list-group,
+.ec-specter-tickets > .items,
+.ec-specter-tickets > .item-list,
+.ec-specter-tickets > .products,
+.ec-specter-tickets > section,
+.ec-specter-tickets > .panel,
+.ec-specter-tickets > .panel-body,
+.ec-specter-tickets > .category,
+.ec-specter-tickets > .category-box{
+    display:contents !important;
+    background:transparent !important;
+    border:none !important;
+    box-shadow:none !important;
+    padding:0 !important;
+    margin:0 !important;
+}
+.ec-specter-tickets .item,
+.ec-specter-tickets .item-row,
+.ec-specter-tickets .product-row,
+.ec-specter-tickets .product,
+.ec-specter-tickets .variation,
+.ec-specter-tickets article{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) auto auto !important;
+    grid-template-areas:"name price qty" !important;
+    align-items:center !important;
+    column-gap:24px !important;
+    padding:18px 20px !important;
+    margin:0 0 8px !important;
+    background:rgba(20,184,166,.03) !important;
+    width:100% !important;
+}
+.ec-specter-tickets .product-row > .col-md-8,
+.ec-specter-tickets .product-row > .col-md-2,
+.ec-specter-tickets .product-row > .col-sm-6,
+.ec-specter-tickets .product-row > .col-sm-3,
+.ec-specter-tickets .product-row > .col-xs-12,
+.ec-specter-tickets .product-row > .col-xs-6{
+    width:auto !important;
+    float:none !important;
+    padding:0 !important;
+}
+.ec-specter-tickets .item h3,
+.ec-specter-tickets .product-description h4,
+.ec-specter-tickets .item-name,
+.ec-specter-tickets .product-name{
+    font-size:16px !important;
+    font-weight:500 !important;
+    margin:0 !important;
+    color:#f0fdfa !important;
+    display:block !important;
+    grid-area:name !important;
+}
+.ec-specter-tickets .item-description,
+.ec-specter-tickets .product-description,
+.ec-specter-tickets .variation-description{
+    display:none !important;
+}
+.ec-specter-tickets .product-description{display:block !important}
+.ec-specter-tickets .price,
+.ec-specter-tickets .price-current,
+.ec-specter-tickets .item-price,
+.ec-specter-tickets .product-price{
+    margin-left:0 !important;
+    margin-right:0 !important;
+    font-size:18px !important;
+    font-weight:600 !important;
+    white-space:nowrap !important;
+    grid-area:price !important;
+    justify-self:end !important;
+}
+.ec-specter-tickets .price::after{
+    content:"incl. VAT";
+    display:block !important;
+    font-size:10px !important;
+    font-weight:300 !important;
+    letter-spacing:.06em !important;
+    color:#134e4a !important;
+}
+.ec-specter-tickets .availability-box{
+    width:auto !important;
+    grid-area:qty !important;
+    justify-self:end !important;
+}
+.ec-specter-tickets .input-item-count-group{
+    display:flex !important;
+    align-items:center !important;
+    gap:0 !important;
+    margin:0 !important;
+}
+.ec-specter-tickets .input-item-count-dec,
+.ec-specter-tickets .input-item-count-inc{
+    width:32px !important;
+    height:32px !important;
+    padding:0 !important;
+    border:1px solid rgba(20,184,166,.15) !important;
+    background:transparent !important;
+    color:#5eead4 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    font-size:16px !important;
+}
+.ec-specter-tickets .input-item-count-dec:hover,
+.ec-specter-tickets .input-item-count-inc:hover{
+    border-color:#14b8a6 !important;
+    color:#14b8a6 !important;
+}
+.ec-specter-tickets .input-item-count{
+    width:36px !important;
+    min-width:36px !important;
+    height:32px !important;
+    margin:0 !important;
+    padding:0 !important;
+    border-top:1px solid rgba(20,184,166,.15) !important;
+    border-bottom:1px solid rgba(20,184,166,.15) !important;
+    border-left:none !important;
+    border-right:none !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    text-align:center !important;
+    font-family:'Space Grotesk',sans-serif !important;
+    font-size:17px !important;
+    color:#f0fdfa !important;
+    appearance:textfield !important;
+    -moz-appearance:textfield !important;
+}
+.ec-specter-tickets .input-item-count::-webkit-outer-spin-button,
+.ec-specter-tickets .input-item-count::-webkit-inner-spin-button{
+    -webkit-appearance:none !important;
+    margin:0 !important;
+}
+.ec-specter-cta{padding:0 52px 36px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.ec-specter-cta-btn{font-family:'Space Grotesk',sans-serif!important;font-size:14px!important;font-weight:600!important;letter-spacing:.1em!important;border-radius:0!important;padding:13px 32px!important}
+.ec-specter-resend-btn{font-family:'Space Grotesk',sans-serif!important;font-size:12px!important;letter-spacing:.06em!important;border-radius:0!important;color:#134e4a!important}
+@media(max-width:700px){
+    .ec-specter-top,.ec-specter-tickets,.ec-specter-cta{padding-left:24px;padding-right:24px}
+    .ec-specter-wrap > .exclusive-access-cta{margin:0 24px !important}
+    .ec-specter-tickets .item,
+    .ec-specter-tickets .item-row,
+    .ec-specter-tickets .product-row,
+    .ec-specter-tickets .product,
+    .ec-specter-tickets .variation,
+    .ec-specter-tickets article{
+        grid-template-columns:1fr !important;
+        grid-template-areas:
+            "name"
+            "price"
+            "qty" !important;
+        align-items:flex-start !important;
+    }
+    .ec-specter-tickets .price,
+    .ec-specter-tickets .price-current,
+    .ec-specter-tickets .item-price,
+    .ec-specter-tickets .product-price{
+        width:100% !important;
+        justify-self:start !important;
+    }
+    .ec-specter-tickets .availability-box{justify-self:start !important}
+}

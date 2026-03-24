@@ -4,6 +4,7 @@ import string
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils import timezone
+from pretix.multidomain.urlreverse import build_absolute_uri
 
 from .models import ApplicationStatus
 
@@ -14,7 +15,13 @@ def generate_access_token(length=40):
 
 
 def build_access_link(application):
-    return f"https://tickets.ecube-entertainment.com/{application.event.organizer.slug}/{application.event.slug}/access/{application.access_token}/"
+    return build_absolute_uri(
+        application.event,
+        "plugins:pretix_exclusive_access:approved_access",
+        kwargs={
+            "token": application.access_token,
+        },
+    )
 
 
 def approve_application(application, reviewer):
@@ -44,8 +51,8 @@ def approve_application(application, reviewer):
     send_mail(
         event.settings.get(
             "exclusive_access_approval_email_subject",
-            default="Your access request has been approved",
-        ) or "Your access request has been approved",
+            default="You're in — your access request has been approved",
+        ) or "You're in — your access request has been approved",
         body,
         None,
         [application.email],
@@ -79,4 +86,3 @@ def reject_application(application, reviewer):
         [application.email],
     )
     return application
-
