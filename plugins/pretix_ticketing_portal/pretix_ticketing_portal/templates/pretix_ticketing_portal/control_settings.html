@@ -5,19 +5,48 @@
 {% block title %}{% trans "Ticketing Portal Settings" %}{% endblock %}
 
 {% block inside %}
-<form method="post" class="form-horizontal">
+<form method="post" enctype="multipart/form-data" class="form-horizontal">
     {% csrf_token %}
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <strong>{% trans "Portal event visibility" %}</strong>
+            <strong>{% trans "Portal event settings" %}</strong>
         </div>
         <div class="panel-body">
-            {% bootstrap_field form.portal_featured layout="horizontal" %}
+            <p class="text-muted" style="margin-bottom:15px;">
+                {% trans "Hero selection and sort ordering are managed from the" %}
+                <strong>{% trans "Portal Dashboard" %}</strong>
+                {% trans "in the organizer section." %}
+            </p>
             {% bootstrap_field form.portal_visibility layout="horizontal" %}
             {% bootstrap_field form.portal_label layout="horizontal" %}
             {% bootstrap_field form.portal_category layout="horizontal" %}
             {% bootstrap_field form.portal_sort_order layout="horizontal" %}
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>{% trans "Portal image" %}</strong>
+        </div>
+        <div class="panel-body">
+            {% bootstrap_field form.portal_show_image layout="horizontal" %}
+
+            {% if portal_custom_image_url %}
+            <div class="form-group">
+                <label class="col-md-3 control-label">{% trans "Current image" %}</label>
+                <div class="col-md-9">
+                    <div style="display:inline-block;padding:8px;border:1px solid #333;border-radius:6px;background:#111;overflow:hidden;">
+                        <img src="{{ portal_custom_image_url }}" alt="{% trans "Portal image" %}" style="display:block;max-width:100%;max-height:160px;height:auto;width:auto;object-fit:contain;border-radius:4px;">
+                    </div>
+                    <div style="margin-top:8px;">
+                        <button type="submit" name="remove_portal_image" value="1" class="btn btn-default btn-sm">{% trans "Remove custom image" %}</button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% bootstrap_field form.portal_custom_image layout="horizontal" %}
         </div>
     </div>
 

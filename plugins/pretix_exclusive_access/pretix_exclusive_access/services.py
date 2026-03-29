@@ -1,10 +1,14 @@
+import logging
 import secrets
 import string
 
-from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils import timezone
+from pretix.base.i18n import LazyI18nString
+from pretix.base.services.mail import mail
 from pretix.multidomain.urlreverse import build_absolute_uri
+
+logger = logging.getLogger(__name__)
 
 from .models import ApplicationStatus
 
@@ -24,23 +28,24 @@ def build_access_link(application):
     )
 
 
-def approve_application(application, reviewer):
-    if application.status == ApplicationStatus.APPROVED and application.access_token:
-        return application
+def send_notification(application, channel="email"):
+    """Dispatch notification based on application status.
+    Currently only email is implemented. SMS/WhatsApp channels will be
+    added when the pretix_messaging plugin is ready."""
+    if channel != "email":
+        logger.warning("Channel '%s' not yet implemented, falling back to email", channel)
 
+    if application.status == "approved":
+        send_approval_email(application)
+    elif application.status == "rejected":
+        send_rejection_email(application)
+    else:
+        logger.warning("Cannot send notification for application %s with status '%s'", application.pk, application.status)
+
+
+def send_approval_email(application):
     event = application.event
-
-    application.status = ApplicationStatus.APPROVED
-    application.voucher_code = ""
-    application.voucher_id = None
-    application.access_token = generate_access_token()
-    application.access_token_created_at = timezone.now()
-    application.identity_photo_locked = True
-    application.reviewed_by = reviewer
-    application.reviewed_at = timezone.now()
-    application.save()
-
-    body = render_to_string(
+    body_text = render_to_string(
         "pretix_exclusive_access/emails/approval.txt",
         {
             "application": application,
@@ -48,41 +53,44 @@ def approve_application(application, reviewer):
             "access_link": build_access_link(application),
         },
     )
-    send_mail(
+    subject = (
         event.settings.get(
             "exclusive_access_approval_email_subject",
-            default="You're in — your access request has been approved",
-        ) or "You're in — your access request has been approved",
-        body,
-        None,
-        [application.email],
+            default="You're in - your access request has been approved",
+        ) or "You're in - your access request has been approved"
     )
-    return application
+    mail(
+        email=application.email,
+        subject=subject,
+        template=LazyI18nString(body_text),
+        context={},
+        event=event,
+        locale=event.settings.locale or "en",
+    )
+    logger.info("Sent approval email for application %s to %s", application.pk, application.email)
 
 
-def reject_application(application, reviewer):
-    if application.status == ApplicationStatus.REJECTED:
-        return application
-
-    application.status = ApplicationStatus.REJECTED
-    application.reviewed_by = reviewer
-    application.reviewed_at = timezone.now()
-    application.save()
-
-    body = render_to_string(
+def send_rejection_email(application):
+    event = application.event
+    body_text = render_to_string(
         "pretix_exclusive_access/emails/rejection.txt",
         {
             "application": application,
-            "event": application.event,
+            "event": event,
         },
     )
-    send_mail(
-        application.event.settings.get(
+    subject = (
+        event.settings.get(
             "exclusive_access_rejection_email_subject",
             default="Update on your access request",
-        ) or "Update on your access request",
-        body,
-        None,
-        [application.email],
+        ) or "Update on your access request"
     )
-    return application
+    mail(
+        email=application.email,
+        subject=subject,
+        template=LazyI18nString(body_text),
+        context={},
+        event=event,
+        locale=event.settings.locale or "en",
+    )
+    logger.info("Sent rejection email for application %s to %s", application.pk, application.email)

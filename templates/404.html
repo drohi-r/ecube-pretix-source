@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 | Ecube Access</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#080808;--black2:#0d0d0d;--black3:#141414;
+  --red:#C8000A;--white:#F0EDE8;--white2:#c8c4be;--white3:#888;
+  --fd:'Bebas Neue',sans-serif;--fb:'Outfit',sans-serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+html,body{height:100%}
+body{
+  background:var(--black);color:var(--white);
+  font-family:var(--fb);font-weight:300;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+a{text-decoration:none;color:inherit}
+
+/* GRAIN */
+#grain{position:fixed;inset:-60px;z-index:9998;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");background-size:180px;animation:grain 1.2s steps(2) infinite}
+@keyframes grain{0%{transform:translate(0,0)}10%{transform:translate(-2%,-3%)}20%{transform:translate(3%,2%)}30%{transform:translate(-1%,4%)}40%{transform:translate(4%,-1%)}50%{transform:translate(-3%,3%)}60%{transform:translate(2%,-2%)}70%{transform:translate(-4%,1%)}80%{transform:translate(1%,-4%)}90%{transform:translate(-2%,2%)}100%{transform:translate(3%,-3%)}}
+
+/* GRID */
+.grid{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%)}
+
+/* MAIN */
+.wrap{
+  position:relative;z-index:10;
+  height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:40px 24px;
+}
+
+/* BIG NUMBER */
+.big-num{
+  font-family:var(--fd);
+  font-size:clamp(160px,22vw,320px);
+  line-height:.85;
+  letter-spacing:.04em;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,.08);
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  user-select:none;
+  animation:fadeIn 1s var(--ease) forwards;
+}
+
+.tag{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--red);margin-bottom:28px;
+  opacity:0;animation:fadeUp .8s var(--ease) .2s forwards;
+}
+.tag::before,.tag::after{content:'';width:20px;height:1px;background:var(--red)}
+
+.title{
+  font-family:var(--fd);
+  font-size:clamp(42px,7vw,96px);
+  line-height:.92;letter-spacing:.02em;
+  margin-bottom:20px;
+  opacity:0;animation:fadeUp .9s var(--ease) .35s forwards;
+}
+.title .accent{color:var(--red)}
+
+.sub{
+  font-size:1rem;font-weight:300;color:var(--white2);
+  max-width:440px;margin:0 auto 48px;line-height:1.7;
+  opacity:0;animation:fadeUp .9s var(--ease) .5s forwards;
+}
+
+.actions{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;
+  opacity:0;animation:fadeUp .9s var(--ease) .65s forwards;
+}
+
+.btn-primary{
+  background:var(--red);color:var(--white);
+  font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  padding:14px 36px;display:inline-block;
+  transition:background .3s,transform .2s;
+}
+.btn-primary:hover{background:#8B0006;transform:translateY(-1px)}
+
+.btn-ghost{
+  color:var(--white);
+  font-size:.72rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  padding:14px 28px;display:inline-flex;align-items:center;gap:8px;
+  border:1px solid rgba(240,237,232,.15);
+  transition:border-color .3s;
+}
+.btn-ghost:hover{border-color:rgba(240,237,232,.4)}
+.btn-ghost svg{transition:transform .3s var(--ease)}
+.btn-ghost:hover svg{transform:translateX(4px)}
+
+/* NAV LOGO */
+.nav-logo{
+  position:fixed;top:32px;left:56px;z-index:100;
+  font-family:var(--fd);font-size:18px;letter-spacing:.14em;
+  display:flex;align-items:center;gap:10px;
+  opacity:0;animation:fadeUp .8s var(--ease) .1s forwards;
+}
+.nav-badge{font-size:10px;letter-spacing:.18em;color:var(--red);font-family:var(--fb);font-weight:600}
+
+.footer{position:fixed;bottom:0;left:0;right:0;text-align:center;padding:20px 24px;font-size:.72rem;color:var(--white3);letter-spacing:.06em}
+.footer a{color:var(--white3);transition:color .3s}
+.footer a:hover{color:var(--white)}
+
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{0%{opacity:0}to{opacity:1}}
+
+.wrap>*{transform:translateY(20px)}
+.tag,.title,.sub{transform:translateY(20px)}
+</style>
+</head>
+<body>
+
+<div id="grain"></div>
+<div class="grid"></div>
+
+<a href="/" class="nav-logo">ECUBE <span class="nav-badge">ACCESS</span></a>
+
+<div class="wrap">
+  <div class="big-num">404</div>
+  <div class="tag">Page Not Found</div>
+  <h1 class="title">WRONG<br><span class="accent">STAGE</span></h1>
+  <p class="sub">This page doesn't exist or has been moved. Let's get you back to the right place.</p>
+  <div class="actions">
+    <a href="/" class="btn-primary">Back to Home</a>
+    <a href="https://ecube-entertainment.com/contact.html" class="btn-ghost">
+      Contact Us
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 6.5h11M6.5 1l5.5 5.5-5.5 5.5"/></svg>
+    </a>
+  </div>
+</div>
+
+<div class="footer">&copy; 2026 Ecube Entertainment Ltd. &middot; <a href="https://ecube-entertainment.com">ecube-entertainment.com</a></div>
+
+</body>
+</html>

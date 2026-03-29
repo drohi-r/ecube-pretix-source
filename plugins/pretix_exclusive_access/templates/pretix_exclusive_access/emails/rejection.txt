@@ -1,4 +1,9 @@
-Thank you for your interest in {{ event.name }}.
+Hey {{ application.full_name }},
 
-At this time, your access request was not approved.
+Thanks for your interest in {{ event.name }}.
 
+After reviewing your request, we're unable to approve your access at this time.
+
+If you have questions, reply to this email and we'll help clarify.
+
+- Ecube Access

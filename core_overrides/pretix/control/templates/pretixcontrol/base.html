@@ -1,3 +1,8 @@
+{# CORE OVERRIDE — Cannot be moved to a plugin.                              #}
+{# Pretix's template loader resolves control panel templates from the core   #}
+{# pretix.control app BEFORE any plugin templates. Plugins cannot override   #}
+{# pretixcontrol/base.html via the standard template loading mechanism.      #}
+{# This file adds: Ecube control theme CSS/JS, branding, custom footer.     #}
 {% load compress %}
 {% load static %}
 {% load i18n %}

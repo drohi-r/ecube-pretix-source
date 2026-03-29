@@ -1,0 +1,16 @@
+{% extends "pretixpresale/event/base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+<div class="container">
+    <h1>{% trans "Request Access" %}</h1>
+    <p>{% trans "Submit your details for review. If approved, you will receive a private access link by email." %}</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary">{% trans "Submit application" %}</button>
+    </form>
+</div>
+{% endblock %}
+

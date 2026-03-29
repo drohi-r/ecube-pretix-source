@@ -8,22 +8,20 @@ from pretix.presale.signals import html_head as presale_html_head
 from .services.resolver import resolve_design_profile
 
 THEME_FILES = {
-    'bg': 'ecube-bhn-v2.css',
-    'rb': 'ecube-rb-v2.css',
-    'mb': 'ecube-mb-v2.css',
-    'ecube': 'ecube-nexus-v1.css',
+    'gilt': 'ecube-gilt-v1.css',
+    'crimson': 'ecube-crimson-v1.css',
+    'voltage': 'ecube-voltage-v1.css',
     'nexus': 'ecube-nexus-v1.css',
     'aurora': 'ecube-aurora-v1.css',
     'ember': 'ecube-ember-v1.css',
     'specter': 'ecube-specter-v1.css',
 }
-DEFAULT_THEME = 'bg'
+DEFAULT_THEME = 'gilt'
 
 
 def _normalize_theme_key(value):
-    if value == 'nexus':
-        return 'ecube'
-    return value
+    from .theme_config import LEGACY_PRESET_ALIASES
+    return LEGACY_PRESET_ALIASES.get(value, value)
 
 
 def _theme_key_for_event(event):
@@ -37,7 +35,7 @@ def _theme_key_for_organizer(organizer):
 
 def _css_tag(theme_key):
     filename = THEME_FILES.get(theme_key, THEME_FILES[DEFAULT_THEME])
-    return f'<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/{filename}?v=20260320005">'
+    return f'<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/{filename}?v=20260329-v2">'
 
 
 @receiver(nav_event_settings, dispatch_uid='pretix_event_themes_nav_event')
@@ -68,17 +66,23 @@ def global_head(sender, request=None, **kwargs):
     if not request:
         return ''
 
+    # Skip event pages — presale_html_head handles those with per-event theme
+    if getattr(request, 'event', None):
+        return ''
+
     path = request.path
     parts = [p for p in path.strip('/').split('/') if p]
-    if len(parts) == 1:
-        try:
-            from pretix.base.models import Organizer
-            org = Organizer.objects.get(slug=parts[0])
-            theme = _theme_key_for_organizer(org)
-            return _css_tag(theme)
-        except Exception:
-            return ''
-    return ''
+    if not parts:
+        return ''
+
+    # Organizer-level pages only (account, login, etc.)
+    try:
+        from pretix.base.models import Organizer
+        org = Organizer.objects.get(slug=parts[0])
+        theme = _theme_key_for_organizer(org)
+        return _css_tag(theme)
+    except Exception:
+        return ''
 
 
 @receiver(presale_html_head, dispatch_uid='pretix_event_themes_presale')
@@ -90,14 +94,18 @@ def presale_head(sender, request=None, **kwargs):
 
     output = _css_tag(theme)
 
-    if preset == 'ecube':
-        output += '<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/ecube-nexus-layout.css?v=20260319001">'
-    elif preset == 'aurora':
-        output += '<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/ecube-aurora-layout.css?v=20260320005">'
-    elif preset == 'ember':
-        output += '<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/ecube-ember-layout.css?v=20260320005">'
-    elif preset == 'specter':
-        output += '<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/ecube-specter-layout.css?v=20260320006">'
+    LAYOUT_PRESETS = ('nexus', 'aurora', 'ember', 'specter')
+    LAYOUT_FILES = {
+        'nexus': 'ecube-nexus-layout.css',
+        'aurora': 'ecube-aurora-layout.css',
+        'ember': 'ecube-ember-layout.css',
+        'specter': 'ecube-specter-layout.css',
+    }
+    if preset in LAYOUT_PRESETS:
+        # Shared reset first (unlocks .main-box container), then theme-specific layout
+        if preset != 'nexus':  # nexus layout has its own reset via :has()
+            output += '<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/ecube-layout-reset.css?v=20260329-v2">'
+        output += f'<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/{LAYOUT_FILES[preset]}?v=20260329-v2">'
 
     if bg:
         output += f'''

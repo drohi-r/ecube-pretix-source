@@ -134,7 +134,11 @@
     });
 
     if (search) {
-      search.addEventListener("input", applyFilters);
+      var debounceTimer = null;
+      search.addEventListener("input", function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(applyFilters, 300);
+      });
     }
 
     applyFilters();

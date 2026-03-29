@@ -86,12 +86,12 @@ class SSLCommerzPayment(BasePaymentProvider):
             cus_name    = ia.name or 'Customer'
             cus_address = str(ia.street) if ia.street else 'N/A'
             cus_city    = str(ia.city) if ia.city else 'N/A'
-            cus_phone   = str(ia.phone) if ia.phone else '01700000000'
+            cus_phone   = str(ia.phone) if ia.phone else ''
         except Exception:
             cus_name    = 'Customer'
             cus_address = 'N/A'
             cus_city    = 'N/A'
-            cus_phone   = '01700000000'
+            cus_phone   = ''
 
         payload = {
             'store_id':         self.settings.get('store_id'),

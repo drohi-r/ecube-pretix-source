@@ -10,7 +10,7 @@
     <a href="{{ portal_active_path }}">ALL EVENTS</a>
     <a href="https://ecube-entertainment.com" target="_blank" rel="noopener">ECUBE MAIN</a>
     <a href="https://ecube-entertainment.com/contact.html" target="_blank" rel="noopener">CONTACT</a>
-    <a href="#">MY TICKETS</a>
+    <a href="{{ portal_account_url }}">MY TICKETS</a>
 </div>
 
 {# ── Topbar ── #}
@@ -25,7 +25,7 @@
         <a href="https://ecube-entertainment.com/contact.html" target="_blank" rel="noopener">CONTACT</a>
     </nav>
     <div class="topbar-right">
-        <a href="#" class="topbar-tickets">
+        <a href="{{ portal_account_url }}" class="topbar-tickets">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0112 0v1"/></svg>
             <span>MY TICKETS</span>
         </a>
@@ -38,6 +38,9 @@
 {# ── Hero ── #}
 {% if hero_entry %}
 <section class="hero">
+    {% if hero_entry.image_url %}
+    <img class="hero-bg-img" src="{{ hero_entry.image_url }}" alt="" aria-hidden="true">
+    {% endif %}
     <canvas class="hero-canvas" data-freq-canvas aria-hidden="true"></canvas>
     <div class="hero-fog"></div>
 
@@ -47,7 +50,7 @@
                 <span class="eyebrow-line"></span>
                 <span class="eyebrow-text">{% if hero_entry.featured %}FEATURED EVENT{% elif hero_entry.category %}{{ hero_entry.category|upper }} EVENT{% else %}LIVE EVENT{% endif %}</span>
                 {% if hero_entry.sale_state == "ON_SALE" %}
-                <span class="badge badge-live"><span class="dot"></span>ON SALE</span>
+                <span class="badge badge-live"><span class="dot"></span>{% trans "ON SALE" %}</span>
                 {% endif %}
             </div>
 
@@ -84,7 +87,7 @@
         </div>
 
         <div class="hero-panel">
-            <div class="panel-label">STARTING FROM</div>
+            <div class="panel-label">{% trans "STARTING FROM" %}</div>
             <div class="panel-price">{{ hero_entry.price_display }}</div>
             <div class="panel-note">{{ hero_entry.access_mode_label }} &middot; {{ hero_entry.sale_state_label }}</div>
             <div class="panel-grid">
@@ -121,7 +124,7 @@
 
     <div class="scroll-indicator">
         <div class="scroll-line"></div>
-        <span class="scroll-text">SCROLL</span>
+        <span class="scroll-text">{% trans "SCROLL" %}</span>
     </div>
 </section>
 {% endif %}
@@ -153,7 +156,7 @@
         <div class="filter-right">
             <label class="search-box">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="search" placeholder="Search events..." data-filter-search>
+                <input type="search" placeholder="{% trans "Search events..." %}" data-filter-search>
             </label>
         </div>
     </div>
@@ -178,6 +181,7 @@
 
             <div class="ecard-img">
                 <div class="ecard-img-bg" style="background: {{ entry.image_gradient }};"></div>
+                {% if entry.image_url %}<img class="ecard-img-photo" src="{{ entry.image_url }}" alt="{{ entry.event.name }}">{% endif %}
                 <div class="ecard-img-grid"></div>
                 <div class="ecard-img-fade"></div>
                 <div class="ecard-date">
@@ -234,8 +238,8 @@
 
     <div class="portal-empty-state" {% if portal_entries %}style="display:none"{% endif %}>
         <div class="portal-empty-icon">&#9675;</div>
-        <div class="portal-empty-title">No Events Found</div>
-        <div class="portal-empty-desc">Try another category or clear the filter to view all currently listed events.</div>
+        <div class="portal-empty-title">{% trans "No Events Found" %}</div>
+        <div class="portal-empty-desc">{% trans "Try another category or clear the filter to view all currently listed events." %}</div>
     </div>
 </main>
 

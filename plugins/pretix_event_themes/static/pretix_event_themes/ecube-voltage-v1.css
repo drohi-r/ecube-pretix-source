@@ -92,6 +92,55 @@ html body div.container.main-box footer * { display: none !important; height: 0 
     background: transparent !important;
 }
 
+
+/* EXCLUSIVE ACCESS CTA FIX v2 */
+html body .exclusive-access-cta a.exclusive-access-btn:link,
+html body .exclusive-access-cta a.exclusive-access-btn:visited,
+html body .exclusive-access-cta a.exclusive-access-btn:active,
+html body .exclusive-access-cta a.exclusive-access-btn.btn:link,
+html body .exclusive-access-cta a.exclusive-access-btn.btn:visited,
+html body .exclusive-access-cta a.exclusive-access-btn.btn:active,
+html body .exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:link,
+html body .exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:visited,
+html body .exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:active {
+    display: inline-block !important;
+    background: #00D4FF !important;
+    border: 1px solid #00D4FF !important;
+    color: #060B12 !important;
+    -webkit-text-fill-color: #060B12 !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: .08em !important;
+    text-decoration: none !important;
+    filter: none !important;
+}
+
+html body .exclusive-access-cta a.exclusive-access-btn *,
+html body .exclusive-access-cta a.exclusive-access-btn.btn *,
+html body .exclusive-access-cta a.exclusive-access-btn.btn.btn-primary * {
+    color: inherit !important;
+    -webkit-text-fill-color: currentColor !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+}
+
+html body .exclusive-access-cta a.exclusive-access-btn:hover,
+html body .exclusive-access-cta a.exclusive-access-btn:focus,
+html body .exclusive-access-cta a.exclusive-access-btn.btn:hover,
+html body .exclusive-access-cta a.exclusive-access-btn.btn:focus,
+html body .exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:hover,
+html body .exclusive-access-cta a.exclusive-access-btn.btn.btn-primary:focus {
+    background: #0099BB !important;
+    border-color: #0099BB !important;
+    color: #E8EDF2 !important;
+    -webkit-text-fill-color: #E8EDF2 !important;
+    text-decoration: none !important;
+}
+
 /* ── Override Pretix brand primary & dialog styling ── */
 :root {
   --pretix-brand-primary: #00D4FF !important;

@@ -1,3 +1,7 @@
+{# CORE OVERRIDE — Cannot be moved to a plugin.                              #}
+{# Same limitation as pretixcontrol/base.html — Pretix's template loader     #}
+{# resolves core app templates before plugin templates. This file adds:      #}
+{# Ecube control theme CSS/JS and branding to the login/auth pages.          #}
 {% load compress %}
 {% load i18n %}
 {% load static %}

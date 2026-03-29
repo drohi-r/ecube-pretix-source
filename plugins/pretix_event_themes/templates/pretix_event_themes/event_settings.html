@@ -6,53 +6,26 @@
 
     <style>
         .ecube-asset-preview {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            max-width: 100%;
+            display: inline-block;
+            max-width: 480px;
             padding: 12px;
-            border: 1px solid #d9dee5;
+            border: 1px solid #333;
             border-radius: 8px;
-            background: #f8fafc;
+            background: #111;
             overflow: hidden;
-        }
-
-        .ecube-asset-preview img {
-            display: block;
-            width: auto;
-            max-width: 100%;
-            border-radius: 6px;
-        }
-
-        .ecube-asset-preview--wide img {
-            max-width: 100%;
-            max-height: 120px;
-            height: auto;
-            object-fit: contain;
-        }
-
-        .ecube-asset-preview--logo img {
-            max-width: 100%;
-            max-height: 72px;
-            height: auto;
-            object-fit: contain;
-        }
-
-        .ecube-asset-preview--thumb {
-            width: 100px;
-            height: 100px;
-            padding: 6px;
-        }
-
-        .ecube-asset-preview--thumb img {
-            width: 88px;
-            height: 88px;
-            object-fit: cover;
         }
 
         .ecube-asset-actions {
             margin-top: 10px;
+        }
+
+        .ecube-derivative-links {
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .ecube-derivative-links a {
+            margin-right: 8px;
         }
     </style>
 
@@ -140,8 +113,8 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label">{% trans "Preview" %}</label>
                     <div class="col-md-9">
-                        <div class="ecube-asset-preview ecube-asset-preview--wide">
-                            <img src="{{ current_bg_url }}" alt="{% trans "Legacy background preview" %}">
+                        <div class="ecube-asset-preview">
+                            <img src="{{ current_bg_url }}" alt="{% trans "Legacy background preview" %}" style="display:block !important;max-width:100% !important;max-height:140px !important;height:auto !important;width:auto !important;object-fit:contain !important;border-radius:6px;">
                         </div>
                         <div class="ecube-asset-actions">
                             <button type="submit" name="remove_background" value="1" class="btn btn-danger">{% trans "Remove legacy background" %}</button>
@@ -167,15 +140,15 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label">{% trans "Hero preview" %}</label>
                     <div class="col-md-9">
-                        <div class="ecube-asset-preview ecube-asset-preview--wide">
-                            <img src="{{ hero_preview_url }}" alt="{% trans "Hero preview" %}">
+                        <div class="ecube-asset-preview">
+                            <img src="{{ hero_preview_url }}" alt="{% trans "Hero preview" %}" style="display:block !important;max-width:100% !important;max-height:280px !important;height:auto !important;width:auto !important;object-fit:contain !important;border-radius:6px;">
                         </div>
-                        <p class="help-block">
-                            <a href="{{ hero_preview_url }}" target="_blank">{% trans "Original hero" %}</a>
-                            {% if hero_card_16x9_url %} · <a href="{{ hero_card_16x9_url }}" target="_blank">{% trans "16:9 card" %}</a>{% endif %}
-                            {% if hero_email_banner_url %} · <a href="{{ hero_email_banner_url }}" target="_blank">{% trans "Email banner" %}</a>{% endif %}
-                            {% if hero_ticket_texture_url %} · <a href="{{ hero_ticket_texture_url }}" target="_blank">{% trans "Ticket texture" %}</a>{% endif %}
-                        </p>
+                        <div class="ecube-derivative-links">
+                            <a href="{{ hero_preview_url }}" target="_blank">{% trans "Original" %}</a>
+                            {% if hero_card_16x9_url %}<a href="{{ hero_card_16x9_url }}" target="_blank">{% trans "16:9 card" %}</a>{% endif %}
+                            {% if hero_email_banner_url %}<a href="{{ hero_email_banner_url }}" target="_blank">{% trans "Email banner" %}</a>{% endif %}
+                            {% if hero_ticket_texture_url %}<a href="{{ hero_ticket_texture_url }}" target="_blank">{% trans "Ticket texture" %}</a>{% endif %}
+                        </div>
                         <div class="ecube-asset-actions">
                             <button type="submit" name="remove_hero_image" value="1" class="btn btn-default">{% trans "Remove hero image" %}</button>
                         </div>
@@ -210,8 +183,8 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label">{% trans "Logo preview" %}</label>
                     <div class="col-md-9">
-                        <div class="ecube-asset-preview ecube-asset-preview--logo">
-                            <img src="{{ logo_preview_url }}" alt="{% trans "Logo preview" %}">
+                        <div class="ecube-asset-preview">
+                            <img src="{{ logo_preview_url }}" alt="{% trans "Logo preview" %}" style="display:block !important;max-width:100% !important;max-height:72px !important;height:auto !important;width:auto !important;object-fit:contain !important;border-radius:6px;">
                         </div>
                         <p class="help-block">
                             <a href="{{ logo_preview_url }}" target="_blank">{% trans "Original logo" %}</a>
@@ -238,8 +211,8 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label">{% trans "Background texture preview" %}</label>
                     <div class="col-md-9">
-                        <div class="ecube-asset-preview ecube-asset-preview--wide">
-                            <img src="{{ background_texture_web_url|default:background_texture_original_url }}" alt="{% trans "Background texture preview" %}">
+                        <div class="ecube-asset-preview">
+                            <img src="{{ background_texture_web_url|default:background_texture_original_url }}" alt="{% trans "Background texture preview" %}" style="display:block !important;max-width:100% !important;max-height:140px !important;height:auto !important;width:auto !important;object-fit:contain !important;border-radius:6px;">
                         </div>
                         <p class="help-block">
                             {% if background_texture_original_url %}<a href="{{ background_texture_original_url }}" target="_blank">{% trans "Original texture" %}</a>{% endif %}
@@ -266,8 +239,8 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label">{% trans "Thumbnail preview" %}</label>
                     <div class="col-md-9">
-                        <div class="ecube-asset-preview ecube-asset-preview--thumb">
-                            <img src="{{ thumbnail_square_url|default:thumbnail_override_url }}" alt="{% trans "Thumbnail preview" %}">
+                        <div class="ecube-asset-preview" style="width:108px;height:108px;padding:6px;">
+                            <img src="{{ thumbnail_square_url|default:thumbnail_override_url }}" alt="{% trans "Thumbnail preview" %}" style="display:block !important;width:96px !important;height:96px !important;max-height:96px !important;max-width:96px !important;object-fit:cover !important;border-radius:6px;">
                         </div>
                         <p class="help-block">
                             {% if thumbnail_override_url %}<a href="{{ thumbnail_override_url }}" target="_blank">{% trans "Override source" %}</a>{% endif %}

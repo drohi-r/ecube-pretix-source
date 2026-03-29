@@ -28,7 +28,9 @@ class EventThemesSettingsView(EventPermissionRequiredMixin, EventSettingsViewMix
 
     def get(self, request, organizer, event, *args, **kwargs):
         form = self._build_form(request)
-        return render(request, self.template_name, self._context(request, form))
+        resp = render(request, self.template_name, self._context(request, form))
+        resp['Content-Security-Policy'] = "style-src 'unsafe-inline' 'self'"
+        return resp
 
     def post(self, request, organizer, event, *args, **kwargs):
         if request.POST.get("remove_background") == "1":
@@ -111,7 +113,8 @@ class EventThemesSettingsView(EventPermissionRequiredMixin, EventSettingsViewMix
 
     def _save_theme_settings(self, request, form):
         selected_preset = canonical_preset(form.cleaned_data.get("ecube_theme_preset", "").strip())
-        if selected_preset in ("", "bg", "rb", "mb", "nobo", "ecube", "resonance", "bhn", "aurora", "ember", "specter"):
+        valid_presets = {k for k, _ in PRESET_CHOICES} | {""}
+        if selected_preset in valid_presets:
             request.event.settings.set("ecube_theme_preset", selected_preset)
             request.event.settings.set("ecube_theme", preset_to_base_theme(selected_preset) if selected_preset else "")
 
@@ -242,10 +245,11 @@ class OrganizerThemesSettingsView(OrganizerPermissionRequiredMixin, View):
         })
 
     def post(self, request, organizer, *args, **kwargs):
-        selected_preset = request.POST.get("ecube_theme_preset", "bg").strip()
-        if selected_preset not in ("bg", "rb", "mb", "nobo", "ecube", "nexus", "resonance", "bhn", "aurora", "ember", "specter"):
-            selected_preset = "bg"
+        selected_preset = request.POST.get("ecube_theme_preset", "gilt").strip()
         selected_preset = canonical_preset(selected_preset)
+        valid_presets = {k for k, _ in PRESET_CHOICES}
+        if selected_preset not in valid_presets:
+            selected_preset = "gilt"
 
         primary = normalize_hex_color(request.POST.get("ecube_primary", ""))
         secondary = normalize_hex_color(request.POST.get("ecube_secondary", ""))

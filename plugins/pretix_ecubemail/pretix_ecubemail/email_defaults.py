@@ -1,72 +1,74 @@
-# Ecube Access — default email copy applied at organizer level.
+# Ecube Access - default email copy applied at organizer level.
 # All events under the organizer inherit these unless overridden per-event
-# in Settings → E-mail → E-mail content.
+# in Settings > E-mail > E-mail content.
 #
 # Placeholders use Pretix's {placeholder} syntax, not Django templates.
 # Markdown bold (**text**) renders correctly via the Ecube HTML renderer.
+#
+# NOTE: No em dashes. Use regular dashes or rewrite to avoid them.
 
 MAIL_DEFAULTS = {
     # ------------------------------------------------------------------ #
-    # 1. Placed order — pending payment                                   #
+    # 1. Placed order - pending payment                                   #
     # ------------------------------------------------------------------ #
     "mail_subject_order_placed": (
-        "Your order {code} for {event} — complete payment by {expire_date}"
+        "Your order {code} for {event} - complete payment by {expire_date}"
     ),
     "mail_text_order_placed": (
         "Hey {name},\n\n"
-        "Your order for **{event}** is in — nice move. Here's what you need to know:\n\n"
+        "Your order for **{event}** is in. Nice move. Here's what you need to know:\n\n"
         "**Order:** {code}\n"
         "**Total:** {total_with_currency}\n"
         "**Payment deadline:** {expire_date}\n\n"
         "{payment_info}\n\n"
         "Complete your payment before the deadline or your reservation will expire. "
-        "No pressure — but spots don't wait.\n\n"
+        "No pressure, but spots don't wait.\n\n"
         "**View your order and pay here:**\n"
         "{url}\n\n"
         "See you there.\n\n"
-        "— Ecube Access"
+        "- Ecube Access"
     ),
 
     # ------------------------------------------------------------------ #
-    # 2. Free order — no payment needed                                   #
+    # 2. Free order - no payment needed                                   #
     # ------------------------------------------------------------------ #
     "mail_subject_order_free": (
-        "You're in — {event} confirmed ({code})"
+        "You're in - {event} confirmed ({code})"
     ),
     "mail_text_order_free": (
         "Hey {name},\n\n"
-        "You're confirmed for **{event}** — no payment needed, you're all set.\n\n"
+        "You're confirmed for **{event}**. No payment needed, you're all set.\n\n"
         "**Order:** {code}\n"
         "**Event:** {event}\n\n"
         "Download your tickets and save them to your phone. You'll need them at the door.\n\n"
         "**Get your tickets here:**\n"
         "{url}\n\n"
         "See you there.\n\n"
-        "— Ecube Access"
+        "- Ecube Access"
     ),
 
     # ------------------------------------------------------------------ #
-    # 3. Paid order — payment confirmed                                   #
+    # 3. Paid order - payment confirmed                                   #
     # ------------------------------------------------------------------ #
     "mail_subject_order_paid": (
-        "Payment confirmed — your tickets for {event} are ready ({code})"
+        "Payment confirmed - your tickets for {event} are ready ({code})"
     ),
     "mail_text_order_paid": (
         "Hey {name},\n\n"
         "Payment received. You're locked in for **{event}**.\n\n"
         "**Order:** {code}\n"
         "**Total paid:** {total_with_currency}\n\n"
-        "Your tickets are ready to download. Save them to your phone or print them — "
-        "you'll need them at the door.\n\n"
+        "Your tickets are ready to download. Save them to your phone or print them. "
+        "You'll need them at the door.\n\n"
         "{payment_info}\n\n"
         "**Download your tickets:**\n"
         "{url}\n\n"
         "This is happening.\n\n"
-        "— Ecube Access"
+        "- Ecube Access"
     ),
 
     # ------------------------------------------------------------------ #
-    # 4. Order changed                                                     #
+    # 4. Order changed                                                    #
     # ------------------------------------------------------------------ #
     "mail_subject_order_changed": (
         "Your order {code} for {event} has been updated"
@@ -80,7 +82,7 @@ MAIL_DEFAULTS = {
         "**Review your updated order:**\n"
         "{url}\n\n"
         "Questions? Reply to this email and we'll sort it out.\n\n"
-        "— Ecube Access"
+        "- Ecube Access"
     ),
 
     # ------------------------------------------------------------------ #
@@ -98,18 +100,18 @@ MAIL_DEFAULTS = {
         "**View order details:**\n"
         "{url}\n\n"
         "If you didn't request this cancellation or have questions, reply to this email.\n\n"
-        "— Ecube Access"
+        "- Ecube Access"
     ),
 
     # ------------------------------------------------------------------ #
-    # 6. Payment reminder — expiration warning                            #
+    # 6. Payment reminder - expiration warning                            #
     # ------------------------------------------------------------------ #
     "mail_subject_order_expire_warning": (
-        "Reminder: Payment for {event} expires on {expire_date} — order {code}"
+        "Reminder: Payment for {event} expires on {expire_date} - order {code}"
     ),
     "mail_text_order_expire_warning": (
         "Hey {name},\n\n"
-        "Quick heads-up — your order **{code}** for **{event}** is still waiting for payment.\n\n"
+        "Quick heads-up. Your order **{code}** for **{event}** is still waiting for payment.\n\n"
         "**Total due:** {total_with_currency}\n"
         "**Deadline:** {expire_date}\n\n"
         "If we don't receive payment by then, your reservation will expire and your spot "
@@ -118,14 +120,14 @@ MAIL_DEFAULTS = {
         "**Pay now:**\n"
         "{url}\n\n"
         "Don't sleep on this.\n\n"
-        "— Ecube Access"
+        "- Ecube Access"
     ),
 
     # ------------------------------------------------------------------ #
     # 7. Download reminder                                                #
     # ------------------------------------------------------------------ #
     "mail_subject_download_reminder": (
-        "{event} is coming up — download your tickets now"
+        "{event} is coming up - download your tickets now"
     ),
     "mail_text_download_reminder": (
         "Hey {name},\n\n"
@@ -136,25 +138,25 @@ MAIL_DEFAULTS = {
         "**Download your tickets:**\n"
         "{url}\n\n"
         "See you soon.\n\n"
-        "— Ecube Access"
+        "- Ecube Access"
     ),
 
     # ------------------------------------------------------------------ #
-    # 8. Waiting list — voucher available                                 #
+    # 8. Waiting list - voucher available                                 #
     # ------------------------------------------------------------------ #
     "mail_subject_waiting_list": (
-        "Your spot just opened up — {product} for {event}"
+        "Your spot just opened up - {product} for {event}"
     ),
     "mail_text_waiting_list": (
         "Hey {name},\n\n"
-        "Good news — a spot just opened up for **{product}** at **{event}**.\n\n"
+        "Good news. A spot just opened up for **{product}** at **{event}**.\n\n"
         "We're holding a voucher for you, but it won't last forever. "
         "You have **{hours} hours** to claim it before it goes to the next person in line.\n\n"
         "**Your voucher code:** {code}\n\n"
         "**Claim your spot now:**\n"
         "{url}\n\n"
         "Clock's ticking.\n\n"
-        "— Ecube Access"
+        "- Ecube Access"
     ),
 
     # ------------------------------------------------------------------ #
@@ -169,15 +171,15 @@ MAIL_DEFAULTS = {
         "{orders}\n\n"
         "Use this link to view your order status, download tickets, or make changes "
         "(if allowed by the organizer).\n\n"
-        "Didn't request this? Just ignore this email — no action needed.\n\n"
-        "— Ecube Access"
+        "Didn't request this? Just ignore this email, no action needed.\n\n"
+        "- Ecube Access"
     ),
 
     # ------------------------------------------------------------------ #
     # 10. Order requires approval                                         #
     # ------------------------------------------------------------------ #
     "mail_subject_order_placed_require_approval": (
-        "Order {code} received — awaiting approval for {event}"
+        "Order {code} received - awaiting approval for {event}"
     ),
     "mail_text_order_placed_require_approval": (
         "Hey {name},\n\n"
@@ -188,8 +190,8 @@ MAIL_DEFAULTS = {
         "No payment is needed until the order is approved.\n\n"
         "**View your order:**\n"
         "{url}\n\n"
-        "Sit tight — we'll be in touch.\n\n"
-        "— Ecube Access"
+        "Sit tight, we'll be in touch.\n\n"
+        "- Ecube Access"
     ),
 
     # ------------------------------------------------------------------ #
@@ -200,7 +202,7 @@ MAIL_DEFAULTS = {
     ),
     "mail_text_order_approved": (
         "Hey {name},\n\n"
-        "Great news — your order **{code}** for **{event}** has been approved.\n\n"
+        "Great news. Your order **{code}** for **{event}** has been approved.\n\n"
         "**Total:** {total_with_currency}\n\n"
         "{payment_info}\n\n"
         "Complete your payment to secure your tickets. "
@@ -208,14 +210,14 @@ MAIL_DEFAULTS = {
         "**View your order and pay:**\n"
         "{url}\n\n"
         "You're almost there.\n\n"
-        "— Ecube Access"
+        "- Ecube Access"
     ),
 
     # ------------------------------------------------------------------ #
     # 12. Order denied                                                    #
     # ------------------------------------------------------------------ #
     "mail_subject_order_denied": (
-        "Order {code} for {event} — not approved"
+        "Order {code} for {event} - not approved"
     ),
     "mail_text_order_denied": (
         "Hey {name},\n\n"
@@ -223,7 +225,55 @@ MAIL_DEFAULTS = {
         "{comment}\n\n"
         "No payment has been charged. If you have questions about why your order wasn't "
         "approved, reply to this email and we'll help clarify.\n\n"
-        "— Ecube Access"
+        "- Ecube Access"
+    ),
+
+    # ------------------------------------------------------------------ #
+    # 13. Order approved (free - no payment needed)                       #
+    # ------------------------------------------------------------------ #
+    "mail_subject_order_approved_free": (
+        "You're in - {event} confirmed ({code})"
+    ),
+    "mail_text_order_approved_free": (
+        "Hey {name},\n\n"
+        "Your order **{code}** for **{event}** has been approved. No payment needed, "
+        "you're all set.\n\n"
+        "Download your tickets and save them to your phone. You'll need them at the door.\n\n"
+        "**Get your tickets here:**\n"
+        "{url}\n\n"
+        "See you there.\n\n"
+        "- Ecube Access"
+    ),
+}
+
+
+# ------------------------------------------------------------------ #
+# Exclusive access email copy (used by pretix_exclusive_access plugin) #
+# These are NOT Pretix setting keys - they are rendered via Django     #
+# templates and sent through Pretix's mail_send().                     #
+# ------------------------------------------------------------------ #
+EXCLUSIVE_ACCESS_COPY = {
+    "approval_subject": (
+        "You're in - your access request has been approved"
+    ),
+    "approval_body": (
+        "Hey {full_name},\n\n"
+        "You're in. Your access request for {event_name} has been approved.\n\n"
+        "Your private access link is below. Open it on the browser or device "
+        "you'll use to complete your purchase. Don't share this link, it's yours only.\n\n"
+        "{access_link}\n\n"
+        "See you there.\n\n"
+        "- Ecube Access"
+    ),
+    "rejection_subject": (
+        "Update on your access request"
+    ),
+    "rejection_body": (
+        "Hey {full_name},\n\n"
+        "Thanks for your interest in {event_name}.\n\n"
+        "After reviewing your request, we're unable to approve your access at this time.\n\n"
+        "If you have questions, reply to this email and we'll help clarify.\n\n"
+        "- Ecube Access"
     ),
 }
 
@@ -232,7 +282,7 @@ def apply_email_defaults(organizer, force=False):
     """Write MAIL_DEFAULTS to organizer-level settings.
 
     Events inherit these automatically unless they have a per-event override
-    set in Settings → E-mail → E-mail content.
+    set in Settings > E-mail > E-mail content.
 
     Args:
         organizer: Pretix Organizer instance.

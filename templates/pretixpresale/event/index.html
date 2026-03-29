@@ -66,7 +66,7 @@
         <div class="ec-split-identity">
             <div class="ec-split-eyebrow">
                 <span class="ec-eyebrow-line"></span>
-                {% trans "Ecube Entertainment Presents" %}
+                {{ event.organizer.name }} {% trans "Presents" %}
             </div>
             <h1 class="ec-split-title">{{ ev.name }}</h1>
             <div class="ec-split-rule"></div>
@@ -186,6 +186,7 @@
         {% endif %}
 
         {% if not cart_namespace %}
+            {% eventsignal event "pretix.presale.signals.front_page_bottom" subevent=subevent request=request %}
             <div class="ec-resend-section">
                 <a class="btn btn-default btn-block" href="{% eventurl event "presale:event.resend_link" %}">
                     {% trans "Resend order link" %}
@@ -199,6 +200,244 @@
 </div>
 
 <script src="/static/pretix_event_themes/nexus-laser.js?v=20260319001"></script>
+
+{% elif preset == "aurora" %}
+
+{% if show_cart %}{% include "pretixpresale/event/fragment_cart_box.html" with open=1 %}{% endif %}
+
+<div class="ec-aurora-wrap">
+    <div class="ec-aurora-head">
+        <div class="ec-aurora-tag">
+            {{ event.organizer.name }}
+            <span class="ec-aurora-tag-line"></span>
+        </div>
+        <h1 class="ec-aurora-title">
+            {% if ev.name|lower == "resonance" %}
+            <span>RES</span><br><span class="ec-aurora-title-accent">ON</span><br><span>ANCE</span>
+            {% else %}
+            {{ ev.name }}
+            {% endif %}
+        </h1>
+        <div class="ec-aurora-sub">
+            {% if ev.settings.show_dates_on_frontpage %}{{ ev.get_date_range_display }}{% endif %}
+            {% if ev.location %}&nbsp;·&nbsp; {{ ev.location }}{% endif %}
+            {% if event.settings.show_times and ev.date_from %}&nbsp;·&nbsp; {{ ev.date_from|time:"H:i" }}{% if event.settings.show_date_to and ev.date_to %} &rarr; {{ ev.date_to|time:"H:i" }}{% endif %}{% endif %}
+        </div>
+    </div>
+
+    {% eventsignal event "pretix.presale.signals.front_page_top" request=request subevent=subevent %}
+
+    {% if ev.presale_is_running or event.settings.show_items_outside_presale_period %}
+    <form method="post" data-asynctask
+            data-asynctask-headline="{% trans "We're now trying to reserve this for you!" %}"
+            data-asynctask-text="{% blocktrans with time=event.settings.reservation_time %}Once the items are in your cart, you will have {{ time }} minutes to complete your purchase.{% endblocktrans %}"
+            action="{% eventurl request.event "presale:event.cart.add" cart_namespace=cart_namespace %}?next={{ cart_redirect|urlencode }}&next_error={{ request.path|urlencode }}">
+        {% csrf_token %}
+        <input type="hidden" name="subevent" value="{{ subevent.id|default_if_none:"" }}" />
+
+        <div class="ec-aurora-grid">
+            {% include "pretixpresale/event/fragment_product_list.html" %}
+        </div>
+
+        {% if ev.presale_is_running and display_add_to_cart %}
+        <div class="ec-aurora-cta-row">
+            <button class="btn btn-primary ec-aurora-cta-btn" type="submit" id="btn-add-to-cart">
+                {% if request.event.settings.redirect_to_checkout_directly %}
+                    {% if allfree %}{% trans "Register" context "free_tickets" %}{% else %}{% trans "Proceed with checkout" %}{% endif %}
+                {% else %}
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i> {% trans "Add to cart" %}
+                {% endif %}
+            </button>
+            {% if not cart_namespace %}
+            <a class="btn btn-default ec-aurora-resend-btn" href="{% eventurl event "presale:event.resend_link" %}">
+                {% trans "Resend order link" %}
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </form>
+    {% else %}
+    <div class="alert alert-info" style="margin:32px 52px">
+        {% if ev.presale_has_ended %}
+            {% if event.settings.presale_has_ended_text %}{{ event.settings.presale_has_ended_text|rich_text }}{% else %}{% blocktrans trimmed %}The booking period for this event is over.{% endblocktrans %}{% endif %}
+        {% else %}
+            {% blocktrans trimmed %}The booking period for this event has not yet started.{% endblocktrans %}
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if not cart_namespace %}
+        {% eventsignal event "pretix.presale.signals.front_page_bottom" subevent=subevent request=request %}
+    {% else %}
+        {% eventsignal event "pretix.presale.signals.front_page_bottom_widget" subevent=subevent request=request %}
+    {% endif %}
+</div>
+
+{% elif preset == "ember" %}
+
+{% if show_cart %}{% include "pretixpresale/event/fragment_cart_box.html" with open=1 %}{% endif %}
+
+<div class="ec-ember-wrap">
+    <div class="ec-ember-header">
+        <div class="ec-ember-eyebrow">{{ event.organizer.name }} {% trans "Presents" %}</div>
+        <div class="ec-ember-hero">
+            <div class="ec-ember-title-wrap">
+                <h1 class="ec-ember-title">
+                    {% if ev.name|lower == "resonance" %}
+                    <span>RESO</span><br><span>N<em>AN</em></span><br><span>CE</span>
+                    {% else %}
+                    {{ ev.name }}
+                    {% endif %}
+                </h1>
+            </div>
+            {% if ev.settings.show_dates_on_frontpage %}
+            <div class="ec-ember-date-block">
+                {% if ev.date_from %}
+                <div class="ec-ember-date-display">{{ ev.date_from|date:"d" }}{% if ev.date_to %}·{{ ev.date_to|date:"d" }}{% endif %}<br>{{ ev.date_from|date:"M"|upper }}</div>
+                <div class="ec-ember-date-detail">{{ ev.date_from|date:"Y" }}{% if ev.location %} · {{ ev.location }}{% endif %}</div>
+                {% else %}
+                <div class="ec-ember-date-display">{{ ev.get_date_range_display }}</div>
+                {% if ev.location %}<div class="ec-ember-date-detail">{{ ev.location }}</div>{% endif %}
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="ec-ember-body">
+        {% eventsignal event "pretix.presale.signals.front_page_top" request=request subevent=subevent %}
+
+        {% if ev.presale_is_running or event.settings.show_items_outside_presale_period %}
+        <form method="post" data-asynctask
+                data-asynctask-headline="{% trans "We're now trying to reserve this for you!" %}"
+                data-asynctask-text="{% blocktrans with time=event.settings.reservation_time %}Once the items are in your cart, you will have {{ time }} minutes to complete your purchase.{% endblocktrans %}"
+                action="{% eventurl request.event "presale:event.cart.add" cart_namespace=cart_namespace %}?next={{ cart_redirect|urlencode }}&next_error={{ request.path|urlencode }}">
+            {% csrf_token %}
+            <input type="hidden" name="subevent" value="{{ subevent.id|default_if_none:"" }}" />
+
+            <div class="ec-ember-rule">
+                <div class="ec-ember-rule-label">{% trans "Tickets" %}</div>
+                <div class="ec-ember-rule-line"></div>
+            </div>
+
+            {% include "pretixpresale/event/fragment_product_list.html" %}
+
+            {% if ev.presale_is_running and display_add_to_cart %}
+            <div class="ec-ember-cta-row">
+                <button class="btn btn-primary ec-ember-cta-btn" type="submit" id="btn-add-to-cart">
+                    {% if request.event.settings.redirect_to_checkout_directly %}
+                        {% if allfree %}{% trans "Register" context "free_tickets" %}{% else %}{% trans "Proceed with checkout" %}{% endif %}
+                    {% else %}
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> {% trans "Add to cart" %}
+                    {% endif %}
+                </button>
+                {% if not cart_namespace %}
+                <a class="btn btn-default ec-ember-resend-btn" href="{% eventurl event "presale:event.resend_link" %}">
+                    {% trans "Resend order link" %}
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </form>
+        {% else %}
+        <div class="alert alert-info" style="margin-top:24px">
+            {% if ev.presale_has_ended %}
+                {% if event.settings.presale_has_ended_text %}{{ event.settings.presale_has_ended_text|rich_text }}{% else %}{% blocktrans trimmed %}The booking period for this event is over.{% endblocktrans %}{% endif %}
+            {% else %}
+                {% blocktrans trimmed %}The booking period for this event has not yet started.{% endblocktrans %}
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if not cart_namespace %}
+            {% eventsignal event "pretix.presale.signals.front_page_bottom" subevent=subevent request=request %}
+        {% else %}
+            {% eventsignal event "pretix.presale.signals.front_page_bottom_widget" subevent=subevent request=request %}
+        {% endif %}
+    </div>
+</div>
+
+{% elif preset == "specter" %}
+
+{% if show_cart %}{% include "pretixpresale/event/fragment_cart_box.html" with open=1 %}{% endif %}
+
+<div class="ec-specter-wrap">
+    <div class="ec-specter-top">
+        <div class="ec-specter-badge">
+            <span class="ec-specter-badge-dot"></span>
+            <span class="ec-specter-badge-text">
+                {% if ev.presale_is_running %}{% trans "Presale Active" %}{% elif ev.presale_has_ended %}{% trans "Sales Closed" %}{% else %}{% trans "Coming Soon" %}{% endif %}
+            </span>
+        </div>
+        <h1 class="ec-specter-title">
+            {% if ev.name|lower == "resonance" %}
+            <span class="ec-specter-title-main">RESO</span>
+            <span class="ec-specter-title-accent">NANCE</span>
+            {% else %}
+            <span class="ec-specter-title-main">{{ ev.name }}</span>
+            {% endif %}
+        </h1>
+        <div class="ec-specter-info-row">
+            {% if ev.settings.show_dates_on_frontpage %}
+            <div class="ec-specter-info-item">{{ ev.get_date_range_display }}</div>
+            {% endif %}
+            {% if ev.location %}
+            <div class="ec-specter-info-item">{{ ev.location }}</div>
+            {% endif %}
+            {% if event.settings.show_times and ev.date_from %}
+            <div class="ec-specter-info-item">{{ ev.date_from|time:"H:i" }}{% if event.settings.show_date_to and ev.date_to %} &rarr; {{ ev.date_to|time:"H:i" }}{% endif %}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% eventsignal event "pretix.presale.signals.front_page_top" request=request subevent=subevent %}
+
+    {% if ev.presale_is_running or event.settings.show_items_outside_presale_period %}
+    <form method="post" data-asynctask
+            data-asynctask-headline="{% trans "We're now trying to reserve this for you!" %}"
+            data-asynctask-text="{% blocktrans with time=event.settings.reservation_time %}Once the items are in your cart, you will have {{ time }} minutes to complete your purchase.{% endblocktrans %}"
+            action="{% eventurl request.event "presale:event.cart.add" cart_namespace=cart_namespace %}?next={{ cart_redirect|urlencode }}&next_error={{ request.path|urlencode }}">
+        {% csrf_token %}
+        <input type="hidden" name="subevent" value="{{ subevent.id|default_if_none:"" }}" />
+
+        <div class="ec-specter-tickets">
+            <div class="ec-specter-tickets-label">{% trans "Available Tiers" %}</div>
+            {% include "pretixpresale/event/fragment_product_list.html" %}
+        </div>
+
+        {% if ev.presale_is_running and display_add_to_cart %}
+        <div class="ec-specter-cta">
+            <button class="btn btn-primary ec-specter-cta-btn" type="submit" id="btn-add-to-cart">
+                {% if request.event.settings.redirect_to_checkout_directly %}
+                    {% if allfree %}{% trans "Register" context "free_tickets" %}{% else %}{% trans "Proceed with checkout" %}{% endif %}
+                {% else %}
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i> {% trans "Add to cart" %}
+                {% endif %}
+            </button>
+            {% if not cart_namespace %}
+            <a class="btn btn-default ec-specter-resend-btn" href="{% eventurl event "presale:event.resend_link" %}">
+                {% trans "Resend order link" %}
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </form>
+    {% else %}
+    <div class="alert alert-info" style="margin:24px 52px">
+        {% if ev.presale_has_ended %}
+            {% if event.settings.presale_has_ended_text %}{{ event.settings.presale_has_ended_text|rich_text }}{% else %}{% blocktrans trimmed %}The booking period for this event is over.{% endblocktrans %}{% endif %}
+        {% else %}
+            {% blocktrans trimmed %}The booking period for this event has not yet started.{% endblocktrans %}
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if not cart_namespace %}
+        {% eventsignal event "pretix.presale.signals.front_page_bottom" subevent=subevent request=request %}
+    {% else %}
+        {% eventsignal event "pretix.presale.signals.front_page_bottom_widget" subevent=subevent request=request %}
+    {% endif %}
+</div>
 
 {% else %}
 

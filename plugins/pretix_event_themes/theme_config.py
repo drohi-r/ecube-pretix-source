@@ -10,13 +10,10 @@ MEDIA_URL = getattr(settings, "MEDIA_URL", "/media/")
 PUBLIC_SUBDIR = "pub/ecube_themes"
 
 PRESET_CHOICES = [
-    ("bg", "Black & Gold"),
-    ("rb", "Red & Black"),
-    ("mb", "Midnight & Electric Blue"),
-    ("nobo", "Nobo"),
-    ("ecube", "Ecube"),
-    ("resonance", "Resonance"),
-    ("bhn", "BHN"),
+    ("gilt", "Gilt"),
+    ("crimson", "Crimson"),
+    ("voltage", "Voltage"),
+    ("nexus", "Nexus"),
     ("aurora", "Aurora"),
     ("ember", "Ember"),
     ("specter", "Specter"),
@@ -27,27 +24,31 @@ EVENT_PRESET_CHOICES = [
 ] + PRESET_CHOICES
 
 BASE_THEME_FOR_PRESET = {
-    "bg": "bg",
-    "rb": "rb",
-    "mb": "mb",
-    "nobo": "bg",
-    "ecube": "ecube",
-    "nexus": "ecube",
-    "resonance": "rb",
-    "bhn": "rb",
+    "gilt": "gilt",
+    "crimson": "crimson",
+    "voltage": "voltage",
+    "nobo": "gilt",
+    "nexus": "nexus",
+    "resonance": "crimson",
+    "bhn": "crimson",
     "aurora": "aurora",
     "ember": "ember",
     "specter": "specter",
 }
 
 LEGACY_PRESET_ALIASES = {
-    # Keep nexus as a backward-compatible alias only. It should not appear as
-    # a distinct visible preset in new settings UI choices.
-    "nexus": "ecube",
+    "bg": "gilt",
+    "rb": "crimson",
+    "mb": "voltage",
+    "ecube": "nexus",
+    "nexus": "nexus",
+    "nobo": "gilt",
+    "resonance": "crimson",
+    "bhn": "crimson",
 }
 
 PRESET_DEFAULTS = {
-    "bg": {
+    "gilt": {
         "primary_color": "#C8A64A",
         "secondary_color": "#080808",
         "accent_color": "#F0EDE8",
@@ -55,7 +56,7 @@ PRESET_DEFAULTS = {
         "overlay_strength": 0.58,
         "ticket_variant": "standard",
     },
-    "rb": {
+    "crimson": {
         "primary_color": "#C8000A",
         "secondary_color": "#080808",
         "accent_color": "#F4E7E9",
@@ -63,7 +64,7 @@ PRESET_DEFAULTS = {
         "overlay_strength": 0.60,
         "ticket_variant": "contrast",
     },
-    "mb": {
+    "voltage": {
         "primary_color": "#0BA7FF",
         "secondary_color": "#040A14",
         "accent_color": "#D6F0FF",
@@ -79,11 +80,11 @@ PRESET_DEFAULTS = {
         "overlay_strength": 0.50,
         "ticket_variant": "minimal",
     },
-    "ecube": {
-        "primary_color": "#07B6FF",
-        "secondary_color": "#07111D",
-        "accent_color": "#C9F4FF",
-        "text_color": "#F2FBFF",
+    "nexus": {
+        "primary_color": "#C8000A",
+        "secondary_color": "#0A0A0A",
+        "accent_color": "#F4E7E9",
+        "text_color": "#F0EDE8",
         "overlay_strength": 0.48,
         "ticket_variant": "split",
     },
@@ -167,13 +168,13 @@ def canonical_preset(value: str) -> str:
 
 def preset_to_base_theme(value: str) -> str:
     value = canonical_preset(value)
-    return BASE_THEME_FOR_PRESET.get(value, "bg")
+    return BASE_THEME_FOR_PRESET.get(value, "gilt")
 
 
 def preset_label(value: str) -> str:
     mapping = dict(PRESET_CHOICES)
-    value = canonical_preset(value or "bg")
-    return mapping.get(value, "Black & Gold")
+    value = canonical_preset(value or "gilt")
+    return mapping.get(value, "Gilt")
 
 
 def public_media_url(path: str) -> str:

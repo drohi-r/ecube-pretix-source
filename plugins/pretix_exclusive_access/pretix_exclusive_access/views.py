@@ -32,8 +32,6 @@ from .forms import (
     get_exclusive_access_form_config,
 )
 from .models import ExclusiveAccessApplication, ApplicationStatus
-from .services import approve_application as legacy_approve_application
-from .services import reject_application as legacy_reject_application
 
 
 class ExclusiveAccessSettingsForm(forms.Form):
@@ -51,7 +49,7 @@ class ExclusiveAccessSettingsForm(forms.Form):
     approval_email_subject = forms.CharField(
         required=True,
         max_length=255,
-        initial=_("You're in — your access request has been approved"),
+        initial=_("You're in - your access request has been approved"),
         label=_("Approval email subject")
     )
     rejection_email_subject = forms.CharField(
@@ -105,8 +103,8 @@ class ExclusiveAccessSettingsView(EventSettingsViewMixin, FormView):
             ) or 7,
             "approval_email_subject": self.request.event.settings.get(
                 "exclusive_access_approval_email_subject",
-                default="You're in — your access request has been approved",
-            ) or "You're in — your access request has been approved",
+                default="You're in - your access request has been approved",
+            ) or "You're in - your access request has been approved",
             "rejection_email_subject": self.request.event.settings.get(
                 "exclusive_access_rejection_email_subject",
                 default="Update on your access request",
@@ -215,7 +213,7 @@ class RequestAccessView(EventViewMixin, View):
 
             selected_item = form.cleaned_data.get("item") or form.cleaned_data.get("requested_item")
             if not selected_item:
-                # Item field may be hidden — auto-assign first protected item
+                # Item field may be hidden - auto-assign first protected item
                 protected = list(self.get_protected_items()[:1])
                 if protected:
                     selected_item = protected[0]
@@ -270,12 +268,15 @@ class ApprovedAccessView(EventViewMixin, View):
             status=ApplicationStatus.APPROVED,
         )
 
+        event_url = "/{}/{}/".format(request.event.organizer.slug, request.event.slug)
+
         response = render(
             request,
             self.template_name,
             {
                 "event": request.event,
                 "application": application,
+                "event_url": event_url,
             },
         )
         response.set_cookie(
@@ -349,15 +350,26 @@ class ApplicationListView(EventPermissionRequiredMixin, View):
         date_field = "submitted_at" if hasattr(ExclusiveAccessApplication, "submitted_at") else "created_at"
         recent_since = timezone.now() - timedelta(days=7)
 
-        shown_count = qs.count()
+        from django.db.models import Sum as _Sum  # noqa: F811
+
+        agg = qs.aggregate(
+            shown_count=Count("id"),
+            pending_count=Count("id", filter=Q(status=ApplicationStatus.PENDING)),
+            approved_count=Count("id", filter=Q(status=ApplicationStatus.APPROVED)),
+            rejected_count=Count("id", filter=Q(status=ApplicationStatus.REJECTED)),
+            recent_count=Count("id", filter=Q(**{f"{date_field}__gte": recent_since})),
+            missing_photo_count=Count("id", filter=Q(Q(photo="") | Q(photo__isnull=True))),
+            linked_order_count=Count("id", filter=Q(approved_order_position__isnull=False)),
+        )
+        shown_count = agg["shown_count"]
         total_all = base_qs.count()
-        pending_count = qs.filter(status=ApplicationStatus.PENDING).count()
-        approved_count = qs.filter(status=ApplicationStatus.APPROVED).count()
-        rejected_count = qs.filter(status=ApplicationStatus.REJECTED).count()
+        pending_count = agg["pending_count"]
+        approved_count = agg["approved_count"]
+        rejected_count = agg["rejected_count"]
         approval_rate = (approved_count / shown_count * 100.0) if shown_count else 0.0
-        recent_count = qs.filter(**{f"{date_field}__gte": recent_since}).count()
-        missing_photo_count = qs.filter(Q(photo="") | Q(photo__isnull=True)).count()
-        linked_order_count = qs.filter(approved_order_position__isnull=False).count()
+        recent_count = agg["recent_count"]
+        missing_photo_count = agg["missing_photo_count"]
+        linked_order_count = agg["linked_order_count"]
 
         item_rows = [
             {"label": row["item__name"] or "-", "count": row["total"]}
@@ -367,9 +379,14 @@ class ApplicationListView(EventPermissionRequiredMixin, View):
         gender_rows = []
         try:
             gender_choices = dict(ExclusiveAccessApplication._meta.get_field("gender").choices)
+            gender_counts = {
+                row["gender"]: row["total"]
+                for row in qs.values("gender").annotate(total=Count("id"))
+            }
             for key, label in gender_choices.items():
-                gender_rows.append({"label": label, "count": qs.filter(gender=key).count()})
-            gender_rows.append({"label": _("Unspecified"), "count": qs.filter(Q(gender="") | Q(gender__isnull=True)).count()})
+                gender_rows.append({"label": label, "count": gender_counts.get(key, 0)})
+            unspecified = sum(v for k, v in gender_counts.items() if not k)
+            gender_rows.append({"label": _("Unspecified"), "count": unspecified})
         except Exception:
             gender_rows = []
 
@@ -496,14 +513,13 @@ class ApplicationListView(EventPermissionRequiredMixin, View):
                         skipped_count += 1
                         continue
                     try:
-                        legacy_approve_application(application, request.user)
                         approve_application_v11(
                             application,
                             reviewed_by=request.user,
                             guest_category=guest_category,
                             status_reason=status_reason,
                             internal_note=internal_note,
-                            send_email=False,
+                            send_email=True,
                         )
                         approved_count += 1
                     except Exception:
@@ -528,12 +544,12 @@ class ApplicationListView(EventPermissionRequiredMixin, View):
                         skipped_count += 1
                         continue
                     try:
-                        legacy_reject_application(application, request.user)
                         reject_application_v11(
                             application,
                             reviewed_by=request.user,
                             status_reason=status_reason,
                             internal_note=internal_note,
+                            send_email=True,
                         )
                         rejected_count += 1
                     except Exception:
@@ -553,14 +569,13 @@ class ApplicationListView(EventPermissionRequiredMixin, View):
                 pk=request.POST.get("application_id"),
             )
             try:
-                legacy_approve_application(application, request.user)
                 approve_application_v11(
                     application,
                     reviewed_by=request.user,
                     guest_category=guest_category,
                     status_reason=status_reason,
                     internal_note=internal_note,
-                    send_email=False,
+                    send_email=True,
                 )
                 messages.success(request, _("Application approved and email sent."))
             except Exception as e:
@@ -573,12 +588,12 @@ class ApplicationListView(EventPermissionRequiredMixin, View):
                 pk=request.POST.get("application_id"),
             )
             try:
-                legacy_reject_application(application, request.user)
                 reject_application_v11(
                     application,
                     reviewed_by=request.user,
                     status_reason=status_reason,
                     internal_note=internal_note,
+                    send_email=True,
                 )
                 messages.success(request, _("Application rejected and email sent."))
             except Exception as e:
@@ -630,14 +645,13 @@ class ApplicationDetailView(EventPermissionRequiredMixin, View):
 
         if action == "approve":
             try:
-                legacy_approve_application(application, request.user)
                 approve_application_v11(
                     application,
                     reviewed_by=request.user,
                     guest_category=guest_category,
                     status_reason=status_reason,
                     internal_note=internal_note,
-                    send_email=False,
+                    send_email=True,
                 )
                 messages.success(request, _("Application approved and access link sent."))
             except Exception as e:
@@ -645,16 +659,25 @@ class ApplicationDetailView(EventPermissionRequiredMixin, View):
 
         elif action == "reject":
             try:
-                legacy_reject_application(application, request.user)
                 reject_application_v11(
                     application,
                     reviewed_by=request.user,
                     status_reason=status_reason,
                     internal_note=internal_note,
+                    send_email=True,
                 )
                 messages.success(request, _("Application rejected and email sent."))
             except Exception as e:
                 messages.error(request, _("Rejection email failed: %(error)s") % {"error": str(e)})
+
+        elif action == "resend_notification":
+            try:
+                from .services import send_notification
+                send_notification(application)
+                messages.success(request, _("Notification resent."))
+            except Exception as e:
+                logger.exception("Resend notification failed for application %s", application.pk)
+                messages.error(request, _("Failed to resend notification: %(error)s") % {"error": str(e)})
 
         elif action == "save":
             changed = False

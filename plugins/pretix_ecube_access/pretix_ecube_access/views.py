@@ -275,14 +275,23 @@ def control_ops_dashboard(request, organizer, event):
     recent_logs = list(logs_qs.filter(scanned_at__gte=recent_window)[:400])
     logs = list(logs_qs[:32])
 
-    count_total = logs_qs.count()
-    count_allowed = logs_qs.filter(result__in=allowed_results).count()
-    count_access_pending = logs_qs.filter(result="pending").count()
+    from django.db.models import Count, Q as _Q
+
+    log_agg = logs_qs.aggregate(
+        count_total=Count("id"),
+        count_allowed=Count("id", filter=_Q(result__in=allowed_results)),
+        count_access_pending=Count("id", filter=_Q(result="pending")),
+        count_credentials=Count("id", filter=_Q(object_type=EcubeAccessScanLog.TYPE_CREDENTIAL)),
+        count_tickets=Count("id", filter=_Q(object_type=EcubeAccessScanLog.TYPE_TICKET)),
+    )
+    count_total = log_agg["count_total"]
+    count_allowed = log_agg["count_allowed"]
+    count_access_pending = log_agg["count_access_pending"]
     count_access_blocked = max(count_total - count_allowed - count_access_pending, 0)
     count_denied = count_access_blocked + count_access_pending
 
-    count_credentials = logs_qs.filter(object_type=EcubeAccessScanLog.TYPE_CREDENTIAL).count()
-    count_tickets = logs_qs.filter(object_type=EcubeAccessScanLog.TYPE_TICKET).count()
+    count_credentials = log_agg["count_credentials"]
+    count_tickets = log_agg["count_tickets"]
     count_signal_other = max(count_total - count_credentials - count_tickets, 0)
 
     count_active_doors = sum(1 for d in doors if d.is_active)
@@ -302,12 +311,19 @@ def control_ops_dashboard(request, organizer, event):
     count_inside_signal = max(entry_allowed - exit_allowed, 0)
 
     orders_qs = Order.objects.filter(event=evt)
-    count_paid_orders = orders_qs.filter(status="p").count()
-    count_pending_orders = orders_qs.filter(status="n").count()
-    count_expired_orders = orders_qs.filter(status="e").count()
-    count_canceled_orders = orders_qs.filter(status="c").count()
+    order_agg = orders_qs.aggregate(
+        count_paid_orders=Count("id", filter=_Q(status="p")),
+        count_pending_orders=Count("id", filter=_Q(status="n")),
+        count_expired_orders=Count("id", filter=_Q(status="e")),
+        count_canceled_orders=Count("id", filter=_Q(status="c")),
+        gross_paid_raw=Sum("total", filter=_Q(status="p")),
+    )
+    count_paid_orders = order_agg["count_paid_orders"]
+    count_pending_orders = order_agg["count_pending_orders"]
+    count_expired_orders = order_agg["count_expired_orders"]
+    count_canceled_orders = order_agg["count_canceled_orders"]
 
-    gross_paid_raw = orders_qs.filter(status="p").aggregate(total=Sum("total"))["total"] or Decimal("0.00")
+    gross_paid_raw = order_agg["gross_paid_raw"] or Decimal("0.00")
     gross_paid = f"{gross_paid_raw:.2f}"
 
     count_paid_positions = OrderPosition.objects.filter(order__event=evt, order__status="p").count()

@@ -1,0 +1,113 @@
+{% extends "pretixcontrol/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Portal Dashboard" %}{% endblock %}
+
+{% block content %}
+<h1>{% trans "Portal Dashboard" %}</h1>
+<p class="text-muted">{% trans "Manage portal hero, ordering, visibility, and images for all events." %}</p>
+
+<style>
+    .pd-table { width: 100%; border-collapse: collapse; }
+    .pd-table th { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; padding: 8px 6px; border-bottom: 2px solid #444; white-space: nowrap; }
+    .pd-table td { padding: 10px 6px; border-bottom: 1px solid #333; vertical-align: middle; }
+    .pd-table tr:hover td { background: rgba(255,255,255,.03); }
+    .pd-name { font-weight: 600; }
+    .pd-slug { font-size: 11px; opacity: .5; }
+    .pd-center { text-align: center; }
+    .pd-sort { width: 60px; }
+    .pd-sel { min-width: 100px; }
+    .pd-file { font-size: 11px; max-width: 140px; }
+    .pd-thumb { width: 140px; height: 80px; object-fit: cover; border-radius: 4px; border: 1px solid #444; display: block; }
+    .pd-no-img { font-size: 11px; opacity: .4; }
+    .pd-rm { font-size: 11px; margin-top: 2px; }
+</style>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="table-responsive">
+    <table class="pd-table">
+        <thead>
+            <tr>
+                <th>{% trans "Event" %}</th>
+                <th class="pd-center">{% trans "Hero" %}</th>
+                <th>{% trans "Sort" %}</th>
+                <th>{% trans "Visibility" %}</th>
+                <th class="pd-center">{% trans "Image" %}</th>
+                <th>{% trans "Category" %}</th>
+                <th>{% trans "Label" %}</th>
+                <th>{% trans "Custom image" %}</th>
+                <th>{% trans "Preview" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in event_rows %}
+            <tr>
+                <td>
+                    <span class="pd-name">{{ row.event.name }}</span><br>
+                    <span class="pd-slug">{{ row.event.slug }}{% if row.event.date_from %} · {{ row.event.date_from|date:"d M Y" }}{% endif %}</span>
+                </td>
+                <td class="pd-center">
+                    <input type="radio" name="hero_event" value="{{ row.event.pk }}"
+                           {% if row.event.pk == hero_event_id %}checked{% endif %}>
+                </td>
+                <td>
+                    <input type="number" name="portal_sort_order__{{ row.event.slug }}"
+                           value="{{ row.sort_order }}" min="0" class="form-control input-sm pd-sort">
+                </td>
+                <td>
+                    <select name="portal_visibility__{{ row.event.slug }}" class="form-control input-sm pd-sel">
+                        {% for val, label in visibility_choices %}
+                        <option value="{{ val }}" {% if val == row.visibility %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td class="pd-center">
+                    <input type="checkbox" name="portal_show_image__{{ row.event.slug }}"
+                           {% if row.show_image %}checked{% endif %}>
+                </td>
+                <td>
+                    <select name="portal_category__{{ row.event.slug }}" class="form-control input-sm pd-sel">
+                        {% for val, label in category_choices %}
+                        <option value="{{ val }}" {% if val == row.category %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <select name="portal_label__{{ row.event.slug }}" class="form-control input-sm pd-sel">
+                        {% for val, label in label_choices %}
+                        <option value="{{ val }}" {% if val == row.label %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <input type="file" name="portal_custom_image__{{ row.event.slug }}"
+                           accept="image/*" class="pd-file">
+                    {% if row.custom_image_url %}
+                    <label class="pd-rm">
+                        <input type="checkbox" name="remove_image__{{ row.event.slug }}" value="1">
+                        {% trans "Remove" %}
+                    </label>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if row.image_url %}
+                    <img src="{{ row.image_url }}" alt="" class="pd-thumb">
+                    {% else %}
+                    <span class="pd-no-img">—</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="9" class="text-muted pd-center">{% trans "No events found." %}</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+    <div style="margin-top:15px;">
+        <button type="submit" class="btn btn-primary btn-save">{% trans "Save all" %}</button>
+    </div>
+</form>
+{% endblock %}

@@ -62,9 +62,8 @@ def approve_application_v11(
 
     if send_email:
         try:
-            from . import services as legacy_services
-            if hasattr(legacy_services, "send_approval_email"):
-                legacy_services.send_approval_email(application)
+            from .services import send_approval_email
+            send_approval_email(application)
         except Exception:
             logger.exception("Failed to send approval email for application %s", application.pk)
 
@@ -77,6 +76,7 @@ def reject_application_v11(
     reviewed_by=None,
     status_reason=None,
     internal_note=None,
+    send_email=False,
 ):
     application.status = "rejected"
     _set_review_metadata(
@@ -86,6 +86,14 @@ def reject_application_v11(
         internal_note=internal_note,
     )
     application.save()
+
+    if send_email:
+        try:
+            from .services import send_rejection_email
+            send_rejection_email(application)
+        except Exception:
+            logger.exception("Failed to send rejection email for application %s", application.pk)
+
     return application
 
 

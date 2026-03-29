@@ -1,11 +1,12 @@
 Hey {{ application.full_name }},
 
-You're in — your access request for {{ event.name }} has been approved.
+You're in. Your access request for {{ event.name }} has been approved.
 
-Your private access link is below. Open it on the browser or device you'll use to complete your purchase. Don't share this link — it's yours only.
+Your private access link is below. Open it on the browser or device you'll use to complete your purchase. Don't share this link, it's yours only.
 
 {{ access_link }}
 
 See you there.
 
-— Ecube Access
+- Ecube Access
+

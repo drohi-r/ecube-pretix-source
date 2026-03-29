@@ -73,6 +73,8 @@ if (document.body) {
     var nodes = Array.prototype.slice.call(document.querySelectorAll("a, button"));
     nodes.forEach(function (el) {
       if (el.querySelector(".ecube-inline-nav-icon")) return;
+      // Skip settings sub-nav items (event settings children)
+      if (el.closest(".nav-second-level")) return;
 
       var txt = (el.textContent || "").replace(/\s+/g, " ").trim().toLowerCase();
       if (txt !== "themes" && txt !== "custom theme") return;

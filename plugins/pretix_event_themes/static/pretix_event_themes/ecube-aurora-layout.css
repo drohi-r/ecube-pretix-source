@@ -1,20 +1,4 @@
-html body .main-box,
-html body .container.main-box,
-html body div.container.main-box {
-    margin: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    border-radius: 0 !important;
-    max-width: 100% !important;
-    width: 100% !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    --pretix-body-bg-white-0: 0 !important;
-    --pretix-body-bg-white-1: 0 !important;
-}
+/* Layout reset is in ecube-layout-reset.css (loaded by signals.py) */
 .ec-aurora-wrap{padding:0 52px 56px;position:relative;z-index:1;min-height:calc(100vh - 120px)}
 .ec-aurora-head{padding-top:56px;margin-bottom:40px}
 .ec-aurora-tag{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:#7c3aed;margin-bottom:20px;display:flex;align-items:center;gap:10px}

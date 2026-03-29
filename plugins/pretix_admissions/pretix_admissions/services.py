@@ -1,7 +1,10 @@
+import logging
 import secrets
 
 from django.db import transaction
 from django.utils import timezone
+
+logger = logging.getLogger(__name__)
 
 from .models import AdmissionCredential, AdmissionScanEvent
 

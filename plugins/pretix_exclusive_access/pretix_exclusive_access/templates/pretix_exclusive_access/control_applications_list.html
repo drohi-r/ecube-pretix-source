@@ -2,8 +2,8 @@
 {% load i18n %}
 {% block custom_header %}
     {{ block.super }}
-    <link rel="stylesheet" href="/static/pretix_exclusive_access/exclusive-access-control.css?v=20260324-v7">
-    <link rel="stylesheet" href="/static/pretix_exclusive_access/control-applications.css?v=20260324-v7">
+    <link rel="stylesheet" href="/static/pretix_exclusive_access/exclusive-access-control.css?v=20260325-v11">
+    <link rel="stylesheet" href="/static/pretix_exclusive_access/control-applications.css?v=20260325-v11">
 {% endblock %}
 
 {% block content %}
@@ -187,121 +187,85 @@
     </div>
 </form>
 
-<div class="panel panel-default">
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover table-applications">
-            <thead>
-                <tr>
-                    <th class="select-cell"></th>
-                    <th>{% trans "Photo" %}</th>
-                    <th>{% trans "Name" %}</th>
-                    <th>{% trans "Status" %}</th>
-                    <th>{% trans "Guest category" %}</th>
-                    <th>{% trans "Item" %}</th>
-                    <th>{% trans "Email" %}</th>
-                    <th>{% trans "Phone" %}</th>
-                    <th>{% trans "Instagram / Social" %}</th>
-                    <th>{% trans "Submitted" %}</th>
-                    <th>{% trans "Reviewed by" %}</th>
-                    <th>{% trans "Linked order" %}</th>
-                    <th style="min-width:220px;">{% trans "Actions" %}</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for a in applications %}
-                <tr>
-                    <td class="select-cell">
-                        <input type="checkbox" name="selected_applications" value="{{ a.pk }}" form="bulk-actions-form">
-                    </td>
-                    <td style="width:180px;min-width:180px;max-width:180px;vertical-align:middle;">
-                        {% if a.photo %}
-                            <a href="{{ a.photo.url }}" target="_blank"
-                               style="display:block;width:160px;height:160px;min-width:160px;min-height:160px;max-width:160px;max-height:160px;overflow:hidden;border-radius:8px;border:1px solid #ddd;background:#f5f5f5;">
-                                <img
-                                    src="{{ a.photo.url }}"
-                                    alt="{{ a.full_name }}"
-                                    width="160"
-                                    height="160"
-                                    style="width:160px !important;height:160px !important;min-width:160px !important;min-height:160px !important;max-width:160px !important;max-height:160px !important;object-fit:cover !important;display:block !important;margin:0 !important;border:0 !important;"
-                                >
-                            </a>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <strong>{{ a.full_name }}</strong>
-                        {% if a.gender %}
-                            <br><small class="text-muted">{% trans "Gender" %}: {{ a.get_gender_display|default:a.gender }}</small>
-                        {% endif %}
-                        {% if a.referred_by %}
-                            <br><small class="text-muted">{% trans "Referred by" %}: {{ a.referred_by }}</small>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <span class="status-pill status-{{ a.status }}">{{ a.get_status_display }}</span>
-                    </td>
-                    <td>{{ a.guest_category|default:"-" }}</td>
-                    <td>{{ a.item.name }}</td>
-                    <td>{{ a.email }}</td>
-                    <td>{{ a.phone|default:"-" }}</td>
-                    <td>{{ a.instagram_handle|default:"-" }}</td>
-                    <td>{{ a.created_at }}</td>
-                    <td>{{ a.reviewed_by|default:"-" }}</td>
-                    <td>{{ a.approved_order_code|default:"-" }}</td>
-                    <td>
-                        <div class="action-stack">
-                            <a class="btn btn-primary btn-sm"
-                               href="{% url 'plugins:pretix_exclusive_access:application_detail' organizer=event.organizer.slug event=event.slug application_id=a.pk %}">
-                                {% trans "Review" %}
-                            </a>
+<div class="app-grid">
+    {% for a in applications %}
+    <div class="app-card app-card--{{ a.status }}">
+        <label class="app-card-check">
+            <input type="checkbox" name="selected_applications" value="{{ a.pk }}" form="bulk-actions-form">
+        </label>
 
-                            {% if a.status != "approved" %}
-                            <form method="post" action="{% url 'plugins:pretix_exclusive_access:applications' organizer=event.organizer.slug event=event.slug %}" style="display:inline;">
-                                {% csrf_token %}
-                                <input type="hidden" name="application_id" value="{{ a.pk }}">
-                                <input type="hidden" name="action" value="approve">
-                                <input type="hidden" name="guest_category" value="{{ a.guest_category|default:'' }}">
-                                <input type="hidden" name="status_reason" value="{{ a.status_reason|default:'' }}">
-                                <input type="hidden" name="internal_note" value="{{ a.internal_note|default:'' }}">
-                                <button type="submit" class="btn btn-success btn-sm">{% trans "Approve" %}</button>
-                            </form>
-                            {% endif %}
+        <div class="app-card-photo">
+            {% if a.photo %}
+                <a href="{{ a.photo.url }}" target="_blank">
+                    <img src="{{ a.photo.url }}" alt="{{ a.full_name }}">
+                </a>
+            {% else %}
+                <div class="app-card-nophoto">{% trans "No photo" %}</div>
+            {% endif %}
+        </div>
 
-                            {% if a.status != "rejected" %}
-                            <form method="post" action="{% url 'plugins:pretix_exclusive_access:applications' organizer=event.organizer.slug event=event.slug %}" style="display:inline;">
-                                {% csrf_token %}
-                                <input type="hidden" name="application_id" value="{{ a.pk }}">
-                                <input type="hidden" name="action" value="reject">
-                                <input type="hidden" name="guest_category" value="{{ a.guest_category|default:'' }}">
-                                <input type="hidden" name="status_reason" value="{{ a.status_reason|default:'' }}">
-                                <input type="hidden" name="internal_note" value="{{ a.internal_note|default:'' }}">
-                                <button type="submit" class="btn btn-danger btn-sm">{% trans "Reject" %}</button>
-                            </form>
-                            {% endif %}
-                        </div>
-                    </td>
-                </tr>
+        <div class="app-card-body">
+            <div class="app-card-header">
+                <span class="app-card-name">{{ a.full_name }}</span>
+                <span class="status-pill status-{{ a.status }}">{{ a.get_status_display }}</span>
+            </div>
 
-                {% if a.notes or a.status_reason %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td colspan="11">
-                        {% if a.notes %}
-                            <div><strong>{% trans "Notes" %}:</strong> {{ a.notes }}</div>
-                        {% endif %}
-                        {% if a.status_reason %}
-                            <div class="small-muted"><strong>{% trans "Status reason" %}:</strong> {{ a.status_reason }}</div>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endif %}
-            {% empty %}
-                <tr>
-                    <td colspan="13" class="text-center text-muted">{% trans "No applications found." %}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+            <div class="app-card-details">
+                {% if a.gender %}<div class="app-card-detail"><span class="detail-label">{% trans "Gender" %}</span> {{ a.get_gender_display|default:a.gender }}</div>{% endif %}
+                <div class="app-card-detail"><span class="detail-label">{% trans "Item" %}</span> {{ a.item.name }}</div>
+                {% if a.guest_category %}<div class="app-card-detail"><span class="detail-label">{% trans "Category" %}</span> {{ a.guest_category }}</div>{% endif %}
+                <div class="app-card-detail"><span class="detail-label">{% trans "Email" %}</span> {{ a.email }}</div>
+                {% if a.phone %}<div class="app-card-detail"><span class="detail-label">{% trans "Phone" %}</span> {{ a.phone }}</div>{% endif %}
+                {% if a.instagram_handle %}<div class="app-card-detail"><span class="detail-label">{% trans "Social" %}</span> {{ a.instagram_handle }}</div>{% endif %}
+                {% if a.referred_by %}<div class="app-card-detail"><span class="detail-label">{% trans "Ref" %}</span> {{ a.referred_by }}</div>{% endif %}
+            </div>
+
+            {% if a.notes or a.status_reason %}
+            <div class="app-card-notes">
+                {% if a.notes %}<div class="app-card-note">{{ a.notes }}</div>{% endif %}
+                {% if a.status_reason %}<div class="app-card-note app-card-note--reason">{{ a.status_reason }}</div>{% endif %}
+            </div>
+            {% endif %}
+
+            <div class="app-card-footer">
+                <span class="app-card-date">{{ a.created_at }}</span>
+                {% if a.reviewed_by %}<span class="app-card-reviewer">{{ a.reviewed_by }}</span>{% endif %}
+            </div>
+        </div>
+
+        <div class="app-card-actions">
+            <a class="app-btn app-btn--review"
+               href="{% url 'plugins:pretix_exclusive_access:application_detail' organizer=event.organizer.slug event=event.slug application_id=a.pk %}">
+                {% trans "Review" %}
+            </a>
+
+            {% if a.status != "approved" %}
+            <form method="post" action="{% url 'plugins:pretix_exclusive_access:applications' organizer=event.organizer.slug event=event.slug %}">
+                {% csrf_token %}
+                <input type="hidden" name="application_id" value="{{ a.pk }}">
+                <input type="hidden" name="action" value="approve">
+                <input type="hidden" name="guest_category" value="{{ a.guest_category|default:'' }}">
+                <input type="hidden" name="status_reason" value="{{ a.status_reason|default:'' }}">
+                <input type="hidden" name="internal_note" value="{{ a.internal_note|default:'' }}">
+                <button type="submit" class="app-btn app-btn--approve">{% trans "Approve" %}</button>
+            </form>
+            {% endif %}
+
+            {% if a.status != "rejected" %}
+            <form method="post" action="{% url 'plugins:pretix_exclusive_access:applications' organizer=event.organizer.slug event=event.slug %}">
+                {% csrf_token %}
+                <input type="hidden" name="application_id" value="{{ a.pk }}">
+                <input type="hidden" name="action" value="reject">
+                <input type="hidden" name="guest_category" value="{{ a.guest_category|default:'' }}">
+                <input type="hidden" name="status_reason" value="{{ a.status_reason|default:'' }}">
+                <input type="hidden" name="internal_note" value="{{ a.internal_note|default:'' }}">
+                <button type="submit" class="app-btn app-btn--reject">{% trans "Reject" %}</button>
+            </form>
+            {% endif %}
+        </div>
     </div>
+    {% empty %}
+    <div class="app-grid-empty">{% trans "No applications found." %}</div>
+    {% endfor %}
 </div>
 {% endblock %}

@@ -450,6 +450,39 @@ html[data-ecube-control-theme="1"] .form-signin {
     padding: 28px !important;
 }
 
+/* Login auth backend pills (native / OIDC tabs) */
+html[data-ecube-control-theme="1"] .form-signin .nav-pills {
+    display: flex !important;
+    gap: 8px !important;
+    justify-content: center !important;
+    margin-bottom: 4px !important;
+}
+html[data-ecube-control-theme="1"] .form-signin .nav-pills > li {
+    float: none !important;
+}
+html[data-ecube-control-theme="1"] .form-signin .nav-pills > li > a {
+    border-radius: var(--ec-r) !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    color: var(--ec-fg-2) !important;
+    background: var(--ec-bg-2) !important;
+    border: 1px solid var(--ec-border) !important;
+    transition: all var(--ec-fast) !important;
+}
+html[data-ecube-control-theme="1"] .form-signin .nav-pills > li.active > a,
+html[data-ecube-control-theme="1"] .form-signin .nav-pills > li.active > a:hover,
+html[data-ecube-control-theme="1"] .form-signin .nav-pills > li.active > a:focus {
+    background: var(--ec-red) !important;
+    border-color: var(--ec-red) !important;
+    color: #fff !important;
+}
+html[data-ecube-control-theme="1"] .form-signin .nav-pills > li > a:hover {
+    background: var(--ec-bg-3) !important;
+    color: var(--ec-fg) !important;
+}
+
 
 /* ── 8. BUTTONS ───────────────────────────────────────────────── */
 

@@ -84,6 +84,26 @@
   --ease: cubic-bezier(.16, 1, .3, 1);
 }
 
+/* ── Kill purple focus outlines & tap highlight (browser/Pretix default) ── */
+.portal-page * {
+  -webkit-tap-highlight-color: transparent;
+}
+.portal-page *:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.portal-page *:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.portal-page a:focus-visible,
+.portal-page button:focus-visible,
+.portal-page input:focus-visible,
+.portal-page select:focus-visible {
+  outline: 2px solid var(--rd);
+  outline-offset: 2px;
+}
+
 /* ── Break out of Pretix container ── */
 /* Pretix wraps {% block page %} in .container.main-box > main#content.
    We must escape that constrained container for full-bleed layout. */
@@ -329,6 +349,18 @@ html {
   background: var(--bk);
 }
 
+img.hero-bg-img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: .35;
+  pointer-events: none;
+}
+
 .hero-canvas {
   position: absolute;
   bottom: 0;
@@ -336,23 +368,23 @@ html {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 0;
-  opacity: .6;
+  z-index: 1;
+  opacity: .45;
 }
 
 .hero-fog {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   background:
-    radial-gradient(ellipse 60% 70% at 30% 90%, rgba(200, 0, 10, .05) 0%, transparent 70%),
-    linear-gradient(180deg, rgba(8, 8, 8, .3) 0%, transparent 40%, rgba(8, 8, 8, .7) 100%);
+    radial-gradient(ellipse 60% 70% at 30% 90%, rgba(200, 0, 10, .08) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(8, 8, 8, .4) 0%, transparent 40%, rgba(8, 8, 8, .8) 100%);
   pointer-events: none;
 }
 
 .hero-inner {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: 100%;
   max-width: 1300px;
   margin: 0 auto;
@@ -572,7 +604,7 @@ html {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  z-index: 2;
+  z-index: 3;
 }
 
 .scroll-line {
@@ -601,7 +633,7 @@ html {
 
 .marquee-track {
   display: inline-flex;
-  animation: ticker 40s linear infinite;
+  animation: ticker 80s linear infinite;
 }
 
 .m-item {
@@ -843,11 +875,25 @@ html {
 .ecard-img-bg {
   position: absolute;
   inset: 0;
+  background-size: cover;
+  background-position: center;
   transition: transform .7s var(--ease);
 }
 
-.ecard:hover .ecard-img-bg {
+.ecard:hover .ecard-img-bg,
+.ecard:hover .ecard-img-photo {
   transform: scale(1.05);
+}
+
+.ecard-img-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  transition: transform .7s var(--ease);
 }
 
 .ecard-img-grid {

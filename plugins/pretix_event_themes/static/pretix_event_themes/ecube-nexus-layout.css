@@ -249,6 +249,10 @@
     border-bottom: 1px solid rgba(240,237,232,0.05);
 }
 
+.ec-top-signal-section:empty {
+    display: none;
+}
+
 .ec-section-label {
     font-family: 'Outfit', sans-serif;
     font-size: 0.58rem;
@@ -257,6 +261,24 @@
     text-transform: uppercase;
     color: #555;
     margin-bottom: 14px;
+}
+
+/* ── EXCLUSIVE ACCESS CTA ALIGNMENT ─────────────────────────── */
+.ec-split-right .exclusive-access-cta {
+    margin: 0 !important;
+    padding: 24px 40px !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+}
+
+.ec-split-right .exclusive-access-cta h3,
+.ec-split-right .exclusive-access-cta p {
+    max-width: 48rem;
+}
+
+.ec-split-right .exclusive-access-cta .exclusive-access-btn {
+    margin-top: 4px !important;
 }
 
 /* ── PRODUCT LIST OVERRIDES (inside right panel) ─────────────── */

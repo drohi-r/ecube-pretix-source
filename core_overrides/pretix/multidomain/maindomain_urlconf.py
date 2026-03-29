@@ -1,7 +1,13 @@
 #
-# Repo-managed override of the Pretix main-domain URL configuration.
-# This keeps the installation-wide ticketing portal at the public root URL
-# while preserving Pretix's normal organizer and event URL handling.
+# CORE OVERRIDE — Cannot be fully moved to a plugin.
+#
+# Pretix's URL dispatcher loads plugin urlpatterns AFTER the wildcard
+# organizer/event patterns. The ticketing portal's root-level routes
+# must come BEFORE those wildcards to intercept requests. Moving this
+# to a plugin would require a Pretix core change to URL loading order.
+#
+# This file keeps the ticketing portal at the public root URL while
+# preserving Pretix's normal organizer and event URL handling.
 #
 
 import importlib.util

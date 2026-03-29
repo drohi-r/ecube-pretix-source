@@ -55,10 +55,10 @@ _FONTS_READY = False
 
 class EcubeTicketOutput(BaseTicketOutput):
     identifier = "ecube_pdf"
-    verbose_name = _("Ecube PDF")
-    download_button_text = _("Ecube PDF")
-    multi_download_button_text = _("Download tickets (Ecube PDF)")
-    long_download_button_text = _("Download ticket (Ecube PDF)")
+    verbose_name = _("PDF output")
+    download_button_text = _("PDF")
+    multi_download_button_text = _("Download tickets (PDF)")
+    long_download_button_text = _("Download ticket (PDF)")
 
     def generate(self, position):
         _ensure_brand_fonts()
@@ -67,7 +67,25 @@ class EcubeTicketOutput(BaseTicketOutput):
         pdf = canvas.Canvas(buffer, pagesize=PAGE_SIZE)
         self._draw_ticket(pdf, position, profile)
         pdf.save()
-        return f"{self.event.slug}-{position.order.code}-{position.positionid}.pdf", "application/pdf", buffer.getvalue()
+        return "order%s%s.pdf" % (self.event.slug, position.order.code), "application/pdf", buffer.getvalue()
+
+    def generate_order(self, order):
+        from pypdf import PdfWriter
+        _ensure_brand_fonts()
+        profile = resolve_design_profile(self.event)
+        merger = PdfWriter()
+        for pos in self.get_tickets_to_print(order):
+            buf = BytesIO()
+            pdf = canvas.Canvas(buf, pagesize=PAGE_SIZE)
+            self._draw_ticket(pdf, pos, profile)
+            pdf.save()
+            buf.seek(0)
+            merger.append(buf)
+        outbuffer = BytesIO()
+        merger.write(outbuffer)
+        merger.close()
+        outbuffer.seek(0)
+        return "order%s%s.pdf" % (self.event.slug, order.code), "application/pdf", outbuffer.read()
 
     def _draw_ticket(self, pdf, position, profile):
         order = position.order
@@ -486,9 +504,9 @@ def _text(value):
 
 
 def _ticket_palette(profile, access_variant):
-    accent = _hex_color(getattr(profile, "primary_color", "") or "#0BB7FF")
+    accent = _hex_color(getattr(profile, "primary_color", "") or "#C8000A")
     secondary = _hex_color(getattr(profile, "secondary_color", "") or "#0B1017")
-    accent_soft = _hex_color(getattr(profile, "accent_color", "") or "#D7F3FF")
+    accent_soft = _hex_color(getattr(profile, "accent_color", "") or "#F4E7E9")
     text = _hex_color(getattr(profile, "text_color", "") or "#F0ECE4")
 
     body_bg = _darken(secondary, 0.42)

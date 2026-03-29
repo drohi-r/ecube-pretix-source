@@ -12,6 +12,7 @@ This repository is not the full private operations repository used to run Ecube 
 
 - `plugins/` - Ecube-maintained custom pretix plugins included in the customized deployment image
 - `core_overrides/` - selected Ecube-maintained override files applied onto upstream pretix paths during image assembly
+- `templates/` - custom presale and error page templates layered into the deployment image
 - `infra/docker/pretix-web.Dockerfile` - Dockerfile used to assemble the customized pretix web image from the disclosed source in this repository
 - `SOURCE_DISCLOSURE.md` - scope and exclusions for the public source disclosure
 - `LICENSE_NOTES.md` - short factual attribution and disclosure note

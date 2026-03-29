@@ -37,7 +37,8 @@ class ResolvedDesignProfile:
 
 def resolve_design_profile(event, item_override=None):
     profile_slug = _resolve_profile_slug(event, item_override)
-    defaults = PRESET_DEFAULTS.get(profile_slug, PRESET_DEFAULTS["bg"])
+    profile_slug = canonical_preset(profile_slug)
+    defaults = PRESET_DEFAULTS.get(profile_slug, PRESET_DEFAULTS.get("gilt", {}))
     asset_pack = _get_event_asset_pack(event)
     organizer_assets = _get_organizer_asset_pack(event.organizer)
 

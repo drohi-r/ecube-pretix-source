@@ -18,8 +18,11 @@ Because the Dockerfile currently references the moving tag `pretix/standalone:st
 
 The exact currently deployed upstream pretix version or image digest is not recorded in the files present in this repository.
 
+## Current Upstream Version
+
+The deployed environment is currently running **pretix 2026.2.0** (as of 2026-03-29).
+
 ## TODO
 
 - Record the exact upstream image digest used for the deployed build.
-- Record the corresponding upstream pretix version or upstream source reference associated with that deployed image.
 - Pin the upstream base image in the build configuration if reproducible provenance tracking is required.

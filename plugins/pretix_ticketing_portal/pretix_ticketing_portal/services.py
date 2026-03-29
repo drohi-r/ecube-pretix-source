@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass
 from datetime import datetime, timezone as dt_timezone
 from decimal import Decimal, InvalidOperation
@@ -7,6 +8,8 @@ from django.utils import timezone
 from django_scopes import scopes_disabled
 from pretix.base.models import Event
 from pretix.multidomain.urlreverse import build_absolute_uri
+
+logger = logging.getLogger(__name__)
 
 
 PORTAL_VISIBILITY_CHOICES = (
@@ -38,6 +41,7 @@ class PortalEventEntry:
     is_public: bool
     is_listed_private: bool
     featured: bool
+    hero_priority: int
     visibility: str
     label: str
     category: str
@@ -59,6 +63,7 @@ class PortalEventEntry:
     availability_display: str
     access_mode_label: str
     image_gradient: str
+    image_url: str
     search_blob: str
 
 
@@ -81,8 +86,14 @@ def build_portal_context(category_filter: str = ""):
     filtered_entries.sort(key=_portal_sort_key)
 
     featured_entries = [entry for entry in filtered_entries if entry.featured]
-    featured_entries.sort(key=_portal_sort_key)
-    hero_entry = featured_entries[0] if featured_entries else (filtered_entries[0] if filtered_entries else None)
+    # Hero selection: featured entries with hero_priority > 0 win (lowest first),
+    # then remaining featured by sort key, then first entry as fallback
+    prioritized = [e for e in featured_entries if e.hero_priority > 0]
+    prioritized.sort(key=lambda e: e.hero_priority)
+    unprioritized = [e for e in featured_entries if e.hero_priority == 0]
+    unprioritized.sort(key=_portal_sort_key)
+    hero_candidates = prioritized + unprioritized
+    hero_entry = hero_candidates[0] if hero_candidates else (filtered_entries[0] if filtered_entries else None)
 
     category_counts = []
     for category in PORTAL_CATEGORIES:
@@ -147,7 +158,11 @@ def _build_event_entry(event):
         "",
     )
     featured = bool(event.settings.get("portal_featured", as_type=bool, default=False))
+    hero_priority = _coerce_int(event.settings.get("portal_hero_priority", as_type=int, default=0))
     sort_order = _coerce_int(event.settings.get("portal_sort_order", as_type=int, default=0))
+    show_image = event.settings.get("portal_show_image", as_type=bool, default=True)
+    if show_image is None:
+        show_image = True
     items = list(getattr(event, "_prefetched_objects_cache", {}).get("items", []))
 
     minimum_price = _minimum_price(items)
@@ -207,11 +222,17 @@ def _build_event_entry(event):
     elif is_listed_private:
         access_mode_label = "Listed Private"
 
+    image_url = ""
+    if show_image:
+        custom_url = event.settings.get("portal_custom_image_url", default="")
+        image_url = custom_url or _event_image_url(event)
+
     return PortalEventEntry(
         event=event,
         is_public=is_public,
         is_listed_private=is_listed_private,
         featured=featured,
+        hero_priority=hero_priority,
         visibility=visibility,
         label=label,
         category=category,
@@ -233,6 +254,7 @@ def _build_event_entry(event):
         availability_display=f"{availability_percent}%" if availability_percent is not None else "",
         access_mode_label=access_mode_label,
         image_gradient=_image_gradient(event, sale_state, category, label, featured),
+        image_url=image_url,
         search_blob=_search_blob(event, category, access_mode_label),
     )
 
@@ -511,6 +533,21 @@ def _build_ticker_items(entries):
 
 def _is_exclusive(entry):
     return entry.label in {"invite_only", "application"} or entry.is_listed_private
+
+
+def _event_image_url(event):
+    try:
+        from pretix_event_themes.services.resolver import resolve_design_profile
+        profile = resolve_design_profile(event)
+        if profile.hero_card_16x9_url:
+            return profile.hero_card_16x9_url
+    except Exception:
+        pass
+    # Fallback to Pretix header image
+    logo = event.settings.get("logo_image")
+    if logo and hasattr(logo, "url"):
+        return logo.url
+    return ""
 
 
 def _image_gradient(event, sale_state, category, label, featured):

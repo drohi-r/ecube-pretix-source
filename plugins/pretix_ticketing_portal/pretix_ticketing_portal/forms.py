@@ -9,11 +9,6 @@ from .services import (
 
 
 class PortalSettingsForm(forms.Form):
-    portal_featured = forms.BooleanField(
-        required=False,
-        label=_("Featured"),
-        help_text=_("Mark this event as featured and eligible for the portal hero spotlight."),
-    )
     portal_visibility = forms.ChoiceField(
         choices=PORTAL_VISIBILITY_CHOICES,
         label=_("Portal visibility"),
@@ -36,6 +31,16 @@ class PortalSettingsForm(forms.Form):
         min_value=0,
         label=_("Manual sort order"),
         help_text=_("Lower numbers appear first. Leave at 0 to use the default date-based ordering."),
+    )
+    portal_show_image = forms.BooleanField(
+        required=False,
+        label=_("Show image on portal"),
+        help_text=_("Display the event cover photo on the portal card and hero. Uncheck to hide."),
+    )
+    portal_custom_image = forms.FileField(
+        required=False,
+        label=_("Custom portal image"),
+        help_text=_("Upload a custom image for this event on the portal. Overrides the theme hero image. Recommended: 1600×900."),
     )
 
     def clean_portal_sort_order(self):

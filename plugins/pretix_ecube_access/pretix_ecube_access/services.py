@@ -1,6 +1,10 @@
+import logging
 import os
+
 import requests
 from django.utils import timezone
+
+logger = logging.getLogger(__name__)
 
 from pretix_admissions.models import AdmissionCredential
 from pretix_admissions.services import record_scan_event, validate_credential_token

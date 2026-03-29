@@ -8,6 +8,7 @@ This mirror contains:
 
 - Ecube-maintained custom plugins under `plugins/`
 - selected Ecube-maintained override files under `core_overrides/`
+- custom presale and error page templates under `templates/`
 - the Docker image assembly file at `infra/docker/pretix-web.Dockerfile`
 - top-level documentation describing the disclosure scope and provenance of the public mirror
 
@@ -34,3 +35,7 @@ This mirror does not contain:
 This mirror is intended to publish the Ecube-maintained source modifications relevant to the customized deployment layer. It does not by itself identify a fully pinned upstream pretix version or digest for every historical deployment.
 
 For provenance and build-mapping notes about the current disclosed build path, see `UPSTREAM_VERSION.md`.
+
+## Sync History
+
+- **2026-03-29**: Full sync of all plugins, core overrides, templates, and Dockerfile. Added `templates/` directory (error pages and presale template overrides). Removed stale `core_overrides/pretix/control/static/pretixcontrol/css/ecube-dark.css`. Updated upstream version reference to pretix 2026.2.0.
