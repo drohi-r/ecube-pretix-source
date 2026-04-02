@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.svg" alt="Ecube Access" width="100%">
+</p>
+
 # Ecube Pretix Public Source-Disclosure Mirror
 
 This repository is a public source-disclosure mirror for an Ecube-maintained customized pretix deployment.
