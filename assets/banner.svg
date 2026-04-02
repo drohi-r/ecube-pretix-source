@@ -8,26 +8,26 @@
     </linearGradient>
 
     <linearGradient id="beamFill1" x1="1520" y1="0" x2="600" y2="520" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#C0924E" stop-opacity="0.6"/>
-      <stop offset="0.35" stop-color="#B0823E" stop-opacity="0.18"/>
-      <stop offset="1" stop-color="#A0722E" stop-opacity="0"/>
+      <stop offset="0" stop-color="#C8000A" stop-opacity="0.65"/>
+      <stop offset="0.35" stop-color="#B80008" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#A80006" stop-opacity="0"/>
     </linearGradient>
 
     <linearGradient id="beamFill2" x1="1600" y1="0" x2="900" y2="520" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#C0924E" stop-opacity="0.35"/>
-      <stop offset="0.35" stop-color="#B0823E" stop-opacity="0.1"/>
-      <stop offset="1" stop-color="#A0722E" stop-opacity="0"/>
+      <stop offset="0" stop-color="#C8000A" stop-opacity="0.4"/>
+      <stop offset="0.35" stop-color="#B80008" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#A80006" stop-opacity="0"/>
     </linearGradient>
 
     <radialGradient id="srcGlow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#C0924E" stop-opacity="0.65"/>
-      <stop offset="0.4" stop-color="#A0722E" stop-opacity="0.12"/>
-      <stop offset="1" stop-color="#906218" stop-opacity="0"/>
+      <stop offset="0" stop-color="#C8000A" stop-opacity="0.7"/>
+      <stop offset="0.4" stop-color="#A80006" stop-opacity="0.15"/>
+      <stop offset="1" stop-color="#880004" stop-opacity="0"/>
     </radialGradient>
 
     <radialGradient id="ambient" cx="0.65" cy="0.15" r="0.65" gradientUnits="objectBoundingBox">
-      <stop offset="0" stop-color="#C0924E" stop-opacity="0.03"/>
-      <stop offset="1" stop-color="#A0722E" stop-opacity="0"/>
+      <stop offset="0" stop-color="#C8000A" stop-opacity="0.035"/>
+      <stop offset="1" stop-color="#A80006" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
@@ -37,14 +37,14 @@
   <polygon points="1555,0 1600,0 920,520 680,520" fill="url(#beamFill1)"/>
   <polygon points="1600,0 1600,35 1120,520 980,520" fill="url(#beamFill2)"/>
 
-  <line x1="1578" y1="0" x2="800" y2="520" stroke="#C0924E" stroke-width="0.8" opacity="0.2"/>
-  <line x1="1600" y1="18" x2="1050" y2="520" stroke="#C0924E" stroke-width="0.8" opacity="0.12"/>
+  <line x1="1578" y1="0" x2="800" y2="520" stroke="#C8000A" stroke-width="0.8" opacity="0.25"/>
+  <line x1="1600" y1="18" x2="1050" y2="520" stroke="#C8000A" stroke-width="0.8" opacity="0.15"/>
 
   <circle cx="1590" cy="0" r="70" fill="url(#srcGlow)"/>
 
   <text x="80" y="80" fill="#484848" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="600" letter-spacing="5">OPEN SOURCE · AGPLV3</text>
 
-  <rect x="80" y="96" width="70" height="2.5" rx="1.25" fill="#C0924E"/>
+  <rect x="80" y="96" width="70" height="2.5" rx="1.25" fill="#C8000A"/>
 
   <text x="66" y="240" fill="#FFFFFF" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="138" font-weight="900" letter-spacing="2">ECUBE ACCESS</text>
 
@@ -53,11 +53,11 @@
   <rect x="80" y="410" width="360" height="1" fill="#1C1C1C"/>
 
   <g transform="translate(80, 450)">
-    <text x="0" y="0" fill="#C0924E" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="900">10</text>
+    <text x="0" y="0" fill="#C8000A" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="900">10</text>
     <text x="40" y="0" fill="#3D3D3D" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="600" letter-spacing="3">PLUGINS</text>
   </g>
 
-  <rect x="80" y="472" width="180" height="1.5" rx="0.75" fill="#C0924E" opacity="0.12"/>
+  <rect x="80" y="472" width="180" height="1.5" rx="0.75" fill="#C8000A" opacity="0.12"/>
 
   <text x="1520" y="492" fill="#1E1E1E" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="600" letter-spacing="4" text-anchor="end">AGPLV3 SOURCE DISCLOSURE</text>
 </svg>
