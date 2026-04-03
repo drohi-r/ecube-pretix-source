@@ -139,7 +139,7 @@ def _error_response(event, payload, message, action, gate=""):
 def _eca_api_base():
     base = (os.getenv("ECUBE_ACCESS_PRETIX_API_BASE") or "").strip().rstrip("/")
     if not base:
-        base = "https://tickets.ecube-entertainment.com"
+        base = "https://pretix.example.invalid"
     return base
 
 
