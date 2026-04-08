@@ -35,7 +35,7 @@ def _theme_key_for_organizer(organizer):
 
 def _css_tag(theme_key):
     filename = THEME_FILES.get(theme_key, THEME_FILES[DEFAULT_THEME])
-    return f'<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/{filename}?v=20260329-v2">'
+    return f'<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/{filename}?v=20260409-v7">'
 
 
 @receiver(nav_event_settings, dispatch_uid='pretix_event_themes_nav_event')
@@ -104,8 +104,8 @@ def presale_head(sender, request=None, **kwargs):
     if preset in LAYOUT_PRESETS:
         # Shared reset first (unlocks .main-box container), then theme-specific layout
         if preset != 'nexus':  # nexus layout has its own reset via :has()
-            output += '<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/ecube-layout-reset.css?v=20260329-v2">'
-        output += f'<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/{LAYOUT_FILES[preset]}?v=20260329-v2">'
+            output += '<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/ecube-layout-reset.css?v=20260409-v7">'
+        output += f'<link rel="stylesheet" type="text/css" href="/static/pretix_event_themes/{LAYOUT_FILES[preset]}?v=20260409-v7">'
 
     if bg:
         output += f'''

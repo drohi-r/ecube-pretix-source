@@ -22,6 +22,11 @@ from pretix.presale.urls import (
 )
 from pretix.urls import common_patterns
 from pretix_ticketing_portal.urls import root_urlpatterns as ticketing_portal_root_urlpatterns
+from pretix_ecubefooter.urls import root_urlpatterns as ecubefooter_root_urlpatterns
+
+ecubefooter_patterns = [
+    re_path(r'', include(ecubefooter_root_urlpatterns)),
+]
 
 presale_patterns_main = [
     re_path(r'', include((locale_patterns + [
@@ -57,7 +62,8 @@ plugin_patterns = [
 ]
 
 # The presale namespace comes last, because it contains a wildcard catch
-urlpatterns = common_patterns + plugin_patterns + presale_patterns_main
+# ecubefooter legal pages go before presale (outside locale_patterns, standalone HTML)
+urlpatterns = common_patterns + plugin_patterns + ecubefooter_patterns + presale_patterns_main
 
 handler404 = 'pretix.base.views.errors.page_not_found'
 handler500 = 'pretix.base.views.errors.server_error'

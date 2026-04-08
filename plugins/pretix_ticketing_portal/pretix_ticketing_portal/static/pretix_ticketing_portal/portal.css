@@ -1174,6 +1174,28 @@ img.hero-bg-img {
   color: var(--wh);
 }
 
+.foot-banner { max-width: 820px; margin: 0 auto 12px; padding: 0 24px; }
+.foot-banner img { width: 100%; height: auto; display: block; border-radius: 6px; }
+
+.foot-legal {
+  text-align: center;
+  font-size: .68rem;
+  color: var(--wh4);
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, .04);
+}
+
+.foot-legal a {
+  color: var(--wh4);
+  text-decoration: none;
+  transition: color .3s;
+}
+
+.foot-legal a:hover {
+  color: var(--wh3);
+}
+
 /* Hide the ecubefooter plugin injection when portal is active */
 .portal-page ~ #ecube-branding-vFinal,
 body:has(.portal-page) #ecube-branding-vFinal {

@@ -4,6 +4,7 @@ from collections import OrderedDict
 
 import requests
 from django import forms
+from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from pretix.base.payment import BasePaymentProvider, PaymentException
@@ -26,7 +27,7 @@ class SSLCommerzPayment(BasePaymentProvider):
             )),
             ('store_passwd', forms.CharField(
                 label=_('Store Password / API Secret Key'),
-                widget=forms.PasswordInput(render_value=True),
+                widget=forms.PasswordInput(),
                 help_text=_('Your SSLCommerz Store Password'),
             )),
             ('sandbox', forms.BooleanField(
@@ -48,10 +49,10 @@ class SSLCommerzPayment(BasePaymentProvider):
         return True
 
     def checkout_confirm_render(self, request, **kwargs):
-        return _('You will be redirected to SSLCommerz to complete your payment.')
+        return mark_safe('<span class="ecube-payment-note">' + str(_('You will be redirected to SSLCommerz to complete your payment.')) + '</span>')
 
     def payment_form_render(self, request, **kwargs):
-        return _('You will be redirected to SSLCommerz to complete your payment.')
+        return mark_safe('<span class="ecube-payment-note">' + str(_('You will be redirected to SSLCommerz to complete your payment.')) + '</span>')
 
     def checkout_prepare(self, request, cart):
         return True
@@ -80,6 +81,9 @@ class SSLCommerzPayment(BasePaymentProvider):
         cancel_url = build_absolute_uri(
             self.event, 'plugins:pretix_sslcommerz:cancel', kwargs=url_kwargs
         )
+        ipn_url = build_absolute_uri(
+            self.event, 'plugins:pretix_sslcommerz:ipn', kwargs=url_kwargs
+        )
 
         try:
             ia = order.invoice_address
@@ -102,6 +106,7 @@ class SSLCommerzPayment(BasePaymentProvider):
             'success_url':      return_url,
             'fail_url':         return_url,
             'cancel_url':       cancel_url,
+            'ipn_url':          ipn_url,
             'cus_name':         cus_name,
             'cus_email':        order.email or 'noemail@example.com',
             'cus_phone':        cus_phone,
@@ -136,6 +141,35 @@ class SSLCommerzPayment(BasePaymentProvider):
         payment.save(update_fields=['info'])
 
         return str(data['GatewayPageURL'])
+
+    def verify_callback_hash(self, callback_data):
+        verify_sign = callback_data.get('verify_sign')
+        verify_key = callback_data.get('verify_key')
+        if not verify_sign or not verify_key:
+            return False
+
+        posted_store_id = callback_data.get('store_id')
+        expected_store_id = self.settings.get('store_id')
+        if posted_store_id and expected_store_id and posted_store_id != expected_store_id:
+            logger.warning(
+                'SSLCommerz callback store_id mismatch. Expected: %s Got: %s',
+                expected_store_id, posted_store_id,
+            )
+            return False
+
+        keys = [k for k in verify_key.split(',') if k]
+        signed_data = {}
+        for key in keys:
+            if key in callback_data:
+                signed_data[key] = callback_data[key]
+
+        signed_data['store_passwd'] = hashlib.md5(
+            str(self.settings.get('store_passwd')).encode('utf-8')
+        ).hexdigest()
+        ordered = sorted(signed_data.items())
+        hash_string = '&'.join(f'{key}={value}' for key, value in ordered)
+        calculated = hashlib.md5(hash_string.encode('utf-8')).hexdigest()
+        return calculated == verify_sign
 
     def validate_payment_with_api(self, val_id, sandbox, payment_obj):
         """

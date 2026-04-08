@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import SSLCommerzReturnView, SSLCommerzCancelView
+from .views import SSLCommerzReturnView, SSLCommerzCancelView, SSLCommerzIPNView
 
 urlpatterns = [
     path(
@@ -11,5 +11,10 @@ urlpatterns = [
         '<str:organizer>/<str:event>/sslcommerz/cancel/<int:payment>/',
         SSLCommerzCancelView.as_view(),
         name='cancel',
+    ),
+    path(
+        '<str:organizer>/<str:event>/sslcommerz/ipn/<int:payment>/',
+        SSLCommerzIPNView.as_view(),
+        name='ipn',
     ),
 ]

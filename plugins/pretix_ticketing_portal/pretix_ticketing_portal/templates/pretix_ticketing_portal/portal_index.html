@@ -1,5 +1,6 @@
 {% extends "pretix_ticketing_portal/portal_base.html" %}
 {% load i18n %}
+{% load static %}
 
 {% block page %}
 <div class="portal-page">
@@ -243,12 +244,22 @@
     </div>
 </main>
 
-{# ── Footer (matches production format) ── #}
+{# ── Footer (matches ecubefooter plugin format) ── #}
 <footer class="site-footer">
+    <div class="foot-banner">
+        <img src="{% static 'pretix_ecubefooter/sslcommerz-pay-with.jpg' %}"
+             alt="Pay with SSLCommerz - Visa, Mastercard, bKash, Nagad, Rocket and more"
+             loading="lazy">
+    </div>
     <div class="foot-center">
-        <div>Powered by <a href="https://pretix.eu" target="_blank" rel="noopener">pretix</a> &middot; Customized by <a href="https://ecube-entertainment.com" target="_blank" rel="noopener">Ecube</a></div>
-        <div>&copy; 2026 Ecube Entertainment Ltd.</div>
-        <div><a href="https://ecube-entertainment.com/about-platform" target="_blank" rel="noopener">Source &amp; Modifications</a></div>
+        <div>&copy; 2026 Ecube Entertainment Ltd. &middot; Powered by <a href="https://pretix.eu" target="_blank" rel="noopener">pretix</a> &middot; Customized by <a href="https://ecube-entertainment.com" target="_blank" rel="noopener">Ecube</a> &middot; <a href="https://ecube-entertainment.com/about-platform" target="_blank" rel="noopener">Source &amp; Modifications</a></div>
+    </div>
+    <div class="foot-legal">
+        <a href="/about/">About</a> &middot;
+        <a href="/contact/">Contact</a> &middot;
+        <a href="/privacy/">Privacy</a> &middot;
+        <a href="/terms/">Terms</a> &middot;
+        <a href="/refund/">Refund Policy</a>
     </div>
 </footer>
 </div>

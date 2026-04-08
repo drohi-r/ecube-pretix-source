@@ -992,19 +992,44 @@ html[data-ecube-control-theme="1"] .page-header h2 {
 html[data-ecube-control-theme="1"] .container-fluid,
 html[data-ecube-control-theme="1"] .container {
     padding-bottom: var(--ec-sp-4);
+    background-color: transparent !important;
+}
+
+html[data-ecube-control-theme="1"] #page-wrapper .container-fluid,
+html[data-ecube-control-theme="1"] #page-wrapper .container,
+html[data-ecube-control-theme="1"] #page-wrapper > div {
+    background-color: transparent !important;
+    color: var(--ec-text) !important;
 }
 
 
 /* ── 18. SELECT2 ──────────────────────────────────────────────── */
 
+html[data-ecube-control-theme="1"] .select2-container .select2-selection,
 html[data-ecube-control-theme="1"] .select2-container--default .select2-selection--single,
-html[data-ecube-control-theme="1"] .select2-container--default .select2-selection--multiple {
+html[data-ecube-control-theme="1"] .select2-container--default .select2-selection--multiple,
+html[data-ecube-control-theme="1"] .select2-container .select2-choice,
+html[data-ecube-control-theme="1"] .select2-choice {
     background-color: var(--ec-surface) !important;
+    background-image: none !important;
     border-color: var(--ec-border-2) !important;
     border-radius: var(--ec-r) !important;
     color: var(--ec-text) !important;
     min-height: 34px !important;
 }
+
+/* Catch any select2 variant that renders outside our scope */
+.select2-container .select2-choice,
+.select2-container .select2-choices,
+.select2-drop,
+.select2-drop-active {
+    background-color: #111111 !important;
+    background-image: none !important;
+    border-color: #2a2a2a !important;
+    color: #eae7e1 !important;
+}
+.select2-results .select2-result-label { color: #eae7e1 !important; }
+.select2-results .select2-highlighted { background-color: #1a1a1a !important; }
 
 html[data-ecube-control-theme="1"] .select2-container--default .select2-selection--single .select2-selection__rendered {
     color: var(--ec-text) !important;

@@ -132,7 +132,7 @@ input[type="number"],input[type="password"],input[type="date"],textarea,select{
 .form-control::placeholder,input::placeholder{color:#134e4a!important}
 h1,h2,h3,h4,h5,h6{color:#f0fdfa!important}
 p,li,span,div,td,th{color:#f0fdfa!important}
-.text-muted,.help-block,small,.small{color:#134e4a!important}
+.text-muted,.help-block,small,.small{color:#5a8a85!important}
 
 .table,table{background:transparent!important;border-color:rgba(20,184,166,0.08)!important}
 .table>thead>tr>th{
@@ -151,6 +151,18 @@ p,li,span,div,td,th{color:#f0fdfa!important}
 .alert-danger{background:rgba(19,78,74,0.2)!important;border-left:3px solid #134e4a!important;color:#f0fdfa!important}
 
 .badge,.label,.label-default{background:rgba(20,184,166,0.12)!important;color:#14b8a6!important;border-radius:0!important}
+.label-success,.badge-success{background:#4ade80!important;border:1px solid #86efac!important;color:#08110b!important;font-weight:700!important;text-shadow:none!important}
+.label-danger{background:rgba(19,78,74,0.2)!important;color:#ef4444!important}
+.text-success{color:#4ade80!important}
+.text-danger{color:#ef4444!important}
+.text-info{color:#14b8a6!important}
+.textbubble-success{background:#4ade80!important;color:#08110b!important;border:1px solid #86efac!important;font-weight:700!important}
+.textbubble-success .fa{color:#08110b!important}
+.textbubble-warning{background:rgba(20,184,166,0.15)!important;color:#f0fdfa!important;border:1px solid rgba(20,184,166,0.3)!important}
+.textbubble-danger{background:rgba(239,68,68,0.15)!important;color:#ef4444!important;border:1px solid rgba(239,68,68,0.3)!important}
+.textbubble-info{background:rgba(20,184,166,0.1)!important;color:#14b8a6!important;border:1px solid rgba(20,184,166,0.2)!important}
+.list-group-item.payment,.list-group-item.payment *{background:#021515!important;color:#f0fdfa!important;border-color:rgba(20,184,166,0.12)!important}
+.list-group-item.payment .ecube-payment-note{color:#f0fdfa!important}
 .modal-content{background:#061212!important;border:1px solid rgba(20,184,166,0.12)!important;border-radius:0!important;color:#f0fdfa!important}
 .modal-header{border-bottom-color:rgba(20,184,166,0.1)!important}
 .modal-footer{border-top-color:rgba(20,184,166,0.1)!important}

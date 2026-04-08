@@ -36,10 +36,13 @@ p,li,span,div,td,th{color:#F0EDE8!important}
 .alert{border-radius:0!important;border:none!important}
 .alert-info{background:rgba(200,0,10,0.06)!important;border-left:3px solid #C8000A!important;color:#F0EDE8!important}
 .alert-success{background:rgba(74,222,128,0.08)!important;border-left:3px solid rgba(74,222,128,0.6)!important;color:#F0EDE8!important}
+.textbubble-success{background:#4ade80!important;color:#08110b!important;border:1px solid #86efac!important;font-weight:700!important}
+.textbubble-success .fa{color:#08110b!important}
+.list-group-item.payment,.list-group-item.payment *{background:#0d0d0d!important;color:#F0EDE8!important;border-color:rgba(255,255,255,0.06)!important}
 .alert-warning{background:rgba(200,0,10,0.08)!important;border-left:3px solid #C8000A!important;color:#F0EDE8!important}
 .alert-danger{background:rgba(139,0,6,0.15)!important;border-left:3px solid #8B0006!important;color:#F0EDE8!important}
 .badge,.label,.label-default{background:rgba(200,0,10,0.12)!important;color:#C8000A!important;border-radius:0!important;font-weight:500!important}
-.label-success{background:rgba(74,222,128,0.15)!important;color:#4ade80!important}
+.label-success,.badge-success{background:#4ade80!important;border:1px solid #86efac!important;color:#08110b!important;font-weight:700!important;text-shadow:none!important}
 .label-danger{background:rgba(139,0,6,0.2)!important;color:#ef4444!important}
 .modal-content{background:#0d0d0d!important;border:1px solid rgba(255,255,255,0.08)!important;border-radius:0!important;color:#F0EDE8!important}
 .modal-header{border-bottom-color:rgba(255,255,255,0.06)!important}
