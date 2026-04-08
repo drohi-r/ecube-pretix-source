@@ -58,7 +58,12 @@ class EcubeMailRenderer(BaseHTMLMailRenderer):
         event_object = position.subevent if position and getattr(position, "subevent_id", None) else self.event
         action_url = self._context_value(context, "url")
         payment_info_raw = self._context_value(context, "payment_info")
-        payment_info = str(payment_info_raw).strip() if payment_info_raw else ""
+        if payment_info_raw and hasattr(payment_info_raw, 'html'):
+            payment_info = payment_info_raw.html or ""
+        elif payment_info_raw:
+            payment_info = str(payment_info_raw).strip()
+        else:
+            payment_info = ""
         recipient_name = self._context_value(context, "name")
         htmlctx = {
             "site": settings.PRETIX_INSTANCE_NAME,
